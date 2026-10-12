@@ -109,6 +109,8 @@ export interface Agent {
   lastHeartbeatAt: Date | null;
   metadata: Record<string, unknown> | null;
   orgChainHealth?: AgentOrgChainHealth;
+  /** Human user who created the agent; null for agent-requested and system-created agents. */
+  createdByUserId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

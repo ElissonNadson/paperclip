@@ -130,6 +130,7 @@ import {
 import { buildPermissionsForTrustPreset, getTrustPreset } from "../lib/trust-policy-ui";
 import { redactHomePathUserSegments, redactHomePathUserSegmentsInValue } from "@paperclipai/adapter-utils";
 import { agentRouteRef } from "../lib/utils";
+import { humanAgentCreatorUserId, resolveAgentCreatorLabel } from "../lib/agent-creator";
 import {
   isStarred,
   resourceMembershipState,
@@ -1743,6 +1744,13 @@ export function AgentOverview({
     queryKey: [...queryKeys.agents.identity(agent.id), lastRun?.id, lastRun?.status],
     queryFn: () => agentsApi.getIdentity(agent.id, agent.companyId),
   });
+  const { data: userDirectory } = useQuery({
+    queryKey: queryKeys.access.companyUserDirectory(agent.companyId),
+    queryFn: () => accessApi.listUserDirectory(agent.companyId),
+    enabled: Boolean(humanAgentCreatorUserId(agent.createdByUserId)),
+    retry: false,
+  });
+  const creatorLabel = resolveAgentCreatorLabel(agent.createdByUserId, userDirectory?.users);
   return (
     <div className="space-y-6">
       <LatestRunCard runs={runs} agentId={agentRouteId} issuesById={issuesById} />
@@ -1764,6 +1772,9 @@ export function AgentOverview({
               ) : <span className="text-sm">Board</span>}
             </SummaryRow>
             <SummaryRow label="Direct reports"><span className="text-sm tabular-nums">{directReportCount}</span></SummaryRow>
+            {creatorLabel ? (
+              <SummaryRow label="Created by"><span className="text-sm">{creatorLabel}</span></SummaryRow>
+            ) : null}
             <SummaryRow label="Public key">
               {identity.isPending ? <span className="text-sm text-muted-foreground">Loading…</span>
                 : identity.isError ? <span className="text-sm text-destructive">Could not load public key</span>

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AgentDetail, AgentRuntimeState, HeartbeatRun, Issue } from "@paperclipai/shared";
 import { describe, expect, it, vi } from "vitest";
 import { AgentOverview } from "./AgentDetail";
+import { queryKeys } from "../lib/queryKeys";
 
 vi.mock("@/lib/router", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
@@ -74,5 +75,57 @@ describe("AgentOverview", () => {
     expect(markup).toContain('href="/activity/costs?agentId=agent-1"');
     expect(markup).not.toContain("Run Activity");
     expect(markup).not.toContain("Tasks by Status");
+    expect(markup).not.toContain("Created by");
+  });
+
+  function renderWithDirectory(createdByUserId: string, principalIds: string[]) {
+    const agent = {
+      id: "agent-2",
+      companyId: "company-1",
+      name: "Shared Agent",
+      urlKey: "sharedagent",
+      role: "engineer",
+      title: null,
+      status: "idle",
+      reportsTo: null,
+      capabilities: null,
+      adapterType: "codex_local",
+      adapterConfig: {},
+      runtimeConfig: {},
+      createdByUserId,
+      chainOfCommand: [],
+      access: { canAssignTasks: true, taskAssignSource: "explicit_grant", membership: null, grants: [] },
+    } as unknown as AgentDetail;
+    const client = new QueryClient();
+    client.setQueryData(queryKeys.access.companyUserDirectory("company-1"), {
+      users: principalIds.map((principalId) => ({
+        principalId,
+        status: "active",
+        user: { id: principalId, name: principalId === "user-alice" ? "Alice Admin" : "Bob Builder", email: null, image: null },
+      })),
+    });
+    return renderToStaticMarkup(
+      <QueryClientProvider client={client}>
+        <AgentOverview
+          agent={agent}
+          runs={[] as HeartbeatRun[]}
+          assignedIssues={[]}
+          directReportCount={0}
+          skillNames={[]}
+          agentRouteId="sharedagent"
+        />
+      </QueryClientProvider>,
+    );
+  }
+
+  it("shows who created the agent when the company has more than one human user", () => {
+    const markup = renderWithDirectory("user-alice", ["user-alice", "user-bob"]);
+    expect(markup).toContain("Created by");
+    expect(markup).toContain("Alice Admin");
+  });
+
+  it("hides the creator when only one human user shares the company with the Board", () => {
+    const markup = renderWithDirectory("user-alice", ["user-alice", "local-board"]);
+    expect(markup).not.toContain("Created by");
   });
 });
