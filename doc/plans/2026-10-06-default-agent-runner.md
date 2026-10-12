@@ -5,7 +5,7 @@ Updated 2026-10-12.
 ## CI fixture, network policy and map synchronization checkpoint
 
 Runtime prerequisite source is `5a9ce11c49db31440863d633426ebe30bcc850ca`
-with 60 changed files. The hosted static check on literal Codex source `eee0534`
+with 59 changed files. The hosted static check on literal Codex source `eee0534`
 passed 133 cases and failed one: its isolated assembly fixture omitted the new
 target JSON, so the helper failed before its existing Cursor-identity assertion.
 The fixture now copies that exact inert JSON; all negative assertions remain.
