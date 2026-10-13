@@ -13,6 +13,7 @@ import { fixtureRuntimeCostCoverage, selectFixtureRuntimeLeases } from "./live-f
 import {
   firstTaskNativeRuntimePatch,
   provisionFirstTaskFixtures,
+  startFirstTaskWithRuntimeBound,
   MANAGED_FIRST_TASK_CELL,
 } from "./first-task-fixtures.js";
 import { describe, expect, it, vi } from "vitest";
@@ -233,6 +234,7 @@ describe("first-task public result projection", () => {
       adapterConfig: { provider: "codex", model: "gpt-5.6-sol", env: { OPENAI_API_KEY: sentinel }, codexHome: sentinel },
       runtimeConfig: { accountId: sentinel }, permissions: { privateTrace: sentinel },
       onboardingRuntime: { mode: "production-wizard", originalAdapterType: "paperclip_runner", testedAdapterType: "paperclip_runner", accountId: sentinel },
+      onboardingRuntimeBound: { timeoutSec: 180, maxConcurrentRuns: 1, before: { runtimeConfig: { accountId: sentinel } }, after: { runtimeConfig: { accountId: sentinel } } },
     };
     for (const checkpoint of e.checkpoints) {
       checkpoint.tasks.forEach(t => Object.assign(t, { executionState: { sessionId: sentinel }, responsibleUserId: sentinel }));
@@ -816,6 +818,110 @@ Accept the card above and I write it. This task stays in review until then.`;
       }),
     ).rejects.toThrow("Missing credential");
     expect(postSensitive).toHaveBeenCalledTimes(1);
+  });
+
+  describe("bounded automatic Codex onboarding admission", () => {
+    function harness(environment = "local", profile = "runner-codex") {
+      const execution = runnerMatrix.find(entry => entry.task.flow === "first_task" && entry.profile.id === profile && entry.environment.id === environment)!;
+      const original = {
+        id: "agent", companyId: "company", adapterType: "paperclip_runner",
+        adapterConfig: { provider: "codex", timeoutSec: 0, model: "gpt-5.6-sol", modelReasoningEffort: "high", codexPermissionMode: "readOnly",
+          env: { OPENAI_API_KEY: { type: "secret_ref", secretId: "encrypted-key", version: "latest" } }, paperclipSkillSync: { desiredSkills: ["paperclipai/paperclip/first-task"] } },
+        runtimeConfig: { aiConnection: { provider: "openai", method: "api_key", mode: "responsible_user" },
+          heartbeat: { maxConcurrentRuns: 20, enabled: false, intervalSec: 0, wakeOnAssignment: true, customHeartbeatSetting: "retained" }, customSetting: "retained" },
+        permissions: { canCreateAgents: true }, defaultEnvironmentId: environment, budgetMonthlyCents: 500, metadata: { ownerUserId: "qa-user" },
+      };
+      let stored = structuredClone(original);
+      const calls: string[] = [];
+      const api = {
+        get: vi.fn(async (_path: string) => { calls.push("GET"); return structuredClone(stored); }),
+        patch: vi.fn(async (_path: string, data: any) => {
+          calls.push("PATCH");
+          stored.adapterConfig = { ...stored.adapterConfig, ...data.adapterConfig };
+          if (data.runtimeConfig) stored.runtimeConfig = structuredClone(data.runtimeConfig);
+          return structuredClone(stored);
+        }),
+      };
+      const observe = vi.fn(() => { calls.push("OBSERVE"); });
+      const start = vi.fn(async () => { calls.push("START"); });
+      const admit = () => startFirstTaskWithRuntimeBound({ api: api as any, execution, agent: original, observe, start });
+      return { api, original, calls, observe, start, admit, stored: () => stored };
+    }
+
+    it.each(["local", "daytona"])("bounds %s without choosing a runner, provider, model, or account", async environment => {
+      const h = harness(environment);
+      const original = structuredClone(h.original);
+      const expected = { ...original, adapterConfig: { ...original.adapterConfig, timeoutSec: 180 },
+        runtimeConfig: { ...original.runtimeConfig, heartbeat: { ...original.runtimeConfig.heartbeat, maxConcurrentRuns: 1 } } };
+      await h.admit();
+      expect(h.stored()).toEqual(expected);
+      expect(h.api.patch).toHaveBeenCalledExactlyOnceWith("/api/agents/agent", { adapterConfig: { timeoutSec: 180 }, runtimeConfig: expected.runtimeConfig });
+      expect(h.calls).toEqual(["GET", "PATCH", "GET", "OBSERVE", "START"]);
+      expect(h.original).toEqual(original);
+      expect(h.observe).toHaveBeenCalledExactlyOnceWith({ timeoutSec: 180, maxConcurrentRuns: 1, before: original, after: expected });
+    });
+
+    it.each(["read-failure", "patch-failure", "verification-failure", "missing-timeout", "missing-concurrency"])("does not admit task execution after %s", async mode => {
+      const h = harness();
+      if (mode === "read-failure") h.api.get.mockRejectedValue(new Error("Agent read failed"));
+      if (mode === "patch-failure") h.api.patch.mockRejectedValue(new Error("Timeout patch failed"));
+      if (mode === "verification-failure") h.api.get.mockResolvedValueOnce(structuredClone(h.original)).mockRejectedValueOnce(new Error("Verification read failed"));
+      if (mode === "missing-timeout") h.api.patch.mockImplementation(async (_path, data) => {
+        h.stored().runtimeConfig = structuredClone(data.runtimeConfig);
+        return structuredClone(h.stored());
+      });
+      if (mode === "missing-concurrency") h.api.patch.mockImplementation(async (_path, data) => {
+        h.stored().adapterConfig = { ...h.stored().adapterConfig, ...data.adapterConfig };
+        return structuredClone(h.stored());
+      });
+      await expect(h.admit()).rejects.toThrow();
+      expect(h.start).not.toHaveBeenCalled();
+      expect(h.observe).not.toHaveBeenCalled();
+      if (mode === "read-failure") expect(h.api.patch).not.toHaveBeenCalled();
+    });
+
+    it.each(["legacy", "wrong-provider", "foreign-agent", "changed-account"])("rejects %s before changing the automatic wizard choice", async mode => {
+      const h = harness();
+      if (mode === "legacy") h.original.adapterType = "codex_local";
+      if (mode === "wrong-provider") h.original.adapterConfig.provider = "claude";
+      if (mode === "foreign-agent") h.api.get.mockResolvedValue({ ...h.original, companyId: "another-company" });
+      if (mode === "changed-account") h.api.get.mockResolvedValue({ ...h.original, runtimeConfig: { ...h.original.runtimeConfig,
+        aiConnection: { ...h.original.runtimeConfig.aiConnection, method: "subscription" } } });
+      await expect(h.admit()).rejects.toThrow();
+      expect(h.api.patch).not.toHaveBeenCalled();
+      expect(h.start).not.toHaveBeenCalled();
+      expect(h.observe).not.toHaveBeenCalled();
+    });
+
+    it.each(["runner", "provider", "model", "account", "permissions", "environment", "instructions", "heartbeat-policy", "other-runtime", "missing-heartbeat"])("refuses a persisted %s change instead of treating the bound PATCH as proof", async field => {
+      const h = harness();
+      const altered = structuredClone(h.original);
+      altered.adapterConfig.timeoutSec = 180;
+      altered.runtimeConfig.heartbeat.maxConcurrentRuns = 1;
+      if (field === "runner") altered.adapterType = "codex_local";
+      if (field === "provider") altered.adapterConfig.provider = "claude";
+      if (field === "model") altered.adapterConfig.model = "another-model";
+      if (field === "account") altered.runtimeConfig.aiConnection.mode = "fixed";
+      if (field === "permissions") altered.permissions.canCreateAgents = false;
+      if (field === "environment") altered.defaultEnvironmentId = "another-environment";
+      if (field === "instructions") altered.adapterConfig.paperclipSkillSync.desiredSkills = [];
+      if (field === "heartbeat-policy") altered.runtimeConfig.heartbeat.wakeOnAssignment = false;
+      if (field === "other-runtime") altered.runtimeConfig.customSetting = "lost";
+      if (field === "missing-heartbeat") delete (altered.runtimeConfig as Partial<typeof altered.runtimeConfig>).heartbeat;
+      h.api.get.mockResolvedValueOnce(structuredClone(h.original)).mockResolvedValueOnce(altered);
+      await expect(h.admit()).rejects.toThrow("runtime bound was not confirmed");
+      expect(h.start).not.toHaveBeenCalled();
+      expect(h.observe).not.toHaveBeenCalled();
+    });
+
+    it.each(["legacy-codex", "legacy-claude", "runner-acpx-claude"])("leaves %s admission unchanged", async profile => {
+      const h = harness("local", profile);
+      await h.admit();
+      expect(h.api.get).not.toHaveBeenCalled();
+      expect(h.api.patch).not.toHaveBeenCalled();
+      expect(h.observe).not.toHaveBeenCalled();
+      expect(h.start).toHaveBeenCalledTimes(1);
+    });
   });
 
   it.each(["runner-codex", "runner-acpx-claude"])(

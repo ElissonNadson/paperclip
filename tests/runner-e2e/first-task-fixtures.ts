@@ -1,4 +1,5 @@
 import { normalizePaperclipOperationalSkillPreference } from "../../packages/adapter-utils/src/server-utils.js";
+import { isDeepStrictEqual } from "node:util";
 import type { RunnerApi } from "./api.js";
 import { deleteDaytonaEnvironment, installFixtureDaytonaProvider, type LiveFixtureValues } from "./live-fixtures.js";
 import { isImmutableDaytonaImage } from "./catalog.js";
@@ -9,6 +10,48 @@ export function isManagedFirstTask(execution: Pick<MatrixExecution, "id">): bool
   return execution.id === MANAGED_FIRST_TASK_CELL;
 }
 
+interface FirstTaskRuntimeBound {
+  timeoutSec: 180;
+  maxConcurrentRuns: 1;
+  before: Record<string, unknown>;
+  after: Record<string, unknown>;
+}
+
+export type FirstTaskFixtureValues = LiveFixtureValues & {
+  onboardingRuntimeBound?: FirstTaskRuntimeBound;
+};
+
+export async function startFirstTaskWithRuntimeBound(input: {
+  api: Pick<RunnerApi, "get" | "patch">;
+  execution: MatrixExecution;
+  agent: Record<string, any>;
+  observe: (bound: FirstTaskRuntimeBound) => void;
+  start: () => Promise<void>;
+}): Promise<void> {
+  if (input.execution.profile.id === "runner-codex") {
+    const snapshot = (agent: Record<string, any>) => structuredClone(Object.fromEntries([
+      "id", "companyId", "adapterType", "adapterConfig", "runtimeConfig", "permissions", "defaultEnvironmentId", "budgetMonthlyCents", "metadata",
+    ].map(key => [key, agent?.[key]]))) as Record<string, any>;
+    const before = snapshot(input.agent);
+    if (!before.id || !before.companyId || before.adapterType !== "paperclip_runner" || before.adapterConfig?.provider !== "codex") {
+      throw new Error("First-task runtime bound requires the wizard's original native Codex selection");
+    }
+    const agentPath = `/api/agents/${encodeURIComponent(before.id)}`;
+    if (!isDeepStrictEqual(snapshot(await input.api.get(agentPath)), before)) {
+      throw new Error("The automatic wizard configuration changed before the first-task runtime bound");
+    }
+    const runtimeConfig = { ...before.runtimeConfig, heartbeat: { ...before.runtimeConfig?.heartbeat, maxConcurrentRuns: 1 } };
+    await input.api.patch(agentPath, { adapterConfig: { timeoutSec: 180 }, runtimeConfig });
+    const after = snapshot(await input.api.get(agentPath));
+    const expected = { ...before, adapterConfig: { ...before.adapterConfig, timeoutSec: 180 }, runtimeConfig };
+    if (!isDeepStrictEqual(after, expected)) {
+      throw new Error("The first-task runtime bound was not confirmed with the original execution and account settings");
+    }
+    input.observe({ timeoutSec: 180, maxConcurrentRuns: 1, before, after });
+  }
+  await input.start();
+}
+
 export async function provisionFirstTaskFixtures(input: {
   api: Pick<RunnerApi, "get" | "patch" | "postSensitive"> & Partial<Pick<RunnerApi, "post" | "delete">>;
   execution: MatrixExecution;
@@ -16,7 +59,7 @@ export async function provisionFirstTaskFixtures(input: {
   daytonaImage?: string;
   company: LiveFixtureValues["company"];
   credentials: Partial<Record<CredentialName, string>>;
-}): Promise<LiveFixtureValues> {
+}): Promise<FirstTaskFixtureValues> {
   const { api, execution, nonce, company, credentials } = input;
   const managed = isManagedFirstTask(execution);
   if (

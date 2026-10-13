@@ -56,6 +56,10 @@ also permits Legacy. Do not switch runners after onboarding when claiming proof
 of that default. Test the selected runtime and account, then complete a bounded
 useful task and follow-up with an independently checked file artifact. Saved
 execution configuration and recorded run identity must match after reload.
+The Codex first-task eval applies operator QA bounds before Get started through
+the existing agent configuration API. It verifies that only timeout and
+concurrency change; automatic runner, account and environment choices remain.
+These campaign bounds are separate from production creation defaults.
 Use [runner validation](./runs-adapters.md#adapter-setup) and
 [environment qualification](./execution-environments.md#environment-settings)
 for the prerequisites; a successful login alone is insufficient.

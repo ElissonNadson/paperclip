@@ -11,6 +11,8 @@ import {
   firstTaskNativeRuntimePatch,
   provisionFirstTaskFixtures,
   isManagedFirstTask,
+  startFirstTaskWithRuntimeBound,
+  type FirstTaskFixtureValues,
 } from "./first-task-fixtures.js";
 import { execFileSync } from "node:child_process";
 import { expect, type Page, type Request, type Response } from "@playwright/test";
@@ -275,7 +277,7 @@ export async function setupFirstTaskFixtures(input: {
   daytonaImage?: string;
   deadlineAt?: number;
   observe: (fixtures: LiveFixtureValues) => void;
-}): Promise<LiveFixtureValues> {
+}): Promise<FirstTaskFixtureValues> {
   const { page, api, execution, nonce } = input;
   await api.patch("/api/instance/settings/experimental", {
     enableClassicTaskInterface: false,
@@ -409,14 +411,18 @@ export async function setupFirstTaskFixtures(input: {
     expect(persisted.adapterType).toBe("paperclip_runner");
     expect(persisted.adapterConfig?.provider).toBe("codex");
   }
-  await page.getByRole("button", { name: "Get started", exact: true }).click();
+  await startFirstTaskWithRuntimeBound({
+    api, execution, agent: agents[0],
+    observe: bound => { fixtures.onboardingRuntimeBound = bound; input.observe(fixtures); },
+    start: () => page.getByRole("button", { name: "Get started", exact: true }).click(),
+  });
   return fixtures;
 }
 
 export async function runFirstTaskFlow(input: {
   page: Page;
   api: RunnerApi;
-  fixtures: LiveFixtureValues;
+  fixtures: FirstTaskFixtureValues;
   execution: MatrixExecution;
   nonce: string;
   deadlineAt?: number;
@@ -611,6 +617,7 @@ export async function runFirstTaskFlow(input: {
     e.runtimeSettings = {
       completionDeliveryProbe: runsCompletionUpdateProbe(execution),
       onboardingRuntime: fixtures.onboardingRuntime,
+      ...(fixtures.onboardingRuntimeBound ? { onboardingRuntimeBound: fixtures.onboardingRuntimeBound } : {}),
       adapterType: agent.adapterType,
       adapterConfig: agent.adapterConfig,
       runtimeConfig: agent.runtimeConfig,

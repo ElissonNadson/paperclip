@@ -168,6 +168,9 @@ remaining operations before qualifying the whole capability.
 
 Gaps: Task creation is agent-accessible where permitted; scheduling/readiness does not
 follow from successful creation.
+The Codex first-task fixture's operator cost guard uses the existing board
+agent-configuration PATCH before admitting work. This is not evidence of agent
+permission to update its runtime; the listed agent-context checks remain not-run.
 
 ## `resume`
 
