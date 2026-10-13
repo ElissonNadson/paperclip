@@ -42,7 +42,7 @@ function targetPlatform(platform: string, architecture: string) {
 
 describe.skipIf(process.platform === "win32")("local browser subscription login", () => {
   it.each([false, true])("uses the selected Codex command with its credential home and ambient HOME/cwd (legacy Linux ARM64: %s)", async (legacy) => {
-    if (legacy) targetPlatform("linux", "arm64");
+    targetPlatform("linux", legacy ? "arm64" : "x64");
     const home = await fakeCli("codex", [
       '[ "$1 $2" = "login --device-auth" ] || exit 11',
       '[ "$HOME" = "$CLAUDE_CONFIG_DIR" ] && [ "$HOME" != "$CODEX_HOME" ] && [ "$CODEX_HOME" = "$PAPERCLIP_TEST_LOGIN_CODEX_HOME" ] || exit 12',
@@ -91,6 +91,7 @@ describe.skipIf(process.platform === "win32")("local browser subscription login"
   });
 
   it("reports a missing terminal prerequisite without exposing spawn details", async () => {
+    targetPlatform("linux", "x64");
     const home = await fakeCli("codex", "exit 0");
     process.env.PATH = path.join(root!, "no-python");
     const login = startLocalBrowserLogin("openai", home);
