@@ -361,3 +361,12 @@ accounts uses a new home; same-account token refresh keeps the home. The regress
 uses a regular credential file to model remote copy-back. The source/Codex suites
 pass 71 cases, and recursive typecheck and production build pass. These are
 deterministic race and launch tests; they do not claim another live model run.
+
+The final default-account follow-up reproduced a mismatch between host and
+company credentials: hashing the host source while seeding the saved company
+login could reuse a previous account's generated home. The digest now reads
+the same prepared company or explicitly selected home used for seeding. The
+default-company switch regression fails before correction and passes afterward.
+All 33 Codex launch/injection/sync cases and recursive typecheck pass. The
+source-removal correction passed fresh review; final CI/review results remain
+recorded on the PR. No extra live-provider result is claimed for this correction.

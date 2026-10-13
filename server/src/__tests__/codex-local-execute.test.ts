@@ -1729,6 +1729,24 @@ process.exit(1);
       expect(removed.codexHome).not.toBe(sourceHome);
       expect(removed.codexHome).toContain("skill-runtimes/agent-1/");
       await expect(fs.stat(path.join(removed.codexHome!, "skills/agentmail"))).rejects.toMatchObject({ code: "ENOENT" });
+      if (!explicitHome) {
+        // A promoted company login can differ from the host's default account.
+        // Digest and seeding must use that same effective credential source.
+        const companyHome = path.resolve(first.codexHome!, "../../..");
+        await fs.unlink(path.join(companyHome, "auth.json"));
+        const originalAccount = JSON.stringify({ tokens: { account_id: "company-account-one", access_token: "test-token-one" } });
+        await fs.writeFile(path.join(companyHome, "auth.json"), originalAccount);
+        const companyRun = await invoke("agent-1", "a".repeat(64));
+        expect(JSON.parse(await fs.readFile(path.join(companyRun.codexHome!, "auth.json"), "utf8")).tokens.account_id).toBe("company-account-one");
+        await fs.unlink(path.join(companyRun.codexHome!, "auth.json"));
+        await fs.writeFile(path.join(companyRun.codexHome!, "auth.json"), originalAccount);
+        await fs.writeFile(path.join(companyHome, "auth.json"), JSON.stringify({ tokens: { account_id: "company-account-two", access_token: "test-token-two" } }));
+        const companyNext = await invoke("agent-1", "a".repeat(64));
+        expect(companyNext.codexHome).not.toBe(companyRun.codexHome);
+        expect(JSON.parse(await fs.readFile(path.join(companyNext.codexHome!, "auth.json"), "utf8")).tokens.account_id).toBe("company-account-two");
+        expect(await fs.readFile(path.join(sourceHome, "auth.json"), "utf8")).toBe(fakeCodexAuthJson);
+      }
+
     } finally {
       for (const key of keys) { if (previous[key] === undefined) delete process.env[key]; else process.env[key] = previous[key]; }
       await fs.rm(root, { recursive: true, force: true });
