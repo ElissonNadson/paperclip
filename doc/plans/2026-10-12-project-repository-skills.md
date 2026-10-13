@@ -118,3 +118,30 @@ not be published or attached.
   rebase and template-compliant PR/review handoff.
 - Owned current server session 94907; development Storybook 14926; built static
   Storybook 34961 (6188). Preserve ownership and use the stop helper for cleanup.
+
+## Rebased checkpoint — 2026-10-12
+
+- Implementation is in four logical commits on `codex/project-repository-skills`,
+  rebased onto master `4b958ecbd8`. Current committed head is `afc5f22a0c`.
+- Master added the downstream Storybook catalog. The new suites now live in the
+  Skills feature home, with explicit stable IDs preserving every existing URL.
+  Shared simulation lives in `ui/storybook/support/projectRepositorySkills.ts`.
+  Catalog structural checks passed (225 files / 2,235 stories) and nine catalog
+  tests passed. Existing source dependency records preserve their classifications.
+- Post-rebase recursive typecheck, production build, Storybook build, map/token
+  gates and all six built-browser journeys passed. No Linux visual baseline was
+  compared or updated.
+- The earlier full-suite process was stopped before rebase. The authoritative
+  post-rebase full suite is exec session 12928, log
+  `/private/tmp/project-skills-rebased-full-suite.log`. It is live; do not restart
+  it because output is quiet.
+- The owned instance restarted at `http://127.0.0.1:3110`, PID 71855, server
+  session 62515, and Doctor proved committed head `afc5f22a0c` with ready UI/API.
+  Its retained source, skill identities, routine and execution history persisted.
+- Manual mobile connection repair passed via keyboard. A missing focus return
+  was observed after saving; the UI now returns to the source actions button.
+  Its eleven focused UI tests and UI typecheck passed. The updated Storybook
+  build is session 73545 and must be followed by the browser focus assertion.
+- Keep the full objective active. Still required: final suite result, complete
+  requirements audit, remaining theme/state review, acceptance evidence handoff,
+  template-compliant PR and review/check loops. No PR has been opened yet.

@@ -70,6 +70,7 @@ test('connection repair keeps the installed skills and selections', async ({ pag
   await dialog.getByRole('radio', { name: 'My GitHub account', exact: true }).click();
   await dialog.getByRole('button', { name: 'Save connection', exact: true }).click();
   await expect(dialog).toHaveCount(0);
+  await expect(source.getByRole('button', { name: 'More actions for acme/team-skills', exact: true })).toBeFocused();
   await expect(source.getByRole('alert')).toHaveCount(0);
   await expect(source.getByText('Code review', { exact: true })).toBeVisible();
 });

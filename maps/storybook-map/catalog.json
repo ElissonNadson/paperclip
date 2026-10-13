@@ -2607,7 +2607,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -2619,7 +2619,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx"
       ],
-      "fingerprint": "99ebebe1ad645fcb409d71ae248196c8ac1342e12188bd6e44e2f5ed056fdaa0",
+      "fingerprint": "a97c4091a5ab6b351ec20899da54d554b6b670dfe2dee69245bcc7a91988e29d",
       "stableId": "skills-github-sync-journey",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub sync journey"
     },
@@ -2633,7 +2633,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -2642,7 +2642,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-synced-skills.stories.tsx"
       ],
-      "fingerprint": "62b348c8195d4c3987362c0790dd2d3a8e335da35dadb1a6c61051352f7261ae",
+      "fingerprint": "66e31f1e28118a4552dfbadcfee817e695b4b08186c677c4513e23cdc9a3332e",
       "stableId": "skills-github-synced-skills",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub synced skills"
     },
@@ -4386,7 +4386,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4399,7 +4399,7 @@
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx",
         "ui/storybook/stories/skills/repository-skill-packages/repository-skill-packages.stories.tsx"
       ],
-      "fingerprint": "204c8707cf2701759959fb8843762d8ee6bfa5ba5a4fae23d889eb6ab0eb08d1",
+      "fingerprint": "af2edab0734234dda22f2160deb34ea50324a153ccf529ac1afc003d3cd1d376",
       "stableId": "skills-repository-packages",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Repository packages"
     },
@@ -5621,7 +5621,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior.",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
@@ -5644,7 +5644,7 @@
       ],
       "stableId": "skills-project-repository-skills-02-journeys",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys",
-      "fingerprint": "2bcaa79bd70b6802fd5ae443b404eee3a21d7f449cda67df0cd7493251f44471"
+      "fingerprint": "eb6d44ed67cf9ea039fad795140b0e2fd2f02c2d49e91ffbc04a15b57512bd0e"
     }
   ]
 }

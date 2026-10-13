@@ -27,6 +27,7 @@ import { consumeSkillSourceReturn, rememberSkillSourceReturn } from '@/lib/skill
 
 const sourceKey = (companyId: string) => queryKeys.skillSources.all(companyId);
 export function SkillSources() {
+  const sourceActionButtons = useRef<Record<string, HTMLButtonElement | null>>({});
   const { selectedCompanyId, selectedCompany } = useCompany();
   const { sourceId } = useParams<{ sourceId: string }>();
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ export function SkillSources() {
               onAutomaticUpdates={enabled => settings.mutate({ source, enabled })} />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="icon-sm" variant="ghost" className="shrink-0" aria-label={`More actions for ${source.fullName}`}><MoreVertical className="size-4" /></Button>
+                <Button ref={button => { sourceActionButtons.current[source.id] = button; }} size="icon-sm" variant="ghost" className="shrink-0" aria-label={`More actions for ${source.fullName}`}><MoreVertical className="size-4" /></Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuCheckboxItem checked={source.automaticUpdates ?? true} disabled={!source.enabled || settings.isPending}
@@ -124,7 +125,7 @@ export function SkillSources() {
         </section>;
       })}
     </div>
-    {repairSource && <SkillSourceConnectionRepair companyId={companyId} source={repairSource} onClose={() => setRepairSource(null)} onSaved={async () => {
+    {repairSource && <SkillSourceConnectionRepair companyId={companyId} source={repairSource} onClose={() => setRepairSource(null)} onReturnFocus={() => sourceActionButtons.current[repairSource.id]?.focus()} onSaved={async () => {
       setResults(prev => ({ ...prev, [repairSource.id]: null })); await invalidate();
     }} />}
     {sourceId && (sourceId === 'new' || activeSource) && <SourceDialog key={`${companyId}:${sourceId}`} companyId={companyId} source={activeSource} onClose={() => navigate('/skills/sources')} onSaved={async result => {

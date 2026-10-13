@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { RadioCardGroup } from '@/components/ui/radio-card';
 
-export function SkillSourceConnectionRepair({ companyId, source, onClose, onSaved }: {
+export function SkillSourceConnectionRepair({ companyId, source, onClose, onSaved, onReturnFocus }: {
   companyId: string; source: SkillSource; onClose: () => void; onSaved: () => Promise<void>;
+  onReturnFocus?: () => void;
 }) {
   const [connectionId, setConnectionId] = useState('');
   const query = useQuery({ queryKey: queryKeys.skillSources.repositories(companyId), queryFn: () => skillSourcesApi.repositories(companyId), refetchOnMount: 'always', retry: false });
@@ -17,7 +18,8 @@ export function SkillSourceConnectionRepair({ companyId, source, onClose, onSave
     onSuccess: async () => { await onSaved(); onClose(); } });
   const connections = query.data?.connections ?? [];
   return <Dialog open onOpenChange={open => { if (!open && !save.isPending) onClose(); }}>
-    <DialogContent className="flex max-h-(--sz-calc-18) flex-col overflow-hidden sm:max-w-md">
+    <DialogContent className="flex max-h-(--sz-calc-18) flex-col overflow-hidden sm:max-w-md"
+      onCloseAutoFocus={event => { if (onReturnFocus) { event.preventDefault(); onReturnFocus(); } }}>
       <DialogHeader className="shrink-0">
         <DialogTitle>Choose GitHub connection</DialogTitle>
         <DialogDescription>Automatic updates will use your access to this connection. Installed skills and selections stay in place.</DialogDescription>
