@@ -28,10 +28,10 @@ host architecture; all 13 login cases passed. Recursive typecheck and production
 build passed again. The 4 GB Linux run passed all server cases, then found a repository-defaults UI
 reset. Its correction passed 38 focused cases; final full qualification remains.
 
-GitHub CLI and Git credentials are unavailable. The signed-in GitHub browser
-session is available for publishing and merging. A refresh that requested a new
-OAuth scope was canceled. Final-head checks must pass before merging. Merge is already authorized;
-no further merge permission is needed.
+GitHub CLI authentication was restored by the user. Local and browser-published
+histories were reconciled with an unchanged, identical tree. Final-head checks
+must pass before merging. Merge is already authorized; no further merge
+permission is needed.
 
 The temporary reconciliation checkout and obsolete previews have been stopped
 and removed. Final local acceptance data and evidence are retained. See the

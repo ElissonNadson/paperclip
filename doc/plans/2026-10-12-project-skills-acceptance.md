@@ -129,10 +129,9 @@ Recursive typecheck, production build, Storybook build, token gates, map checks,
 and catalog checks passed. Full-suite result: **pending rerun after the verified UI correction**. All
 55 PR check contexts were successful, skipped, or neutral on implementation
 614a2d1. Greptile reviewed that exact implementation at 5/5 with no findings;
-all previous review threads were resolved at that review. GitHub CLI credentials are unavailable. The existing browser session is
-authenticated as the setup account and is available for publishing and merging.
-A CLI refresh requested an additional scope and was canceled; no new OAuth
-permission was granted.
+all previous review threads were resolved at that review. The user restored GitHub CLI authentication as the setup account. Earlier
+publication used the existing signed-in browser session. Local and published
+histories were reconciled without changing their identical tree.
 The PR remains gated on final-head
 checks after this evidence-only update.
 
@@ -171,13 +170,17 @@ routine section were found, fixed and covered by regression journeys.
 The final concurrent-repair story also passed manual inspection at 390px in dark
 mode. The selected account remained checked after a 409, its error and footer
 fit on screen, keyboard retry succeeded, and focus returned to source actions.
+The shared task-defaults editor was also inspected after saving on mobile in dark
+mode: the acknowledged selection remained visible and Save became disabled.
 Sampling does not claim interaction coverage for all **27 new exports**. No Linux
 screenshot baseline was compared or updated.
 
-The existing Storybook deployment workflow published implementation 614a2d1:
+The existing Storybook deployment workflow published commit 4450411 in run
+38363451975. Its entire tree is byte-identical to qualified checkout d8ab984
+(tree a5213e1763cc9975e558bfc2af9e4671ccc8f0d9):
 [review guide](https://github.com/paperclipai/paperclip/blob/614a2d1d72892128c7fc949d2485308756e7c687/ui/storybook/stories/skills/project-repository-skills/README.md),
-[project creation](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38345492092-1/?path=/story/skills-project-repository-skills-02-journeys--create-project),
-[repair retry](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38345492092-1/?path=/story/skills-project-repository-skills-02-journeys--repair-conflict).
+[project creation](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38363451975-1/?path=/story/skills-project-repository-skills-02-journeys--create-project),
+[repair retry](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38363451975-1/?path=/story/skills-project-repository-skills-02-journeys--repair-conflict).
 Published deployment metadata and story IDs were verified over HTTP. The in-app
 browser blocked CloudFront navigation, so hands-on inspection used the identical
 local built artifact. No browser security warning was bypassed.
