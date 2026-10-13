@@ -190,9 +190,17 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
           sourceId = concurrent.id;
         }
       }
-      await db.update(projectSkillSources).set({ sourceId, status: 'ready', lastError: null, failureCount: 0, leaseToken: null, leaseExpiresAt: null })
-        .where(and(eq(projectSkillSources.id, binding.id), eq(projectSkillSources.leaseToken, token)));
-      return true;
+      return await db.transaction(async tx => {
+        // Removal locks the source before its bindings. Follow the same order
+        // and recheck provenance while that lock prevents concurrent removal.
+        const [source] = await tx.select().from(companySkillSources).where(and(
+          eq(companySkillSources.companyId, binding.companyId), eq(companySkillSources.id, sourceId))).for('update');
+        if (!source || source.removedAt) throw conflict('Source was removed during import. Retry to start independent tracking.');
+        const linked = await tx.update(projectSkillSources).set({ sourceId, status: 'ready', lastError: null, failureCount: 0, leaseToken: null, leaseExpiresAt: null })
+          .where(and(eq(projectSkillSources.id, binding.id), eq(projectSkillSources.companyId, binding.companyId),
+            eq(projectSkillSources.active, true), eq(projectSkillSources.leaseToken, token))).returning({ id: projectSkillSources.id });
+        return linked.length > 0;
+      });
     } catch (error) {
       const message = shutdown.signal.aborted ? binding.lastError : error instanceof Error && 'status' in error ? error.message : 'Skill import failed. Retry from Skills.';
       await db.update(projectSkillSources).set({ status: shutdown.signal.aborted ? 'pending' : 'error', lastError: message, leaseToken: null, leaseExpiresAt: null,

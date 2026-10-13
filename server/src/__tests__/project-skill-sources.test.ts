@@ -54,6 +54,40 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
   }
   const actor = (userId: string): AuthorizationActor => ({ type: 'board', userId, source: 'session', companyIds: [companyId], ignoreInstanceAdmin: true });
 
+  it('does not add readers when an import overlaps private source removal', async () => {
+    files = { 'race/SKILL.md': md('race workflow') };
+    const originalWorkspace = await workspace('removal-race', 'private');
+    await enqueueProjectSkillSource(db, originalWorkspace);
+    await skillSourceSyncService(db, { context: async () => context }).tick();
+    const [origin] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, originalWorkspace.id));
+    const sources = skillSourceService(db), skills = companySkillService(db);
+    const source = await sources.detail(companyId, origin!.sourceId!);
+    const skillId = source.entries[0]!.skillId!;
+    const pendingWorkspace = await workspace('removal-race', 'open');
+    await enqueueProjectSkillSource(db, pendingWorkspace);
+    let removed = false;
+    const racingContext = { ...context, authorize: async () => {
+      if (removed) return;
+      removed = true;
+      await sources.disconnect(companyId, source.id, context, { revision: source.revision, skills: 'copy' });
+      await skills.updateFile(companyId, skillId, 'SKILL.md', md('Restricted race edits'));
+    } };
+    const worker = skillSourceSyncService(db, { context: async () => racingContext });
+    expect((await worker.tick()).imported).toBe(0);
+    const [pending] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, pendingWorkspace.id));
+    expect(pending).toMatchObject({ sourceId: null, status: 'error' });
+    const readerId = randomUUID();
+    await db.insert(authUsers).values({ id: readerId, name: 'Open reader', email: `${readerId}@example.test`, createdAt: new Date(), updatedAt: new Date() });
+    await db.insert(companyMemberships).values({ companyId, principalType: 'user', principalId: readerId, membershipRole: 'member', status: 'active' });
+    await withSkillActor(actor(readerId), async () => {
+      expect(await skills.getById(companyId, skillId)).toBeNull();
+      expect(await skills.readFile(companyId, skillId, 'SKILL.md')).toBeNull();
+    });
+    expect((await worker.tick(new Date(Date.now() + 6 * 60_000))).imported).toBe(1);
+    const [retried] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, pendingWorkspace.id));
+    expect(retried!.sourceId).not.toBe(source.id);
+  });
+
   it('imports after durable enqueue, imports later additions and avoids unchanged downloads', async () => {
     files = { 'one/SKILL.md': md('one') }; commit = 'a'.repeat(40); downloads.mockClear();
     const row = await workspace('automatic');

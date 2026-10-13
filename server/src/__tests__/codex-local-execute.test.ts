@@ -1590,7 +1590,8 @@ process.exit(1);
     await fs.mkdir(workspace, { recursive: true });
     await fs.mkdir(sourceHome, { recursive: true });
     await fs.mkdir(skillSource, { recursive: true });
-    await fs.writeFile(path.join(sourceHome, "auth.json"), fakeCodexAuthJson);
+    const selectedAuth = JSON.stringify({ tokens: { account_id: "original-selected-account", access_token: "test-subscription-token" } });
+    await fs.writeFile(path.join(sourceHome, "auth.json"), selectedAuth);
     await fs.writeFile(path.join(skillSource, "SKILL.md"), "# AgentMail\nAssigned inbox one.");
     await writeFakeCodexCommand(command);
     const keys = ["PAPERCLIP_HOME", "PAPERCLIP_INSTANCE_ID", "CODEX_HOME"] as const;
@@ -1637,6 +1638,21 @@ process.exit(1);
       expect(removed.codexHome).not.toBe(sourceHome);
       expect(removed.codexHome).toContain("skill-runtimes/agent-1/");
       await expect(fs.stat(path.join(removed.codexHome!, "skills/agentmail"))).rejects.toMatchObject({ code: "ENOENT" });
+      // Remote credential copy-back leaves a regular file. A later authorized
+      // account switch must not reuse that previous account's generated home.
+      await fs.unlink(path.join(first.codexHome!, "auth.json"));
+      await fs.writeFile(path.join(first.codexHome!, "auth.json"), selectedAuth);
+      const nextAccount = JSON.parse(selectedAuth);
+      nextAccount.tokens.account_id = "new-selected-account";
+      await fs.writeFile(path.join(sourceHome, "auth.json"), JSON.stringify(nextAccount));
+      const switched = await invoke("agent-1", "a".repeat(64));
+      expect(switched.codexHome).not.toBe(first.codexHome);
+      expect(JSON.parse(await fs.readFile(path.join(switched.codexHome!, "auth.json"), "utf8")).tokens.account_id).toBe("new-selected-account");
+      nextAccount.tokens.access_token = "refreshed-same-account-token";
+      await fs.writeFile(path.join(sourceHome, "auth.json"), JSON.stringify(nextAccount));
+      expect((await invoke("agent-1", "a".repeat(64))).codexHome).toBe(switched.codexHome);
+      expect(await fs.readFile(path.join(first.codexHome!, "auth.json"), "utf8")).toBe(selectedAuth);
+
     } finally {
       for (const key of keys) { if (previous[key] === undefined) delete process.env[key]; else process.env[key] = previous[key]; }
       await fs.rm(root, { recursive: true, force: true });

@@ -10,6 +10,7 @@ import { copyBackCodexAuth } from "./codex-auth-copyback.js";
 import {
   ensureCodexAuthCacheEntryDir,
   isCodexAuthCacheEnabled,
+  readSubscriptionAccountId,
   resolveCodexAuthCacheEntryPath,
   selectVendCredential,
 } from "./codex-auth-cache.js";
@@ -652,13 +653,23 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
   const desiredSet = new Set(desiredSkillNames);
   // An explicit inventory is the server's authorized execution selection. Include
   // empty inventories: revocation must not fall back to a previously populated home.
-  const runtimeSkillDigest = Array.isArray(config.paperclipRuntimeSkills)
+  let runtimeSkillDigest = Array.isArray(config.paperclipRuntimeSkills)
     ? createHash("sha256").update(JSON.stringify({ connectorSkillDigest,
       skills: codexSkillEntries.filter(entry => desiredSet.has(entry.key))
         .map(entry => [entry.key, entry.source]).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
     })).digest("hex")
     : connectorSkillDigest;
   if (runtimeSkillDigest) {
+    const credentialHome = skillSourceHome ?? resolveSharedCodexHomeDir(process.env);
+    const credentialBytes = await fs.readFile(path.join(credentialHome, "auth.json")).catch(() => null);
+    // Copy-back may retain a refreshed regular credential in a generated home.
+    // Account switches must select a different home, while token refreshes for
+    // the same subscription identity preserve its cache and session state.
+    const credentialIdentity = credentialBytes
+      ? readSubscriptionAccountId(credentialBytes) ?? createHash("sha256").update(credentialBytes).digest("hex") : null;
+    runtimeSkillDigest = createHash("sha256").update(JSON.stringify({
+      runtimeSkillDigest, credentialHome, credentialIdentity, apiKey: envConfig.OPENAI_API_KEY ?? null,
+    })).digest("hex");
     // Different authorized versions/assignments get separate homes, including
     // session state. Previously permitted private links cannot survive revocation.
     configuredCodexHome = path.join(resolveManagedCodexHomeDir(process.env, agent.companyId),

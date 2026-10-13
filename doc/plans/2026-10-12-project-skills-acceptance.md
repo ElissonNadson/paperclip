@@ -350,3 +350,14 @@ and pinned resumes preserve the old bytes. The runtime/catalog suites pass all
 17 cases. This final correction changes no UI; the published Storybook build
 38427815861 pins 6219538f75 and contains all eight successful execution receipts
 and the two explicitly classified old-client failures.
+
+A fresh review then identified a removal/import race and stale account selection
+in generated Codex homes. Both were reproduced before correction. Final source
+linking locks the source before the binding, follows removal's lock order, and
+rechecks removal and the binding lease. A losing import retries with independent
+tracking; it never adds readers to retained edits. Generated homes now include
+the selected subscription account and credential source in their digest. Switching
+accounts uses a new home; same-account token refresh keeps the home. The regression
+uses a regular credential file to model remote copy-back. The source/Codex suites
+pass 71 cases, and recursive typecheck and production build pass. These are
+deterministic race and launch tests; they do not claim another live model run.
