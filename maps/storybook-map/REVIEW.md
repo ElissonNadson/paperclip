@@ -136,6 +136,39 @@ sample of interactions and rendering, not execution of all 2,210 stories.
 The fixture-server story and visual-baseline comparisons remain untested for the
 reasons below. The owned static preview was left running for the requested test-drive.
 
+## Complete feature index follow-up — 2026-10-12
+
+Source baseline: `88bf4c6c1d222f818faa56257efe79207c892a6c` (merged PR #16049).
+Storybook now derives all eight sections, 35 feature families, and 171 capabilities
+from the feature map. Each feature has a generated Overview, including the seven
+without primary suites. Related example links cross primary homes without copying
+stories. Generated guides are separate from the authored catalog and example counts.
+The upstream feature map remains unchanged. Deeper authored scenario groups remain
+intact; this pass does not establish new production parity.
+
+The built index preserved all 2,210 existing story IDs and the docs ID, adding only
+35 feature overviews in map order. Catalog/generator tests (16), token gates, map
+checks, both skill validators, workspace typecheck, workspace build, and Storybook
+build passed. The UI project passed 8,170 tests in 728 files. The broad local test
+run encountered a failure in the unchanged GitHub chat case `authorizes description
+edits as the editor, never inheriting the original author's access`; that exact
+case passed alone without changing code or expectations. A complete local repository
+suite pass is not established. PR #16052 records the final CI result separately.
+
+The local built Storybook passed browser checks for the complete index/sidebar,
+capability-ID search, empty search, Goals cross-feature suite links, all five
+Execution environments capability gaps, and the existing Questions suite links.
+The original `composer-question-flow--editable-initial-text` bookmark still renders.
+The CLI feature uses a comma in its sidebar label because Storybook treats `/` as
+a folder separator; its guide heading retains the upstream name.
+
+Review fixes retain matching shared foundations during search and validate review
+fingerprints after generated files are written. Searching `Primitive Matrix` shows
+and opens the existing foundation story. A regression test changes a capability
+description and proves regeneration reports the resulting review drift without
+updating fingerprints. These checks establish navigation and generation behavior,
+not production acceptance or visual-baseline comparison.
+
 ## Remaining review work
 
 1. Review the 188 unreviewed suites by capability and production subject. Compare
@@ -206,6 +239,24 @@ comparisons and production provider acceptance were not run. Native lifecycle
 behavior remains with the linked transport controls and their existing hosted
 CI fixtures. Catalog validation proves structure and reviewed dependency hashes,
 not that these live journeys passed.
+
+## Project skills: master reconciliation — 2026-10-13
+
+Merged catalog records by stable identity, preserving both branches' additions,
+notes and classifications. Compared the 62 stale entries' declared inputs with
+449a218874: ten source files changed through master's suggested reply assignee,
+manual selection retention, linked-person avatar and verification-recipe work.
+The avatar story retains its supplied image and initials/alignment assertions.
+The shared defaults editor's acknowledged selection fix is preserved. Existing
+fixtures do not gain proof of live provider, source authorization or execution
+behavior from this source comparison. Refreshed only the stale reviewed hashes;
+no classifications, IDs or titles were upgraded. Final build and affected browser
+verification are recorded separately in the acceptance report.
+
+The final master reconciliation preserves master entry order and both branches'
+additions. Seven dependency-list/hash conflicts were compared with 8469b41691;
+none of their declared source bytes changed. Their merged dependency hashes were
+refreshed without upgrading classifications or claiming new rendering proof.
 
 ## Task workspace reconciliation — 2026-10-12
 
@@ -312,15 +363,22 @@ run or live production acceptance was performed for this reconciliation. The
 existing catalog checker must run on the actual merged tree after synchronization;
 its result verifies structure and declared hashes, not these live journeys.
 
-## Project skills: master reconciliation — 2026-10-13
+## 2026-10-13 master merge reconciliation
 
-Merged catalog records by stable identity, preserving both branches' additions,
-notes and classifications. Compared the 62 stale entries' declared inputs with
-449a218874: ten source files changed through master's suggested reply assignee,
-manual selection retention, linked-person avatar and verification-recipe work.
-The avatar story retains its supplied image and initials/alignment assertions.
-The shared defaults editor's acknowledged selection fix is preserved. Existing
-fixtures do not gain proof of live provider, source authorization or execution
-behavior from this source comparison. Refreshed only the stale reviewed hashes;
-no classifications, IDs or titles were upgraded. Final build and affected browser
-verification are recorded separately in the acceptance report.
+Reviewed the source delta from `4808adc34e` to merge `63b2e7b8ad`
+(master parent `d67e3507b2`). The text conflict in INDEX retained the feature-map
+ordering and upstream workspace review notes. Regenerated INDEX after reviewing
+61 stale catalog entries against the changed declared sources.
+
+The inspected changes add assignment-history recipient suggestions and preserve
+manual selections, expand backend verification recipes, and add channel task
+defaults and access avatars with matching fixture changes. Entries record those
+limits. The sidebar suite that also mounts IssueDetail is now unreviewed because
+its route fixture has not been exercised against the new activity query. Existing
+composer examples omit the new optional suggested-assignee prop and retain their
+previous scenarios; their classifications do not certify the new behavior.
+
+All 223 authored suites and 2,210 authored story IDs remain. Generated feature
+pages still cover 35 areas and 171 capabilities. Catalog/generator tests (16),
+catalog validation, map checks and token gates pass. This is source reconciliation,
+not a new visual or live production acceptance claim.
