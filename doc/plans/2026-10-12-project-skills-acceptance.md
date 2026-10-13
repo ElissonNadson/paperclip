@@ -272,3 +272,16 @@ cases. The initial Linux pass exposed two harness mismatches: source authorizati
 now precedes request validation, and repository skill instructions use a wrapper.
 Both assertions retain their intended contract with corrected fixture setup/file
 paths; the final service pass and current PR checks are recorded on PR #16066.
+
+## Final review corrections
+
+The security review’s per-revision approval recommendation conflicts with the
+approved automatic/latest behavior. The response records repository-author trust,
+per-refresh credential/access/policy revalidation and the manual-update option.
+The scanner subsequently passed. Greptile then identified two concrete defects:
+legacy adoption without a saved source ID did not restore removed tracking, and
+Codex’s reused home could retain a revoked private skill link. Adoption now resolves
+the matching removed repository/ref in its transaction. Codex launches against a
+home scoped to its permitted immutable inventory, including an empty inventory,
+with the selected credential source preserved. Three Codex launch/injection/sync
+suites pass 32 cases; final service and real-provider results are recorded on the PR.

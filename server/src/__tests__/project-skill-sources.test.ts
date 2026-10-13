@@ -217,7 +217,10 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       await enqueueProjectSkillSource(db, row);
       await worker.tick(new Date(Date.now() + 6 * 60_000));
       expect(downloads).toHaveBeenCalledTimes(before);
-      await adoptProjectSkillRepository(db, companyId, row.id, context.authorize);
+      const legacy = await workspace(`removed-${choice}`, 'private');
+      await db.insert(projectAccessMembers).values({ companyId, projectId: legacy.projectId, subjectType: 'user', subjectId: userId });
+      // This older workspace has no binding/source ID; one explicit adoption must work.
+      await adoptProjectSkillRepository(db, companyId, legacy.id, context.authorize);
       await worker.tick(new Date(Date.now() + 6 * 60_000));
       const restored = await service.detail(companyId, source.id);
       expect(restored.enabled).toBe(true);
@@ -225,6 +228,7 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       expect(restored.entries.filter(entry => entry.skillId)).toHaveLength(1);
       expect(restored.entries[0]!.skillId).not.toBe(original.id);
       if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toMatchObject({ key: original.key, sourceType: 'local_path', currentVersionId: original.currentVersionId });
+      await db.delete(projects).where(eq(projects.id, legacy.projectId));
       await db.delete(projectAccessMembers).where(and(eq(projectAccessMembers.projectId, row.projectId), eq(projectAccessMembers.subjectId, userId)));
       expect(await skills.getById(companyId, fork.skill.id)).toBeNull();
       if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toBeNull();

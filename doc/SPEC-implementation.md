@@ -2224,3 +2224,9 @@ Project-derived source removal retains dynamic project access for kept editable
 copies and forks. A removed source is absent from Sources and cannot refresh;
 ordinary repository attachment does not restart it. Explicit project adoption can
 restart tracking without widening the retained content’s access.
+
+Codex execution homes are scoped to the agent’s authorized skill inventory,
+including its immutable source versions and an empty inventory. Revocation and
+version changes select a separate home and session store while retaining the
+selected model account’s credential source. Repository skill auto-update trusts
+its upstream authors; operators can pause updates to review changes manually.

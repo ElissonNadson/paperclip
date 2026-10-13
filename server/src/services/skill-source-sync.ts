@@ -56,10 +56,16 @@ export async function adoptProjectSkillRepository(db: Db, companyId: string, wor
     const database = tx as unknown as Db;
     const binding = await enqueueProjectSkillSource(database, workspace);
     if (!binding) throw notFound('Project repository not found');
-    if (binding.sourceId) {
+    {
       const [removed] = await tx.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, companyId),
-        eq(companySkillSources.id, binding.sourceId), sql`${companySkillSources.removedAt} is not null`)).for('update');
+        binding.sourceId ? eq(companySkillSources.id, binding.sourceId) : and(
+          eq(companySkillSources.repositoryUrl, repository.repositoryUrl), eq(companySkillSources.trackingRef, repository.trackingRef)),
+        sql`${companySkillSources.removedAt} is not null`)).for('update');
       if (removed) {
+        // Bind legacy adoption before restoring provenance, even without a saved source ID.
+        await tx.update(projectSkillSources).set({ sourceId: removed.id, status: 'ready', lastError: null })
+          .where(eq(projectSkillSources.id, binding.id));
+        binding.sourceId = removed.id;
         // Explicit adoption restarts tracking; ordinary attachment never overrides removal.
         await tx.update(companySkillSources).set({ removedAt: null, enabled: true, automaticUpdates: true,
           lastScanCommit: null, lastError: null, nextSyncAt: new Date(), failureCount: 0,

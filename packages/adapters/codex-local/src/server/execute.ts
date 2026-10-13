@@ -1,5 +1,6 @@
 import { createProviderStoppedBoundary } from "@paperclipai/adapter-utils/provider-stopped-boundary";
 import { createUsageCheckpointLog } from "@paperclipai/adapter-utils/usage-checkpoint";
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -642,20 +643,27 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     typeof envConfig.CODEX_HOME === "string" && envConfig.CODEX_HOME.trim().length > 0
       ? path.resolve(envConfig.CODEX_HOME.trim())
       : null;
-  const connectorSourceHome = configuredCodexHome;
+  const skillSourceHome = configuredCodexHome;
   const connectorSkillDigest = typeof config.paperclipConnectorSkillDigest === "string"
     && /^[a-f0-9]{64}$/.test(config.paperclipConnectorSkillDigest) ? config.paperclipConnectorSkillDigest : null;
-  if (connectorSkillDigest) {
-    // Never mount assignment-specific skills into the shared company/user home.
-    // A different skill revision gets a new home, so revoked/changed resources
-    // cannot survive as stale symlinks or bleed into another agent's session.
-    configuredCodexHome = path.join(resolveManagedCodexHomeDir(process.env, agent.companyId),
-      "connector-runtimes", agent.id, connectorSkillDigest);
-  }
   const codexSkillEntries = (await readPaperclipRuntimeSkillEntries(config, __moduleDir))
-    // A missing-source entry would become a dangling skill symlink; skip it.
     .filter((entry) => !isPaperclipSkillSourceMissing(entry));
   const desiredSkillNames = resolveCodexDesiredSkillNames(config, codexSkillEntries);
+  const desiredSet = new Set(desiredSkillNames);
+  // An explicit inventory is the server's authorized execution selection. Include
+  // empty inventories: revocation must not fall back to a previously populated home.
+  const runtimeSkillDigest = Array.isArray(config.paperclipRuntimeSkills)
+    ? createHash("sha256").update(JSON.stringify({ connectorSkillDigest,
+      skills: codexSkillEntries.filter(entry => desiredSet.has(entry.key))
+        .map(entry => [entry.key, entry.source]).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
+    })).digest("hex")
+    : connectorSkillDigest;
+  if (runtimeSkillDigest) {
+    // Different authorized versions/assignments get separate homes, including
+    // session state. Previously permitted private links cannot survive revocation.
+    configuredCodexHome = path.join(resolveManagedCodexHomeDir(process.env, agent.companyId),
+      connectorSkillDigest ? "connector-runtimes" : "skill-runtimes", agent.id, runtimeSkillDigest);
+  }
   if (!executionTargetIsRemote) {
     await ensureAbsoluteDirectory(cwd, { createIfMissing: true });
   }
@@ -697,14 +705,14 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
       void error;
     });
   }
-  if (configuredCodexHome == null || (connectorSkillDigest && connectorSourceHome == null)) {
+  if (configuredCodexHome == null || (runtimeSkillDigest && skillSourceHome == null)) {
     await prepareManagedCodexHome(process.env, onLog, agent.companyId, {
       apiKey: configuredOpenAiApiKey,
     });
   }
   if (configuredHomeIsManaged && configuredCodexHome) {
-    const seedEnv = connectorSkillDigest ? {
-      ...process.env, CODEX_HOME: connectorSourceHome ?? resolveManagedCodexHomeDir(process.env, agent.companyId),
+    const seedEnv = runtimeSkillDigest ? {
+      ...process.env, CODEX_HOME: skillSourceHome ?? resolveManagedCodexHomeDir(process.env, agent.companyId),
     } : process.env;
     await seedManagedCodexHome(configuredCodexHome, seedEnv, onLog, {
       apiKey: configuredOpenAiApiKey,
