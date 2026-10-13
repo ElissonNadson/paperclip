@@ -2094,10 +2094,11 @@ unavailable. Preserve current ownership and newer-work fences. See
   be paused independently of selection. Project sources select future additions unless
   excluded; existing manually imported sources retain their selections. Legacy projects
   adopt through an explicit company-scoped, project-authorized endpoint, never a GET.
-- Repository size fallback must not automatically replace installed repository
-  versions with package-only snapshots. Retain their dependencies and report the
-  size error. Initial fallback imports only valid self-contained packages; omitted
-  dependencies invalidate the affected package without bypassing scan limits.
+- Repository size fallback must not discard installed shared dependencies or
+  publish packages with detected omitted dependencies. Retain affected versions
+  and report the size problem. Self-contained packages can still update through
+  fallback. Project sources retry complete repository packaging and return to it
+  when supported; selections and exclusions remain unchanged.
 - Unattended refresh stores setup identity and connection/grant identifiers, never token
   values. Current membership, connection authorization and skill policy are revalidated.
   Unrecoverable legacy setup identities require explicit connection repair. Retries are

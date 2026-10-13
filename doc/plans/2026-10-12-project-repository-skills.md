@@ -20,13 +20,14 @@ checks, a live GitHub-to-routine update journey and a reviewable PR with evidenc
 
 ## Current qualification — 2026-10-13 UTC
 
-Live GitHub-to-routine updates, private-access API matrices and responsive review
-passed. After master reconciliation, eleven built-browser journeys, thirty
-conflict-resolution cases and another real v2 routine execution passed on cea9e474.
-All CI jobs passed that head; review then found a repository-size fallback that
-could omit dependencies. Its correction passed all 56 scanner/source-service
-cases, including retained versions and recovery. Final-head checks after that
-correction and completion of the serialized local phase remain required.
+Implementation and live acceptance passed, including upstream updates, private
+access/recovery matrices, eleven rebuilt browser journeys, responsive inspection
+and a final real v2 execution after master reconciliation. All standard local test
+phases completed across documented retries. The final safe-fallback correction
+passed 89 pinned Node 24 cases and server typecheck/build. Project fallback retains
+shared dependencies, permits safe package updates and restores complete packaging
+when the repository fits. Final review/check results and authorized merge state
+are recorded on PR #16066; only its exact green head may be merged.
 
 GitHub CLI authentication was restored by the user. Local and browser-published
 histories were reconciled with an unchanged, identical tree. Final-head checks

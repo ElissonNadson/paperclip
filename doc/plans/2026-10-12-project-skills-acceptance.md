@@ -1,10 +1,10 @@
 # Project repository skills: acceptance evidence
 
-The live GitHub update journey, production-component browser journeys, and
-manual responsive review passed, including another real routine execution after
-master reconciliation. Final qualification and exact-head review after the
-repository-fallback correction remain required. This report separates live
-outcomes from deterministic tests and Storybook simulations.
+Live GitHub updates, immutable routine executions, access/recovery checks,
+production-component browser journeys, and manual responsive review passed.
+Local standard test phases were completed across documented environment retries.
+Final review/check results and merge state are recorded on PR #16066; merge is
+gated on its exact head. This report separates real outcomes from test fixtures.
 
 ## Environment and artifacts
 
@@ -18,7 +18,7 @@ fixtures. The supported live adapter is `codex_local`, using model `gpt-6.1-sol`
 through the existing authenticated Codex subscription.
 
 The tracked [evidence bundle](../../ui/storybook/public/project-skills-evidence/)
-contains four inspectable captures and an explicit, minimized
+contains the original four captures and a final post-reconciliation capture and an explicit, minimized
 [version receipt](../../ui/storybook/public/project-skills-evidence/versions.json).
 It is included in the existing Storybook build artifact and branch publication.
 Credential files, full provider logs, human authentication keys, and connection
@@ -135,14 +135,39 @@ components with simulated provider/import/execution data; they do not replace
 the live acceptance above.
 
 Recursive typecheck, production build, Storybook build, token gates, map checks,
-and catalog checks passed. Full-suite result: **pending rerun after the verified UI correction**. All
-55 PR check contexts were successful, skipped, or neutral on implementation
-614a2d1. Greptile reviewed that exact implementation at 5/5 with no findings;
-all previous review threads were resolved at that review. The user restored GitHub CLI authentication as the setup account. Earlier
-publication used the existing signed-in browser session. Local and published
-histories were reconciled without changing their identical tree.
-The PR remains gated on final-head
-checks after this evidence-only update.
+and catalog checks passed after master reconciliation. The final fallback follow-up
+also passed server typecheck/build and **89 pinned Node 24 cases**: scanner/source,
+project worker, and both workspace authorization suites. Eleven built-browser
+journeys passed again after master reconciliation. The signoff retry passed ten
+browser/API cases across two runs.
+
+The standard `pnpm test:run` phases on source d8ab984 were completed across retries:
+
+| Phase | Passed files | Passed cases |
+| --- | ---: | ---: |
+| General server | 900 | 18,429 |
+| UI | 729 | 8,181 |
+| CLI | 66 | 527 |
+| Shared | 89 | 908 |
+| Skills catalog | 5 | 20 |
+| Adapter utilities | 73 | 1,736 |
+| Other workspaces | 130 | 2,079 |
+| Database | 51 | 194 |
+| Serialized server | 158 | 3,113 |
+
+This is complete phase coverage, not a claim that one uninterrupted monolithic
+command exited zero. The serialized run passed 156 files, then hit a 15-second
+route-test timeout; the failed file and the last unrun file passed all 21 cases in
+isolation. The final five-suite run passed all 89 cases on source
+`40bafbb7a2f7753ac48765081bd2583f611cf5f2`, preserving assertions and deadlines.
+Full final-head CI covers the reconciled master and subsequent corrections;
+its authoritative results are linked from the PR.
+
+GitHub CLI authentication was restored by the user. Earlier browser publication
+and local source trees were identical and their histories were reconciled without
+content changes. No host credentials or production data were mounted in the Linux
+verifier. Review findings were fixed with regressions and resolved through the
+[check-pr workflow](../../.agents/skills/check-pr/SKILL.md).
 
 Earlier local full runs failed. macOS runs encountered database startup/hook
 failures from shared-memory exhaustion and a public-MCP timeout. The first Linux
@@ -156,8 +181,7 @@ existing setup-token route suite. Its 30 cases passed with an explicit 4 GB
 heap. With the 4 GB heap, all 900 server files passed: 18,429 tests passed and
 76 skipped. The UI group then reported 8179 passed and one failure. The reset
 reproduced in isolation; its editor now holds accepted selections until parent
-data refreshes. Both focused UI suites passed all 38 cases. Remaining full
-qualification uses the same isolated verifier setting; completion is not claimed.
+data refreshes. Both focused UI suites passed all 38 cases. Subsequent phase completion and final focused verification are recorded above.
 The final Linux run uses Node 24, built workspace dependencies, pinned Rust,
 and the standard process, shell, SSH and JSON test tools in an isolated container.
 No host credentials or production data are mounted.
@@ -184,12 +208,13 @@ mode: the acknowledged selection remained visible and Save became disabled.
 Sampling does not claim interaction coverage for all **27 new exports**. No Linux
 screenshot baseline was compared or updated.
 
-The existing Storybook deployment workflow published commit 4450411 in run
-38363451975. Its entire tree is byte-identical to qualified checkout d8ab984
-(tree a5213e1763cc9975e558bfc2af9e4671ccc8f0d9):
-[review guide](https://github.com/paperclipai/paperclip/blob/614a2d1d72892128c7fc949d2485308756e7c687/ui/storybook/stories/skills/project-repository-skills/README.md),
-[project creation](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38363451975-1/?path=/story/skills-project-repository-skills-02-journeys--create-project),
-[repair retry](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38363451975-1/?path=/story/skills-project-repository-skills-02-journeys--repair-conflict).
+The existing Storybook deployment workflow published commit 5869973 in run
+38394544972, including the sixth real execution receipt and final task capture.
+Subsequent fallback changes affect server code; shipped UI and story sources remain
+identical to this published build:
+[review guide](https://github.com/paperclipai/paperclip/blob/586997352198b2dbf025445706762e27d38e6764/ui/storybook/stories/skills/project-repository-skills/README.md),
+[project creation](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38394544972-1/?path=/story/skills-project-repository-skills-02-journeys--create-project),
+[repair retry](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38394544972-1/?path=/story/skills-project-repository-skills-02-journeys--repair-conflict).
 Published deployment metadata and story IDs were verified over HTTP. The in-app
 browser blocked CloudFront navigation, so hands-on inspection used the identical
 local built artifact. No browser security warning was bypassed.
@@ -220,9 +245,18 @@ writes before truncation, resolving a reproduced database teardown deadlock.
 ![Mobile concurrent repair](../../ui/storybook/public/project-skills-evidence/repair-conflict-mobile.jpg)
 
 The final review identified an oversized-repository refresh that could drop shared
-dependencies. Installed repository sources now retain their immutable versions
-instead of automatically downgrading to package-only content. Initial fallback
-rejects dependent packages while allowing valid self-contained ones. All 56 scanner
+dependencies. Repository sources retain installed versions when fallback would omit shared
+files; safe self-contained packages can still update. Initial and subsequent project fallback scans reject detected omitted
+dependencies. Project sources automatically restore complete packaging when it fits. All 56 scanner
 and source-service cases passed, including manual and scheduled oversized refresh,
 retained shared/sibling files, unchanged versions, and recovery after size reduction.
 The signoff fixture retry also passed ten real browser/API cases across two runs.
+
+Environment retries also preserved the original failures: a telemetry opt-out
+variable conflicted with a mocked CLI test; Docker overlay storage affected probe
+identity tests; a native temporary mount initially disallowed execution; and an
+oversized stream fixture failed under that mount. The normal-storage cases and
+all 56 probe cases on an executable native temporary filesystem passed. A later
+host rerun used Node 26 and hit database/subprocess timeouts. The pinned Node 24
+run passed the unchanged audit deadline, project suites and authorization cases.
+No assertions or timeout thresholds were relaxed to obtain these results.
