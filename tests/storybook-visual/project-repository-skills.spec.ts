@@ -50,7 +50,7 @@ test('routine instructions stay stable while new executions follow updated skill
   const outcome = page.getByText(/^Completed using code review version /);
   await expect(outcome).toContainText('version-entry-1 at commit a17d36');
   await expect(outcome).toBeVisible();
-  const first = await outcome.textContent();
+  const first = await outcome.textContent() ?? '';
   expect(first).toContain('version-entry-1 at commit a17d36');
   await expect(page.getByRole('alert')).toHaveCount(0);
   await page.getByRole('link', { name: 'Skills', exact: true }).click();
@@ -146,6 +146,22 @@ test('connection repair keeps the installed skills and selections', async ({ pag
   await dialog.getByRole('button', { name: 'Save connection', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await expect(source.getByRole('button', { name: 'More actions for acme/team-skills', exact: true })).toBeFocused();
+  await expect(source.getByRole('alert')).toHaveCount(0);
+  await expect(source.getByText('Code review', { exact: true })).toBeVisible();
+});
+
+test('connection repair recovers from a concurrent update without losing the selected account', async ({ page }) => {
+  await page.goto(story('repair-conflict'));
+  const source = page.getByRole('region', { name: 'acme/team-skills', exact: true });
+  await source.getByRole('button', { name: 'Choose connection', exact: true }).click();
+  const dialog = page.getByRole('dialog');
+  const account = dialog.getByRole('radio', { name: 'My GitHub account', exact: true });
+  await account.click();
+  await dialog.getByRole('button', { name: 'Save connection', exact: true }).click();
+  await expect(dialog.getByRole('alert')).toContainText('This source was updated');
+  await expect(account).toBeChecked();
+  await dialog.getByRole('button', { name: 'Save connection', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
   await expect(source.getByRole('alert')).toHaveCount(0);
   await expect(source.getByText('Code review', { exact: true })).toBeVisible();
 });

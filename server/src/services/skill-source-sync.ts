@@ -194,12 +194,14 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
     const ids = activeCompanies.map(company => company.id);
     if (!ids.length) return { imported: 0, checked: 0 };
     const pending = await db.select().from(projectSkillSources).where(and(inArray(projectSkillSources.companyId, ids),
-      eq(projectSkillSources.active, true), isNull(projectSkillSources.sourceId), lte(projectSkillSources.nextSyncAt, now)))
+      eq(projectSkillSources.active, true), isNull(projectSkillSources.sourceId), lte(projectSkillSources.nextSyncAt, now),
+      or(isNull(projectSkillSources.leaseToken), lte(projectSkillSources.leaseExpiresAt, now))))
       .orderBy(asc(projectSkillSources.nextSyncAt)).limit(10);
     let imported = 0, checked = 0;
     for (const binding of pending) { if (shutdown.signal.aborted) break; if (await importBinding(binding, now)) imported++; }
     const due = await db.select().from(companySkillSources).where(and(inArray(companySkillSources.companyId, ids),
       eq(companySkillSources.enabled, true), eq(companySkillSources.automaticUpdates, true), lte(companySkillSources.nextSyncAt, now),
+      or(isNull(companySkillSources.leaseToken), lte(companySkillSources.leaseExpiresAt, now)),
       or(eq(companySkillSources.accessScope, 'company'), sql`exists (select 1 from ${projectSkillSources} b where b.source_id = ${companySkillSources.id} and b.company_id = ${companySkillSources.companyId} and b.active)`)))
       .orderBy(asc(companySkillSources.nextSyncAt)).limit(10);
     for (const entry of due) {

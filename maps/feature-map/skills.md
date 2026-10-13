@@ -72,3 +72,7 @@ be absent for unrelated people/agents; access through either originating project
 
 Storybook/browser coverage uses scoped fixtures. Live GitHub-to-routine execution
 must be verified separately; inspect resolved version IDs across an upstream update.
+
+### Connection repair during an update
+
+Open Choose connection while a source is being refreshed. Select an authorized account and save. If the source changes, the dialog must retain that selection, load the current revision, and allow a second save without reopening. The [project repository browser suite](../../tests/storybook-visual/project-repository-skills.spec.ts) covers this recovery with simulated upstream data.

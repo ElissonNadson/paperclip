@@ -4421,7 +4421,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4429,7 +4429,7 @@
         "ui/src/pages/agent-skills/AgentSkillRow.tsx",
         "ui/storybook/stories/skills/agent-skill-row.stories.tsx"
       ],
-      "fingerprint": "a9bc3f4ac119f856d7edbdb7ecafd18af5c55490fd3fc431e9a793143b27e689",
+      "fingerprint": "747df5d18b20ef648fa72de243e5e906df75f8ccdb326487a64ccb4c868f0ef0",
       "stableId": "agent-skills-agentskillrow",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Agent Skills/AgentSkillRow"
     },
@@ -4442,14 +4442,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/agent-skills/AgentSkillsTab.tsx",
         "ui/storybook/stories/skills/agent-skills-edge.stories.tsx"
       ],
-      "fingerprint": "528f568d77b6e0a95a94a9c175a0e0420d84fe97be88d8fa04f663baaab916dd",
+      "fingerprint": "41c2c0324a076d60a683ff2e81e7f99fffedcba692804a3b3b93df67cd4ee919",
       "stableId": "qa-agent-skills-edge-states",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/QA / Agent skills edge states"
     },
@@ -4462,14 +4462,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/skill-studio/AgentsUsingSkillDialog.tsx",
         "ui/storybook/stories/skills/agents-using-skill.stories.tsx"
       ],
-      "fingerprint": "e202ddbbffa27452f6ed3d34e4b903edfdb658344f5d37cb392fd5269de1495b",
+      "fingerprint": "4a18424a725859956af30abf23e55cd63b7ceed185e2b8b5af29aed5c3744c49",
       "stableId": "skill-studio-agentsusingskill",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skill Studio/AgentsUsingSkill"
     },
@@ -4482,7 +4482,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4491,7 +4491,7 @@
         "ui/src/components/skill-studio/SkillProvenance.tsx",
         "ui/storybook/stories/skills/fork-skill-flow.stories.tsx"
       ],
-      "fingerprint": "f65a844b980f5e8d8866082af0656c670d3540ca4177e057188bbf02c99ddad0",
+      "fingerprint": "5b2be60085a6dc3d1271e44681078b939e86454b2b08e97c19cf92e6b8f24530",
       "stableId": "skill-studio-editacopy",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skill Studio/EditACopy"
     },
@@ -4504,14 +4504,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/FrontmatterPanel.tsx",
         "ui/storybook/stories/skills/frontmatter-panel.stories.tsx"
       ],
-      "fingerprint": "649f55c31301d9e8009a46c2e9f9c5498dc25aefe5b0bd6309336ac54cba41c7",
+      "fingerprint": "3ce86c6fc5abd40ab68ce9e6ea45c2ed8891af8f88fe5a7f8b82e32cd9d68657",
       "stableId": "product-skill-studio-·-frontmatterpanel",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio · FrontmatterPanel"
     },
@@ -4525,7 +4525,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4537,7 +4537,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx"
       ],
-      "fingerprint": "82b2cb2df961764d1947f17eb08121ce1357834d37f16f5ed4a04d7196bfc1c8",
+      "fingerprint": "2df9f3323d399a86b19ba1ba94669bf4ecfae0c2d09ed25aaf057b884e1039c9",
       "stableId": "skills-github-sync-journey",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub sync journey"
     },
@@ -4551,7 +4551,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4560,7 +4560,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-synced-skills.stories.tsx"
       ],
-      "fingerprint": "0df965b997e72794933d969c839692f4b4fe239772dda9a0cbbb1def229eb99c",
+      "fingerprint": "2f8eddf13949a48a87a682dd74715fd613dc8a35caf1d599ea0098a2126d1b9e",
       "stableId": "skills-github-synced-skills",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub synced skills"
     },
@@ -4574,7 +4574,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "ui/storybook/stories/skills/project-repository-skills/components.stories.tsx",
@@ -4585,7 +4585,7 @@
       ],
       "stableId": "skills-project-repository-skills-01-components",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/01 Components",
-      "fingerprint": "f89491c34861016bc71bf1f340a1a83c7ef7b4e5cf319b0c8d0b3cad22d9fe4e"
+      "fingerprint": "7453ec1d7ba76570935b45d72b91d7cc48721957245809987af6d9484c9f9e92"
     },
     {
       "file": "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
@@ -4600,7 +4600,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
@@ -4623,7 +4623,7 @@
       ],
       "stableId": "skills-project-repository-skills-02-journeys",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys",
-      "fingerprint": "83ad32aededadbb46c7b7802ac9efb2bc80642b7f0a022b3af92b1364207f5fb"
+      "fingerprint": "e29dea1e62c4a52865d51e7b7dcdad42500e83bf83284a7fc0c2d7155f724a6f"
     },
     {
       "file": "ui/storybook/stories/skills/repository-skill-packages/repository-skill-packages.stories.tsx",
@@ -4635,7 +4635,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4648,7 +4648,7 @@
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx",
         "ui/storybook/stories/skills/repository-skill-packages/repository-skill-packages.stories.tsx"
       ],
-      "fingerprint": "3f545c3fef6560756134d4f4413acabcb8f57044ae6a576bdf57395636d07fcb",
+      "fingerprint": "e5c81fcacb111a978e51d843d6af458e6d562a0bdbb1cfab775138815bfa497a",
       "stableId": "skills-repository-packages",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Repository packages"
     },
@@ -4662,7 +4662,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4671,7 +4671,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/skill-import-progress.stories.tsx"
       ],
-      "fingerprint": "3a5d21585f8a78c2a3033b4c333a1073eaf85e09dbfbb2456d8ca75bf3ecf46e",
+      "fingerprint": "be79cb6994a18d8fa5f508396ad73b7d491e3dbdbf3c1a0b7621092e6ba47cd6",
       "stableId": "skills-import-progress",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Import progress"
     },
@@ -4684,14 +4684,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/skill-studio/SkillPolicySurfaces.tsx",
         "ui/storybook/stories/skills/skill-policy-surfaces.stories.tsx"
       ],
-      "fingerprint": "5060764c0bcd8867b9111e4791c8e1dc85fab72fdde00befda332f6f816f7894",
+      "fingerprint": "dc266b950a8d6b73a69f1f13f2a13da6c7c743ffa6e577012a9300cf013b1237",
       "stableId": "product-skills-policy-surfaces",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skills/Policy surfaces"
     },
@@ -4704,14 +4704,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/CompanySkills.tsx",
         "ui/storybook/stories/skills/skills-store-detail.stories.tsx"
       ],
-      "fingerprint": "a3a8dcc5ca4f7e57e820fd3131a731591a73a8c169e2638821c128832bdd298a",
+      "fingerprint": "6623621f6043267b82dd71838b0614e039b62d1877edd5f760641699105d8ae6",
       "stableId": "skills-store-skill-detail",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills Store/Skill detail"
     },
@@ -4724,14 +4724,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/CompanySkills.tsx",
         "ui/storybook/stories/skills/skills-store-discovery.stories.tsx"
       ],
-      "fingerprint": "b8d679ca84c62e1fadaf50644ea5b75053adf4189ef8c9ed92b495cbdbe74b6c",
+      "fingerprint": "120a83b298f6e3f2112d45a023f7675a03334353cceeb79332b7710ccebac3b3",
       "stableId": "skills-store-discovery-grid",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills Store/Discovery grid"
     },

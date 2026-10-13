@@ -145,7 +145,7 @@ was reachable by keyboard. A cramped provenance layout and missing repair focus 
 and fixed. The repair footer was reachable on mobile, and keyboard saving worked.
 The routine and empty-source defects found in this inspection were fixed and
 covered by the focused browser cases. This sampling does not claim interaction
-coverage for all 26 new exports. These macOS captures
+coverage for all 27 new exports. These macOS captures
 are inspection evidence; no Linux screenshot baseline was compared or updated.
 
 ## Inspectable captures
@@ -161,3 +161,11 @@ Shipped mobile repair dialog with Storybook fixtures:
 Real completed routine execution:
 
 ![Real routine execution](../../ui/storybook/public/project-skills-evidence/routine-execution.jpg)
+
+## Final review fixes
+
+Greptile's 3008f4f review scored 5/5 but had two open P2 findings; it was not treated as approval to merge. Initial-import and scheduled-refresh queries now exclude live leases before their bounded batches. A real database regression places ten leased records ahead of eligible work and verifies the eligible import and refresh proceed. The project-source suite passed 12 cases.
+
+Connection repair now follows the current source row and reloads it after a revision conflict while retaining the selected account. Eleven browser journeys passed against the rebuilt Storybook, including a conflict followed by successful repair without reopening the dialog. Runtime-test cleanup now drains tracked execution/wakeup writes before truncating its database; the source/runtime suites passed 16 cases after reproducing a teardown deadlock. Recursive typecheck passed after these fixes.
+
+The first isolated Linux full run used source 3008f4f and failed because fresh dependencies lacked generated SDK entry points. It reported 206 failed files, 695 passed, five skipped, and 136 failed tests. This setup attempt is not passing qualification. The next run must build prerequisites before executing the full suite.

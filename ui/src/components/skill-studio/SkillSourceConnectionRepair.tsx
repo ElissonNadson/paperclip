@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SkillSource } from '@paperclipai/shared';
 import { skillSourcesApi } from '@/api/skillSources';
+import { ApiError } from '@/api/client';
 import { queryKeys } from '@/lib/queryKeys';
 import { Link } from '@/lib/router';
 import { Button } from '@/components/ui/button';
@@ -13,8 +14,14 @@ export function SkillSourceConnectionRepair({ companyId, source, onClose, onSave
   onReturnFocus?: () => void;
 }) {
   const [connectionId, setConnectionId] = useState('');
+  const client = useQueryClient();
   const query = useQuery({ queryKey: queryKeys.skillSources.repositories(companyId), queryFn: () => skillSourcesApi.repositories(companyId), refetchOnMount: 'always', retry: false });
   const save = useMutation({ mutationFn: () => skillSourcesApi.settings(companyId, source.id, { revision: source.revision, connectionId }),
+    onError: async error => {
+      if (error instanceof ApiError && error.status === 409) {
+        await client.invalidateQueries({ queryKey: queryKeys.skillSources.all(companyId) });
+      }
+    },
     onSuccess: async () => { await onSaved(); onClose(); } });
   const connections = query.data?.connections ?? [];
   return <Dialog open onOpenChange={open => { if (!open && !save.isPending) onClose(); }}>
@@ -31,7 +38,8 @@ export function SkillSourceConnectionRepair({ companyId, source, onClose, onSave
         options={connections.map(connection => ({ value: connection.id, title: connection.name }))} />
       {query.isSuccess && connections.length === 0 && <p className="text-sm text-muted-foreground">Connect GitHub to continue.</p>}
       <Button asChild variant="link" className="justify-start p-0"><Link to="/apps">Manage GitHub connections</Link></Button>
-      {save.error && <p role="alert" className="text-sm text-destructive">{save.error.message}</p>}
+      {save.error && <p role="alert" className="text-sm text-destructive">{save.error instanceof ApiError && save.error.status === 409
+        ? 'This source was updated. Your connection is still selected. Save again to apply it.' : save.error.message}</p>}
       </div>
       <footer className="flex shrink-0 items-center justify-between gap-3 border-t border-border pt-4">
         <Button variant="ghost" disabled={save.isPending} onClick={onClose}>Cancel</Button>

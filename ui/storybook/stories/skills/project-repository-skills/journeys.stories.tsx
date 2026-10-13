@@ -61,3 +61,4 @@ export const TwoPrivateProjects: Story = { name: '18 · Two private projects', a
 export const ManySkills: Story = { name: '19 · Large skill list', args: { scenario: 'many' } };
 
 export const AttachRepository: Story = { name: '20 · Attach another repository', args: { scenario: 'attach-repository' } };
+export const RepairConflict: Story = { name: '21 · Repair during a background update', args: { scenario: 'repair-conflict' } };

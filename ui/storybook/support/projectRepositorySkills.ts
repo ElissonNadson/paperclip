@@ -8,13 +8,14 @@ import { routinesApi } from '@/api/routines';
 import { activityApi } from '@/api/activity';
 import { heartbeatsApi } from '@/api/heartbeats';
 import { emailApi } from '@/api/email';
+import { ApiError } from '@/api/client';
 import { issuesApi } from '@/api/issues';
 import { queryKeys } from '@/lib/queryKeys';
 import { baseRoutine } from '../fixtures/routineWebhooks';
 import { storybookProjects, storybookIssues } from '../fixtures/paperclipData';
 import { COMPANY_ID, SOURCE_ID, COMMIT, installFixtures, candidates, sourceFixture } from '../fixtures/githubSkillSources';
 
-export type Scenario = 'new-project' | 'attach-repository' | 'legacy' | 'ready' | 'refreshing' | 'error' | 'empty' | 'private' | 'shared' | 'shared-private' | 'long' | 'many' | 'paused' | 'removed' | 'validation' | 'repair' | 'automatic' | 'latest';
+export type Scenario = 'new-project' | 'attach-repository' | 'legacy' | 'ready' | 'refreshing' | 'error' | 'empty' | 'private' | 'shared' | 'shared-private' | 'long' | 'many' | 'paused' | 'removed' | 'validation' | 'repair' | 'repair-conflict' | 'automatic' | 'latest';
 export const projectRepository: ProjectSkillRepository = {
   projectId: 'project-skills', projectName: 'Acme platform', projectVisibility: 'open',
   workspaceId: 'workspace-skills', repositoryUrl: 'https://github.com/acme/team-skills', trackingRef: 'main',
@@ -34,7 +35,8 @@ export function installProjectSkillFixtures(scenario: Scenario, client: QueryCli
   let projectCreated = scenario !== 'new-project';
   const updatedSources = new Set<string>();
   const sourcePreferences = new Map<string, { automaticUpdates?: boolean; importNewSkills?: boolean; connectionId?: string | null }>();
-  let live = true, automaticUpdates = scenario !== 'paused', failed = ['error', 'repair'].includes(scenario);
+  let live = true, automaticUpdates = scenario !== 'paused', failed = ['error', 'repair', 'repair-conflict'].includes(scenario);
+  let sourceRevision = sourceFixture().revision, repairConflict = scenario === 'repair-conflict';
   const privateProject = scenario === 'private';
   let repository = { ...projectRepository, projectVisibility: privateProject ? 'private' as const : 'open' as const };
   if (!['new-project', 'legacy'].includes(scenario)) repository = { ...repository, sourceId: SOURCE_ID, bindingId: 'binding-skills', status: 'ready' };
@@ -77,11 +79,12 @@ export function installProjectSkillFixtures(scenario: Scenario, client: QueryCli
     return { ...result, source: (await skillSourcesApi.list(COMPANY_ID))[0]! };
   }
   skillSourcesApi.list = async companyId => (await baseSources.list(companyId)).map(source => ({ ...source,
+    revision: Math.max(source.revision, sourceRevision),
     automaticUpdates, importNewSkills: true, ...sourcePreferences.get(source.id), accessScope: 'projects',
     syncState: scenario === 'refreshing' ? 'refreshing' : failed ? 'error' : automaticUpdates ? 'ready' : 'paused',
     fullName: scenario === 'long' ? 'acme/platform-services-production-web-accessibility-improvements' : source.fullName,
     lastScanCommit: updatedSources.has(source.id) ? NEW_COMMIT : source.lastScanCommit,
-    lastError: failed ? scenario === 'repair' ? 'The person who connected this source no longer has company access. Choose another GitHub connection.'
+    lastError: failed ? scenario.startsWith('repair') ? 'The person who connected this source no longer has company access. Choose another GitHub connection.'
       : 'GitHub could not be reached. The installed skills were kept.' : null,
     projects: ['shared', 'shared-private'].includes(scenario) ? [{ id: project.id, name: 'Private research', visibility: 'private', active: true },
       { id: 'project-open', name: 'Engineering', visibility: scenario === 'shared' ? 'open' : 'private', active: true }]
@@ -98,6 +101,13 @@ export function installProjectSkillFixtures(scenario: Scenario, client: QueryCli
   };
   skillSourcesApi.refresh = refresh;
   skillSourcesApi.settings = async (_companyId, id, input) => {
+    if (input.connectionId !== undefined && repairConflict) {
+      repairConflict = false; sourceRevision++;
+      throw new ApiError('The source was updated while choosing a connection.', 409, null);
+    }
+    if (input.revision !== undefined && input.revision < sourceRevision) {
+      throw new ApiError('The source revision changed.', 409, null);
+    }
     sourcePreferences.set(id, { ...sourcePreferences.get(id),
       ...(input.automaticUpdates === undefined ? {} : { automaticUpdates: input.automaticUpdates }),
       ...(input.importNewSkills === undefined ? {} : { importNewSkills: input.importNewSkills }),

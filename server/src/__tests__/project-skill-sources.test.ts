@@ -224,6 +224,43 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     expect(retryRead).not.toHaveBeenCalled();
   });
 
+  it('skips live leases before bounding import and refresh batches', async () => {
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    files = { 'fair/SKILL.md': md('fair') }; commit = '9'.repeat(40);
+    const now = new Date();
+    const expires = new Date(now.getTime() + 60 * 60_000);
+    const busyJobs: string[] = [];
+    for (let index = 0; index < 10; index++) {
+      const row = await workspace(`busy-import-${index}`);
+      const binding = await enqueueProjectSkillSource(db, row);
+      busyJobs.push(binding!.id);
+      await db.update(projectSkillSources).set({ leaseToken: randomUUID(), leaseExpiresAt: expires,
+        nextSyncAt: new Date(now.getTime() - (20 - index) * 1_000) }).where(eq(projectSkillSources.id, binding!.id));
+    }
+    const ready = await enqueueProjectSkillSource(db, await workspace('ready-import'));
+    await db.update(projectSkillSources).set({ nextSyncAt: now }).where(eq(projectSkillSources.id, ready!.id));
+    const worker = skillSourceSyncService(db, { context: async () => context });
+    expect((await worker.tick(now)).imported).toBe(1);
+    const [imported] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.id, ready!.id));
+    expect(imported!.sourceId).toBeTruthy();
+    for (const id of busyJobs) {
+      const [job] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.id, id));
+      expect(job).toMatchObject({ sourceId: null, leaseExpiresAt: expires, status: 'pending' });
+    }
+
+    const [template] = await db.select().from(companySkillSources).where(eq(companySkillSources.id, imported!.sourceId!));
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    const readySourceId = randomUUID();
+    await db.insert(companySkillSources).values(Array.from({ length: 11 }, (_, index) => ({
+      ...template!, id: index === 10 ? readySourceId : randomUUID(), trackingRef: `fair-refresh-${index}`,
+      accessScope: 'company' as const, automaticUpdates: true, nextSyncAt: new Date(now.getTime() - (20 - index) * 1_000),
+      leaseToken: index === 10 ? null : randomUUID(), leaseExpiresAt: index === 10 ? null : expires,
+    })));
+    expect((await worker.tick(now)).checked).toBe(1);
+    const [refreshed] = await db.select().from(companySkillSources).where(eq(companySkillSources.id, readySourceId));
+    expect(refreshed!.nextSyncAt.getTime()).toBeGreaterThan(now.getTime());
+  });
+
   it('releases interrupted initial imports so a new worker can recover them', async () => {
     await db.update(companySkillSources).set({ automaticUpdates: false });
     files = { 'recovered/SKILL.md': md('recovered') }; commit = '1'.repeat(40);

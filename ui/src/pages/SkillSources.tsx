@@ -34,10 +34,11 @@ export function SkillSources() {
   const client = useQueryClient();
   const { setBreadcrumbs } = useBreadcrumbs();
   const [results, setResults] = useState<Record<string, { message: string; failedAt: number; operation: 'refresh' | 'settings' } | null>>({});
-  const [repairSource, setRepairSource] = useState<SkillSource | null>(null);
+  const [repairSourceId, setRepairSourceId] = useState<string | null>(null);
   const companyId = selectedCompanyId ?? '';
   useEffect(() => { setBreadcrumbs([{ label: 'Skills', href: '/skills' }, { label: 'Sources' }]); }, [setBreadcrumbs]);
   const query = useQuery({ queryKey: sourceKey(companyId), queryFn: () => skillSourcesApi.list(companyId), enabled: Boolean(companyId), refetchInterval: 5000 });
+  const repairSource = query.data?.find(source => source.id === repairSourceId);
   const projectRepositories = useQuery({ queryKey: queryKeys.skillSources.projects(companyId), queryFn: () => skillSourcesApi.projectRepositories(companyId), enabled: Boolean(companyId), refetchInterval: 5000 });
   async function invalidate() {
     await Promise.all([client.invalidateQueries({ queryKey: queryKeys.skillSources.projects(companyId) }), client.invalidateQueries({ queryKey: sourceKey(companyId) }), client.invalidateQueries({ queryKey: queryKeys.companySkills.list(companyId) })]);
@@ -101,7 +102,7 @@ export function SkillSources() {
                 <DropdownMenuCheckboxItem checked={source.automaticUpdates ?? true} disabled={!source.enabled || settings.isPending}
                   onCheckedChange={enabled => settings.mutate({ source, enabled })}>Automatic updates</DropdownMenuCheckboxItem>
                 <DropdownMenuItem onSelect={() => navigate(`/skills/sources/${source.id}`)}>Select skills</DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setRepairSource(source)}>Choose connection</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setRepairSourceId(source.id)}>Choose connection</DropdownMenuItem>
                 <DropdownMenuItem variant="destructive" disabled={!source.enabled || disconnect.isPending} onSelect={() => disconnect.mutate(source.id)}>Disconnect source</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -123,12 +124,12 @@ export function SkillSources() {
           <SkillImportWarnings warnings={skillImportWarnings(source.entries.filter(entry => entry.selection === 'selected'), source.repositoryPackage)} />
           {source.lastError && source.lastAttemptAt && <p className="text-xs text-muted-foreground">Last attempt {timeAgo(source.lastAttemptAt)}</p>}
           {source.lastError && <p role="alert" className="text-sm text-destructive">{source.lastError} <Link to={`/skills/sources/${source.id}`} className="underline">Review source</Link></p>}
-          {source.lastError && <Button variant="outline" size="sm" className="self-start" onClick={() => setRepairSource(source)}>Choose connection</Button>}
+          {source.lastError && <Button variant="outline" size="sm" className="self-start" onClick={() => setRepairSourceId(source.id)}>Choose connection</Button>}
           {source.connectionId && <Link to={`/apps/${source.connectionId}/permissions`} className="text-xs text-muted-foreground hover:text-foreground">Manage GitHub connection</Link>}
         </section>;
       })}
     </div>
-    {repairSource && <SkillSourceConnectionRepair companyId={companyId} source={repairSource} onClose={() => setRepairSource(null)} onReturnFocus={() => sourceActionButtons.current[repairSource.id]?.focus()} onSaved={async () => {
+    {repairSource && <SkillSourceConnectionRepair companyId={companyId} source={repairSource} onClose={() => setRepairSourceId(null)} onReturnFocus={() => sourceActionButtons.current[repairSource.id]?.focus()} onSaved={async () => {
       setResults(prev => ({ ...prev, [repairSource.id]: null })); await invalidate();
     }} />}
     {sourceId && (sourceId === 'new' || activeSource) && <SourceDialog key={`${companyId}:${sourceId}`} companyId={companyId} source={activeSource} onClose={() => navigate('/skills/sources')} onSaved={async result => {
