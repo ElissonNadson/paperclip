@@ -44,6 +44,8 @@ before the task workspace is published. Low-trust review runs cannot use this
 persistent clone fallback. This fallback does not copy unpublished
 local changes or replace reused workspaces, explicit workspace selections, pinned
 branches, or repositories that only exist on the local filesystem.
+Workspace close and reopen use the recorded isolated source. Both operations
+verify its company, task, repository URL, and separate Git storage before use.
 
 ## Discovery and setup
 

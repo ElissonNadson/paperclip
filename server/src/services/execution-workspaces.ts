@@ -1,4 +1,5 @@
 import { assertTaskWorkspaceAccess, assertTaskWorkspaceSourceProjectAccess } from "./task-workspace-source-access.js";
+import { verifiedRecordedIsolatedRemoteSource } from "./isolated-remote-workspace-source.js";
 import { parseObject } from "../adapters/utils.js";
 import { resolveCoreTrustPreset } from "./trust-preset-resolver.js";
 import { CONTROLLER_PROVISION_COPY_ONLY, workspaceRequiresCopyOnlyProvisioning } from "./workspace-host-provision.js";
@@ -3280,7 +3281,9 @@ export function executionWorkspaceService(db: Db, opts: ExecutionWorkspaceServic
           .where(and(eq(projects.companyId, snapshot.companyId), snapshot.projectId ? eq(projects.id, snapshot.projectId) : sql`false`))
           .then((rows) => parseProjectExecutionWorkspacePolicy(rows[0]?.executionWorkspacePolicy)),
       ]);
-      let resolvedBaseCwd = projectWorkspace?.cwd ?? null;
+      let resolvedBaseCwd: string | null;
+      try { resolvedBaseCwd = await verifiedRecordedIsolatedRemoteSource(snapshot) ?? projectWorkspace?.cwd ?? null; }
+      catch { return { ok: false, code: "rebuild_failed", message: "Failed to rebuild the execution workspace" }; }
       if (isClosedExecutionWorkspaceStatus(snapshot.status) && resolvedBaseCwd == null && snapshot.strategyType === "git_worktree" && snapshot.projectId) {
         try {
           const managedWorkspace = await ensureManagedProjectWorkspace({

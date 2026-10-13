@@ -16,6 +16,45 @@ export function isolatedRemoteSourcePath(companyId: string, issueId: string): st
   return path.join(resolvePaperclipInstanceRoot(), "isolated-repository-sources", companyId, issueId, "checkout");
 }
 
+export function recordedIsolatedRemoteSource(input: {
+  companyId?: string;
+  sourceIssueId: string | null;
+  repoUrl: string | null;
+  metadata?: Record<string, unknown> | null;
+}): string | null {
+  const value = input.metadata?.isolatedRemoteSource;
+  if (value === undefined) return null;
+  const source = value as Record<string, unknown> | null;
+  if (!source || source.schema !== "paperclip.isolated-remote-source.v1"
+    || !input.companyId || !input.sourceIssueId || source.companyId !== input.companyId
+    || source.issueId !== input.sourceIssueId || source.repoUrl !== input.repoUrl) {
+    throw new Error("Recorded isolated repository source identity changed");
+  }
+  return isolatedRemoteSourcePath(input.companyId, input.sourceIssueId);
+}
+
+async function assertRemoteSourceIdentity(cwd: string, repoUrl: string) {
+  const root = resolvePaperclipInstanceRoot();
+  const canonicalCwd = await fs.realpath(cwd);
+  if (canonicalCwd !== path.join(await fs.realpath(root), path.relative(root, cwd))) {
+    throw new Error("Isolated repository source path changed");
+  }
+  const gitDir = path.join(canonicalCwd, ".git");
+  const entry = await fs.lstat(gitDir);
+  if (!entry.isDirectory() || entry.isSymbolicLink()) throw new Error("Isolated repository source Git storage changed");
+  const options = { timeout: 10_000, maxBuffer: 16 * 1024 };
+  const common = await execFile("git", ["-C", canonicalCwd, "rev-parse", "--path-format=absolute", "--git-common-dir"], options);
+  if (common.stdout.trim() !== gitDir) throw new Error("Isolated repository source Git storage changed");
+  const origin = await execFile("git", ["-C", canonicalCwd, "config", "--local", "--null", "--get-all", "remote.origin.url"], options);
+  if (origin.stdout !== `${repoUrl}\0`) throw new Error("Isolated repository source identity changed");
+}
+
+export async function verifiedRecordedIsolatedRemoteSource(input: Parameters<typeof recordedIsolatedRemoteSource>[0]): Promise<string | null> {
+  const cwd = recordedIsolatedRemoteSource(input);
+  if (cwd) await assertRemoteSourceIdentity(cwd, input.repoUrl!);
+  return cwd;
+}
+
 export function canIsolateRemoteWorkspaceSource(input: {
   error: unknown;
   repoUrl: string | null;
@@ -70,9 +109,6 @@ export async function materializeIsolatedRemoteWorkspaceSource(input: {
     repoUrl: input.repoUrl, resolveGitAuth: input.resolveGitAuth,
   });
   if (result.warning) throw new Error("Isolated repository source is not a Git checkout");
-  const origin = await execFile("git", ["-C", canonicalCwd, "config", "--local", "--null", "--get-all", "remote.origin.url"], {
-    timeout: 10_000, maxBuffer: 16 * 1024,
-  });
-  if (origin.stdout !== `${input.repoUrl}\0`) throw new Error("Isolated repository source identity changed");
+  await assertRemoteSourceIdentity(cwd, input.repoUrl);
   return cwd;
 }

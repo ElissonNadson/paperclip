@@ -486,6 +486,7 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
   const isolatedWorkspaceSourceActor = { type: "agent" as const, source: "agent_jwt" as const, companyId: agent.companyId,
     agentId: agent.id, runId: run.id, onBehalfOfUserId: responsibleUserId === "local-board" ? null : responsibleUserId };
   let isolatedWorkspaceSourceAccess = null;
+  let isolatedRemoteSource: Record<string, unknown> | null = null;
   if (!isDotRun && issueId && !persistedNativeExecutionInput && !nativeRecoveryExecutionWorkspaceId
     && (latestWorkspaceStrategyType === "git_worktree"
       || (workspaceReuseProvisioningPolicy.shouldRestoreExistingWorkspace && reusableExistingExecutionWorkspace?.strategyType === "git_worktree"))) {
@@ -502,6 +503,8 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
         issueId, repoUrl: executionWorkspaceBase.repoUrl!, resolveGitAuth: workspaceGitAuthProvider });
       executionWorkspaceBase.baseCwd = cwd;
       resolvedWorkspace.cwd = cwd;
+      isolatedRemoteSource = { schema: "paperclip.isolated-remote-source.v1", companyId: agent.companyId,
+        issueId, repoUrl: executionWorkspaceBase.repoUrl };
       isolatedWorkspaceSourceAccess = await assertIsolatedWorkspaceSourceReadAccess(db, {
         companyId: agent.companyId, sourceCwd: cwd, actor: isolatedWorkspaceSourceActor,
       });
@@ -768,6 +771,7 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
   }
   const nextExecutionWorkspaceMetadata = {
     ...baseExecutionWorkspaceMetadata,
+    ...(isolatedRemoteSource ? { isolatedRemoteSource } : {}),
     ...(copyOnlyProvisioning ? { [CONTROLLER_PROVISION_COPY_ONLY]: true } : {}),
     ...(persistedWorktreeInstanceRoot
       ? {

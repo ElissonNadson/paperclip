@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { forbidden } from "../errors.js";
-import { canIsolateRemoteWorkspaceSource } from "./isolated-remote-workspace-source.js";
+import { canIsolateRemoteWorkspaceSource, recordedIsolatedRemoteSource } from "./isolated-remote-workspace-source.js";
 
 const allowed = {
   error: forbidden("Task workspace access is no longer available"),
@@ -38,5 +38,18 @@ describe("isolated remote source admission", () => {
     expect(canIsolateRemoteWorkspaceSource({ ...allowed, selection: {
       version: 1, source, selection: { kind: "configured_source", projectWorkspaceId: "source", mode: "managed_isolated" },
     } })).toBe(false);
+  });
+});
+
+describe("recorded isolated source identity", () => {
+  const workspace = { companyId: "company", sourceIssueId: "task", repoUrl: allowed.repoUrl,
+    metadata: { isolatedRemoteSource: { schema: "paperclip.isolated-remote-source.v1", companyId: "company", issueId: "task", repoUrl: allowed.repoUrl } } };
+  it("keeps ordinary workspace sources unchanged", () => {
+    expect(recordedIsolatedRemoteSource({ ...workspace, metadata: null })).toBeNull();
+  });
+  it.each([{ companyId: "other-company" }, { sourceIssueId: "other-task" }, { repoUrl: "https://example.test/other" },
+    { metadata: { isolatedRemoteSource: { schema: "unknown" } } },
+  ])("rejects a changed source binding: %j", patch => {
+    expect(() => recordedIsolatedRemoteSource({ ...workspace, ...patch })).toThrow("source identity changed");
   });
 });

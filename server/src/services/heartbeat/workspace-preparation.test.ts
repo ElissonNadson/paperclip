@@ -21,6 +21,7 @@ import { createHeartbeatWorkspaceResolver, prepareProjectRepositoryWorkspaces, r
 import { prepareHeartbeatWorkspace, type HeartbeatWorkspacePreparationInput } from "./workspace-preparation.js";
 import * as managedRepositoryCheckout from "../managed-repository-checkout.js";
 import { isolatedRemoteSourcePath } from "../isolated-remote-workspace-source.js";
+import { cleanupExecutionWorkspaceArtifacts } from "../workspace-runtime.js";
 
 const execFile = promisify(execFileCallback);
 const support = await getEmbeddedPostgresTestSupport();
@@ -122,20 +123,25 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     const { input, source, issue } = await fixture(true);
     const remoteUrl = "https://example.test/public/repository.git";
     await db.update(projectWorkspaces).set({ repoUrl: remoteUrl }).where(eq(projectWorkspaces.id, issue.projectWorkspaceId!));
+    const publishedSource = join(home, `published-${issue.id}`);
+    await execFile("git", ["clone", "--no-hardlinks", source, publishedSource]);
     const [privateIssue] = await db.insert(issues).values({ companyId: issue.companyId, title: "Private work",
       visibility: "private", projectId: issue.projectId }).returning();
     const privateCwd = join(source, "private-work");
-    await mkdir(privateCwd);
+    await execFile("git", ["-C", source, "worktree", "add", "-b", "restricted-task", privateCwd, "main"]);
     await writeFile(join(privateCwd, "confidential.txt"), "Private source must not be copied");
+    await execFile("git", ["-C", privateCwd, "add", "confidential.txt"]);
+    await execFile("git", ["-C", privateCwd, "commit", "-m", "Restricted task work"]);
+    const privateCommit = (await execFile("git", ["-C", privateCwd, "rev-parse", "HEAD"])).stdout.trim();
     const [privateWorkspace] = await db.insert(executionWorkspaces).values({ companyId: issue.companyId,
       name: "Private workspace", projectId: issue.projectId, sourceIssueId: privateIssue.id, cwd: privateCwd, mode: "isolated_workspace",
-      strategyType: "project_primary", status: "idle" }).returning();
+      strategyType: "git_worktree", providerType: "git_worktree", providerRef: privateCwd, branchName: "restricted-task", status: "idle" }).returning();
     await db.update(issues).set({ executionWorkspaceId: privateWorkspace.id }).where(eq(issues.id, privateIssue.id));
     const clone = vi.spyOn(managedRepositoryCheckout, "materializeManagedProjectWorkspace").mockImplementation(async (cwd, options) => {
       expect(options.repoUrl).toBe(remoteUrl);
       expect(options.localSource).toBeUndefined();
       expect(options.resolveGitAuth).toBeTypeOf("function");
-      await execFile("git", ["clone", "--no-hardlinks", source, cwd]);
+      await execFile("git", ["clone", "--no-hardlinks", publishedSource, cwd]);
       await execFile("git", ["-C", cwd, "remote", "set-url", "origin", remoteUrl]);
       return { cwd, warning: null };
     });
@@ -145,12 +151,29 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     expect(await readFile(join(result.executionWorkspace.cwd, "README.md"), "utf8")).toBe("source content\n");
     await expect(access(join(result.executionWorkspace.cwd, "private-work"))).rejects.toMatchObject({ code: "ENOENT" });
     expect(clone).toHaveBeenCalledOnce();
+    await expect(execFile("git", ["-C", isolatedSource, "cat-file", "-e", privateCommit])).rejects.toBeDefined();
+    await expect(execFile("git", ["-C", isolatedSource, "rev-parse", "--verify", "refs/heads/restricted-task"])).rejects.toBeDefined();
+    expect(await realpath(join(isolatedSource, ".git"))).not.toBe(await realpath(join(source, ".git")));
     await reuse(input, result.persistedExecutionWorkspace!);
     const resumed = await prepareHeartbeatWorkspace(db, input);
     expect(resumed.persistedExecutionWorkspace!.id).toBe(result.persistedExecutionWorkspace!.id);
     expect(resumed.executionWorkspace.baseCwd).toBe(await realpath(isolatedSource));
     expect(clone).toHaveBeenCalledOnce();
     expect((await readIssue(privateIssue.id)).visibility).toBe("private");
+    const workspace = resumed.persistedExecutionWorkspace!;
+    const cleanup = await cleanupExecutionWorkspaceArtifacts({ workspace,
+      projectWorkspace: { cwd: source, cleanupCommand: null }, runCleanupCommands: false });
+    expect(cleanup.warnings).toEqual([]);
+    await expect(access(workspace.cwd!)).rejects.toMatchObject({ code: "ENOENT" });
+    await db.update(executionWorkspaces).set({ status: "archived" }).where(eq(executionWorkspaces.id, workspace.id));
+    const reopened = await executionWorkspaceService(db).reopenClosedIsolatedExecutionWorkspaceForIssue({ workspaceId: workspace.id,
+      issue: { id: issue.id, companyId: issue.companyId, projectId: issue.projectId },
+      actor: { agentId: input.agent.id, actorType: "agent" },
+      authorizationActor: { type: "agent", source: "agent_jwt", agentId: input.agent.id, companyId: issue.companyId },
+    });
+    expect(reopened).toMatchObject({ ok: true });
+    expect(await readFile(join(workspace.cwd!, "README.md"), "utf8")).toBe("source content\n");
+    expect(await readFile(join(privateCwd, "confidential.txt"), "utf8")).toBe("Private source must not be copied");
   });
 
   it.each(["sandbox", "ssh", "local", null] as const)("uses the selected %s placement for controller provisioning", async driver => {
