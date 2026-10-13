@@ -25,11 +25,12 @@ journeys and responsive review passed on 614a2d1. PR #16066 had all 55 checks
 successful/skipped/neutral and Greptile 5/5 with no findings on that implementation.
 A test-only follow-up, 411d614, makes two existing login cases independent of the
 host architecture; all 13 login cases passed. Recursive typecheck and production
-build passed again. The full Linux test run is active; its result is still required.
+build passed again. The 4 GB Linux run passed all server cases, then found a repository-defaults UI
+reset. Its correction passed 38 focused cases; final full qualification remains.
 
-GitHub CLI's credential subsequently became invalid (401). The user was asked to
-reconnect it. Publishing the final evidence update and merging require restored
-authentication and green checks on the final head. Merge is already authorized;
+GitHub CLI and Git credentials are unavailable. The signed-in GitHub browser
+session is available for publishing and merging. A refresh that requested a new
+OAuth scope was canceled. Final-head checks must pass before merging. Merge is already authorized;
 no further merge permission is needed.
 
 The temporary reconciliation checkout and obsolete previews have been stopped

@@ -241,3 +241,7 @@ Ten focused Playwright cases passed against the owned reconciliation Storybook d
 The concurrent-update repair story and browser case also passed against the rebuilt artifact. The chosen account remains selected after a 409, the source query reloads its revision, and a second save succeeds without reopening the dialog. Eleven built-browser cases passed. This review remains separate from live provider and full-suite qualification.
 
 Final manual inspection of the concurrent-repair story passed at 390px in dark mode. The selected account, conflict message and footer fit on screen; keyboard retry succeeded and focus returned to source actions. This adds hands-on evidence for that sampled state, not a Linux baseline comparison or live OAuth proof.
+
+## Task-default acknowledgment follow-up — 2026-10-13
+
+Reviewed the three unchanged chat management, GitHub bot management and Photon subjects/fixtures after correcting the shared defaults editor. Accepted selections remain visible while the parent query updates; later server values still replace them. The two focused component suites passed 38 cases, including delayed parent data and the reproduced GitHub repository save failure. Endpoint/repository fixtures preserve defaults; Photon selects setup/access/conversation states and does not exercise this save. Refreshed only these three fingerprints, preserved classifications and stable IDs, and retained unreviewed production parity. No new browser, provider or screenshot-baseline proof is claimed here.

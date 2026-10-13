@@ -1279,8 +1279,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation: the mounted endpoint adds connection and destination editors. Local endpoint PATCH/resource PUT preserve defaults; workspace-choice requests now return only active/idle, unclosed fixture workspaces. Browser save/error/reload and new-conversation inheritance remain unverified.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation: the mounted endpoint adds connection and destination editors. Local endpoint PATCH/resource PUT preserve defaults; workspace-choice requests now return only active/idle, unclosed fixture workspaces. Browser save/error/reload and new-conversation inheritance remain unverified. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
         "ui/src/api/chatEndpoints.ts",
@@ -1292,7 +1292,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/chat-management/chat-management.stories.tsx"
       ],
-      "fingerprint": "593f980a74e21b1e8bce9f48ee8ef7f1247546e4b4519a0916b64881ba5224c8",
+      "fingerprint": "2087aa2ebaa3f3afa5c7def0395fe015d532782360561338cb3e3d045932fc77",
       "stableId": "connections-chat-management",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/Chat management"
     },
@@ -1306,8 +1306,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation: mounted repository and endpoint editors use simulated defaults. Endpoint PATCH now persists omitted/null/concrete values across GET and resets on remount; repository PUT already preserves them. Choice caches intentionally contain no projects/workspaces. Browser editor interactions, access denials and new-task inheritance remain unverified.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation: mounted repository and endpoint editors use simulated defaults. Endpoint PATCH now persists omitted/null/concrete values across GET and resets on remount; repository PUT already preserves them. Choice caches intentionally contain no projects/workspaces. Browser editor interactions, access denials and new-task inheritance remain unverified. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
         "ui/src/api/chatEndpoints.ts",
@@ -1329,7 +1329,7 @@
         "ui/storybook/support/github-bot-management/fixture-api.tsx",
         "ui/storybook/support/github-bot-management/fixtures.ts"
       ],
-      "fingerprint": "8688291f425ae517d5a655e9ab237bb035ef2cc8853dfc24129bd7258e36acab",
+      "fingerprint": "b7e19399d0492a9915ecf36d5210411d41f1be2c6558489b3f84dad5a719ce21",
       "stableId": "connectors-github-bot-management",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connectors/GitHub bot management"
     },
@@ -1395,8 +1395,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
         "ui/src/api/chatEndpoints.ts",
@@ -1411,7 +1411,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/imessage-photon.stories.tsx"
       ],
-      "fingerprint": "90d113f72e3f6db48428bf498fba3d14d713eaab194bfb66eb1d27fe17843063",
+      "fingerprint": "ad8b635a10f4340ec3efdcf432bbda72984c0203bd7b852a2178dcfc48df90f4",
       "stableId": "connections-imessage-photon",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/iMessage Photon"
     },

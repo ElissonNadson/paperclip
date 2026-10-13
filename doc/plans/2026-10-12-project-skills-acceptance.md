@@ -1,11 +1,11 @@
 # Project repository skills: acceptance evidence
 
 The live GitHub update journey, production-component browser journeys, and
-manual responsive review passed. Final full-suite qualification is running on
-commit `411d61482b8758571277dfe21a2588d39987156c` (production behavior is unchanged
-from 614a2d1; only login-test platform selection differs). Merge remains gated
-on its result and passing checks on the final PR head. This report separates
-live outcomes from deterministic tests and Storybook simulations.
+manual responsive review passed. Full qualification on commit 411d614 reached
+900 passing server files, then found a repository-defaults UI reset. Its fix
+passed 38 focused UI cases; a final full rerun and final-head PR checks remain
+required. This report separates live outcomes from deterministic tests and
+Storybook simulations.
 
 ## Environment and artifacts
 
@@ -126,11 +126,13 @@ components with simulated provider/import/execution data; they do not replace
 the live acceptance above.
 
 Recursive typecheck, production build, Storybook build, token gates, map checks,
-and catalog checks passed. Full-suite result: **pending final Linux run**. All
+and catalog checks passed. Full-suite result: **pending rerun after the verified UI correction**. All
 55 PR check contexts were successful, skipped, or neutral on implementation
 614a2d1. Greptile reviewed that exact implementation at 5/5 with no findings;
-all previous review threads were resolved at that review. GitHub CLI subsequently
-returned 401; reconnecting it is required to publish the final report and merge.
+all previous review threads were resolved at that review. GitHub CLI credentials are unavailable. The existing browser session is
+authenticated as the setup account and is available for publishing and merging.
+A CLI refresh requested an additional scope and was canceled; no new OAuth
+permission was granted.
 The PR remains gated on final-head
 checks after this evidence-only update.
 
@@ -143,8 +145,11 @@ and legacy platforms are now explicit, and all 13 login cases passed on ARM64.
 The subsequent 2 GB heap run exited unsuccessfully: 18,422 tests passed,
 76 skipped, and one worker aborted from JavaScript heap exhaustion in the
 existing setup-token route suite. Its 30 cases passed with an explicit 4 GB
-heap. The full command is now running with that same isolated verifier setting;
-it is not yet passing qualification.
+heap. With the 4 GB heap, all 900 server files passed: 18,429 tests passed and
+76 skipped. The UI group then reported 8179 passed and one failure. The reset
+reproduced in isolation; its editor now holds accepted selections until parent
+data refreshes. Both focused UI suites passed all 38 cases. Remaining full
+qualification uses the same isolated verifier setting; completion is not claimed.
 The final Linux run uses Node 24, built workspace dependencies, pinned Rust,
 and the standard process, shell, SSH and JSON test tools in an isolated container.
 No host credentials or production data are mounted.
