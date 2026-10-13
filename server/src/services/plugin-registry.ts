@@ -66,8 +66,8 @@ export function pluginRegistryService(db: Db) {
   // Internal helpers
   // -----------------------------------------------------------------------
 
-  async function getById(id: string) {
-    return db
+  async function getById(id: string, database: Db = db) {
+    return database
       .select()
       .from(plugins)
       .where(eq(plugins.id, id))
@@ -327,7 +327,7 @@ export function pluginRegistryService(db: Db) {
       return db.transaction(async tx => {
         const db = tx as unknown as Db;
         await notifyDeliveryWork(db, DELIVERY_QUEUES.pluginLifecycle);
-        const plugin = await getById(pluginId);
+        const plugin = await getById(pluginId, db);
         if (!plugin) throw notFound("Plugin not found");
 
         const existing = await db
@@ -369,7 +369,7 @@ export function pluginRegistryService(db: Db) {
       return db.transaction(async tx => {
         const db = tx as unknown as Db;
         await notifyDeliveryWork(db, DELIVERY_QUEUES.pluginLifecycle);
-        const plugin = await getById(pluginId);
+        const plugin = await getById(pluginId, db);
         if (!plugin) throw notFound("Plugin not found");
 
         const existing = await db
@@ -451,7 +451,7 @@ export function pluginRegistryService(db: Db) {
       return db.transaction(async tx => {
         const db = tx as unknown as Db;
         await notifyDeliveryWork(db, DELIVERY_QUEUES.pluginLifecycle);
-        const plugin = await getById(pluginId);
+        const plugin = await getById(pluginId, db);
         if (!plugin) throw notFound("Plugin not found");
 
         const existing = await db

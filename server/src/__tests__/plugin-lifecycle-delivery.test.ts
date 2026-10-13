@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { companies, createDb, pluginConfig, plugins, resourceLifecycleEvents, type Db } from "@paperclipai/db";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { getEmbeddedPostgresTestSupport, startEmbeddedPostgresTestDatabase } from "./helpers/embedded-postgres.js";
+import { logger } from "../middleware/logger.js";
 import { registerPluginLifecycleDelivery } from "../services/plugin-lifecycle-delivery.js";
 import { pluginLifecycleInbox } from "../services/plugin-lifecycle-inbox.js";
 import { pluginRegistryService } from "../services/plugin-registry.js";
@@ -118,6 +119,25 @@ describePostgres("durable plugin lifecycle delivery", () => {
     async function eventInTransaction(tx: Db) {
       await tx.transaction(inner => recordResourceCreationEvent(inner as unknown as Db, companyId, "project", randomUUID()));
     }
+  });
+  it("saves config and settings without borrowing another pool connection", async () => {
+    const single = createDb(database.connectionString, { maxConnections: 1 });
+    const registry = pluginRegistryService(single);
+    await registry.upsertConfig(pluginId, companyId, { configJson: { first: true } });
+    await registry.patchConfig(pluginId, companyId, { configJson: { second: true } });
+    await registry.upsertCompanySettings(pluginId, companyId, { enabled: true, settingsJson: {} });
+    expect((await registry.getConfig(pluginId, companyId))?.configJson).toEqual({ first: true, second: true });
+  }, 5000);
+  it("records failed delivery scope and stage without provider secrets", async () => {
+    await event(); const d = delivery();
+    const warn = vi.spyOn(logger, "warn").mockImplementation(() => {});
+    try {
+      d.call.mockImplementationOnce(async () => { throw Object.assign(new Error("provider-secret-fixture"), { code: -32001 }); });
+      await d.run();
+      expect(warn).toHaveBeenCalledWith(expect.objectContaining({ pluginId, companyId, eventId: expect.any(String), stage: "callback", rpcCode: -32001 }), expect.any(String));
+      expect(JSON.stringify(warn.mock.calls)).not.toContain("provider-secret-fixture");
+      expect(await d.pending()).toBe(true);
+    } finally { warn.mockRestore(); d.worker.dispose(); }
   });
   it("rollbacks never expose queue rows even when settlement wakes the dispatcher", async () => {
     const d = delivery();

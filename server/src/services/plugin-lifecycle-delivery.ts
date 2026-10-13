@@ -1,5 +1,6 @@
 import { and, asc, eq, isNull, or } from "drizzle-orm";
 import { pluginCompanySettings, pluginConfig, plugins, type Db } from "@paperclipai/db";
+import { logger } from "../middleware/logger.js";
 import { pluginLifecycleInbox } from "./plugin-lifecycle-inbox.js";
 import { DELIVERY_QUEUES } from "./delivery-work-notifications.js";
 import type { createDeliveryWorkCoordinator } from "./delivery-work-coordinator.js";
@@ -40,6 +41,7 @@ export function registerPluginLifecycleDelivery(
           for (const event of events) {
             if (signal.aborted) return;
             if (!manager.isRunning(plugin.id)) { pending = true; break; }
+            let stage = "eligibility";
             try {
               // Recheck enablement for each invocation; a disable during a batch must stop delivery.
               const [enabled] = await db.select({ manifest: plugins.manifestJson }).from(plugins)
@@ -47,17 +49,25 @@ export function registerPluginLifecycleDelivery(
                 .where(and(eq(plugins.id, plugin.id), eq(plugins.status, "ready"),
                   or(isNull(pluginCompanySettings.enabled), eq(pluginCompanySettings.enabled, true))));
               if (!enabled?.manifest.resourceLifecycle?.includes(event.resourceType) || !enabled.manifest.capabilities.includes("events.subscribe")) break;
+              stage = "callback";
               const result = await manager.call(plugin.id, "resourceLifecycle", event, 30_000);
+              stage = "result";
               if (result?.eventId !== event.id || !["acknowledged", "retry", "deferred"].includes(result.status)) {
                 throw new Error("Invalid resource lifecycle result");
               }
               if (signal.aborted) return;
               if (result.status === "acknowledged") {
+                stage = "acknowledgment";
                 await inbox.acknowledge(companyId, event.id);
                 // An acknowledgment exposes the next event for this resource. Drain immediately.
                 delivery.wake();
               } else if (result.status === "retry") pending = true;
-            } catch {
+            } catch (error) {
+              // Provider error messages/data may contain secrets; retain only routing
+              // identifiers, the failed stage, and the protocol's numeric error code.
+              const code = (error as { code?: unknown } | null)?.code;
+              logger.warn({ pluginId: plugin.id, companyId, eventId: event.id, stage,
+                ...(typeof code === "number" ? { rpcCode: code } : {}) }, "Resource lifecycle delivery failed; retry scheduled");
               // Failed RPCs and uncertain acknowledgments leave durable work for replay.
               pending = true;
             }
