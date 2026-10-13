@@ -317,6 +317,14 @@ function readNonEmptyString(value: unknown): string | null {
   return typeof value === "string" && value.trim().length > 0 ? value : null;
 }
 
+// Attribute a stop the lease watchdog caused, whether the adapter returned
+// or threw. A requested stop recorded earlier still wins in cancellationResultJson.
+function controllerLeaseLossResultJson(signal: AbortSignal) {
+  return signal.reason instanceof LegacyControllerLeaseLostError
+    ? { cancellation: controllerLeaseLossCancellation(signal.reason.leaseLossCause) }
+    : {};
+}
+
 export function createHeartbeatRunCompletion(db: Db, dependencies: HeartbeatRunCompletionDependencies) {
   const {
     getRun,
@@ -545,10 +553,7 @@ export function createHeartbeatRunCompletion(db: Db, dependencies: HeartbeatRunC
             ...(adapterResult.executionRecovery
               ? { executionRecovery: adapterResult.executionRecovery }
               : {}),
-            // A requested stop recorded earlier still wins in cancellationResultJson.
-            ...(outcome === "cancelled" && signal.reason instanceof LegacyControllerLeaseLostError
-              ? { cancellation: controllerLeaseLossCancellation(signal.reason.leaseLossCause) }
-              : {}),
+            ...(outcome === "cancelled" ? controllerLeaseLossResultJson(signal) : {}),
             configFreshness: configFreshnessResultMetadata,
           },
           errorFamily: adapterResult.errorFamily ?? null,
@@ -1108,6 +1113,7 @@ export function createHeartbeatRunCompletion(db: Db, dependencies: HeartbeatRunC
           ...(workspaceValidationFailure?.resultJson ??
             configurationIncompleteFailure?.resultJson ??
             {}),
+          ...(stoppedDuringFailure ? controllerLeaseLossResultJson(signal) : {}),
           ...(!legacyAdapterEntered && run.runtimeMode !== "native"
             ? {
                 executionRecovery: {

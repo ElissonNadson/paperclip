@@ -7,6 +7,7 @@ import * as usageReceipts from "../usage-receipts.js";
 import { createAgentIdentityRedactor } from "../agent-identity-redaction.js";
 import { UnresolvedWorkspaceBaseRefError } from "../workspace-runtime.js";
 import { LegacyControllerLeaseLostError } from "../legacy-controller-lease.js";
+import { requestedRunCancellation } from "../run-cancellation.js";
 import { createHeartbeatLifecycle, type HeartbeatLifecycleDependencies } from "./run-lifecycle.js";
 import { createHeartbeatRunPreparation, ConfigurationIncompleteFailure } from "./run-preparation.js";
 import { createHeartbeatRunState, getAdapterSessionCodec } from "./run-state.js";
@@ -163,6 +164,25 @@ describe.skipIf(!support.supported)("heartbeat run completion boundary", () => {
     await f.completion.completeRun(f.input);
     expect(await read(f.run.id)).toMatchObject({ status: "cancelled", resultJson: { cancellation: {
       source: "controller_lease", expected: false, initiator: { type: "system" }, reason: "Legacy controller lease lost (renewal_deadline)" } } });
+  });
+
+  it("attributes a lost controller lease when the adapter throws the abort reason", async () => {
+    const f = await fixture();
+    f.controller.abort(new LegacyControllerLeaseLostError("renewal_rejected"));
+    await f.completion.failRun(f.failure(f.controller.signal.reason));
+    expect(await read(f.run.id)).toMatchObject({ status: "cancelled", resultJson: {
+      workspaceRestoreFailure: { reason: "missing_base" },
+      cancellation: { source: "controller_lease", expected: false, reason: "Legacy controller lease lost (renewal_rejected)" } } });
+  });
+
+  it("keeps a stop requested before the lease loss when the adapter throws", async () => {
+    const f = await fixture();
+    const requested = requestedRunCancellation({ cancelledByActorType: "user", cancelledByUserId: "operator-1" }, "Stopped from the board");
+    await db.update(heartbeatRuns).set({ resultJson: { cancellation: requested } }).where(eq(heartbeatRuns.id, f.run.id));
+    f.controller.abort(new LegacyControllerLeaseLostError("renewal_error"));
+    await f.completion.failRun(f.failure(f.controller.signal.reason));
+    expect(await read(f.run.id)).toMatchObject({ status: "cancelled", resultJson: { cancellation: {
+      source: "operator", expected: true, initiator: { type: "user", id: "operator-1" }, reason: "Stopped from the board" } } });
   });
 
   it("does not publish or overwrite a conflicting terminal transition that wins the compare-and-set", async () => {
