@@ -1,8 +1,11 @@
 # Project repository skills: acceptance evidence
 
-Qualification remains in progress until the final full suite, PR review, and
-remaining visual review are complete. This report distinguishes live outcomes
-from deterministic tests and Storybook simulations.
+The live GitHub update journey, production-component browser journeys, and
+manual responsive review passed. Final full-suite qualification is running on
+commit `411d61482b8758571277dfe21a2588d39987156c` (production behavior is unchanged
+from 614a2d1; only login-test platform selection differs). Merge remains gated
+on its result and passing checks on the final PR head. This report separates
+live outcomes from deterministic tests and Storybook simulations.
 
 ## Environment and artifacts
 
@@ -16,7 +19,7 @@ fixtures. The supported live adapter is `codex_local`, using model `gpt-6.1-sol`
 through the existing authenticated Codex subscription.
 
 The tracked [evidence bundle](../../ui/storybook/public/project-skills-evidence/)
-contains three inspectable captures and an explicit, minimized
+contains four inspectable captures and an explicit, minimized
 [version receipt](../../ui/storybook/public/project-skills-evidence/versions.json).
 It is included in the existing Storybook build artifact and branch publication.
 Credential files, full provider logs, human authentication keys, and connection
@@ -50,11 +53,14 @@ review access path.
 | `ae685356-02a9-4369-9bb3-b76bb112bcce` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 | `f003baa3-37d7-4203-bd4d-a0c4b45171ca` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 | `e2cbfc2b-aa07-4fa0-b240-82033d6d1035` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
+| `b91818ac-9e9a-4a98-bd6b-63c0a58e4a1a` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 
-A fresh real execution also passed on reviewed implementation
-`da5eace45e37546606c171f3acaaf4e19eacbea8`. It recorded the same four selected
-immutable versions, excluded the unassigned addition, and kept the first run's
-v1 snapshot. Its exact v2 output hash matched the earlier v2 result.
+The final real execution passed on implementation
+`614a2d1d72892128c7fc949d2485308756e7c687`. It delivered four selected immutable
+versions, excluded the unassigned addition, and preserved the first run's v1
+snapshot. The uploaded output was exactly 17 bytes, with the v2 SHA-256 hash in
+the receipt. The model was `gpt-6.1-sol`; its successful heartbeat execution is
+`b91818ac-9e9a-4a98-bd6b-63c0a58e4a1a`.
 
 Initial upstream commit: `d7e95f01903678531981ce684e721191ecb0a7da`.
 Updated upstream commit: `f4b35ea0082150bda320cda7b3c0777d263bf430`.
@@ -91,62 +97,80 @@ The multi-person evidence uses seeded identities followed by production bearer
 middleware and APIs. It does not claim separate browser sign-in journeys. The
 private GitHub repository requires the authorized owner's access for inspection.
 
-## Automated proof and remaining qualification
+## Automated proof
 
-The focused review-fix run passed **27 tests** across project sources, source
-persistence, and runtime versions. It covers transactional repository attachment,
-rollback, legacy edits without adoption, changed refs, retained versions, API-key
-attachment without invented identity, moving default branches, and local file
-updates with immutable resume. A reproduced local-import bypass is also covered:
-known project-derived snapshots and materialized copies cannot become company-wide
-local imports. Authorized readers receive a fork instruction; unauthorized readers
-receive not-found responses. Default-branch `HEAD` and explicitly configured
-branches remain distinct identities, so changing the default cannot retarget a
-fixed branch's references.
+The final focused project-source suite passed **12 cases**. The source and runtime
+suites passed **16 cases**. The replay-safe migration regression passed with a real
+embedded database, retaining installed content, private provenance, scheduling,
+and setup identities when renumbered SQL runs again.
 
-Existing and added suites cover empty sources, unchanged commits, additions,
-exclusions, invalid siblings, activity rollback, lease competition/expiry,
-shutdown/restart recovery, rate-limit backoff, disabled sources, revoked setup
-identities, private forks/publication, runtime access checks, and explicit
-inaccessible references. OAuth refresh and larger failure matrices use
-deterministic provider boundaries; no live OAuth-expiry claim is made.
+The service and authorization suites cover transactional enqueue/rollback,
+legacy edits without adoption, empty repositories, unchanged commits, additions,
+exclusions, invalid siblings, source deduplication, ref changes, detach/delete,
+lease competition/expiry, restart recovery, graceful shutdown, backoff/rate limits,
+revoked setup access, and explicit connection repair. They also cover private
+reads, forks and publication, responsible-person restrictions, immutable resume,
+explicit pins, inaccessible references, and fresh local file snapshots. Known
+project-derived local snapshots/materialized copies cannot become company-wide
+imports. Default-branch HEAD and explicit branches retain distinct identities.
+OAuth expiry and larger failure matrices use deterministic provider boundaries;
+no live OAuth-expiry claim is made.
 
-Six built-Storybook browser journeys passed before reconciliation. Ten focused
-journeys passed against the owned reconciled Storybook development server. The
-additional cases cover project creation without a second import flow, attaching
-another repository with distinct skill identities, an explained empty source,
-and unchanged routine instructions producing a new version while the earlier
-simulated execution retains its original version. A blank routine body caused
-by a missing section route was reproduced and fixed. These new cases must also
-pass against the final built artifact.
+**Eleven browser journeys passed against the built Storybook artifact** on the
+final implementation. They cover automatic import after project creation and
+second repository attachment, empty-source guidance, legacy adoption/navigation,
+background additions, refresh failure/retry, keyboard preferences, mobile touch,
+connection repair/focus, repair after a concurrent update, and latest routine
+execution with immutable earlier versions. Stories mount shipped pages and
+components with simulated provider/import/execution data; they do not replace
+the live acceptance above.
 
-The original six cases cover adoption with navigation,
-background additions, failed refresh/retry, keyboard preferences and focus,
-emulated mobile touch taps without horizontal overflow, and connection repair.
-The stories mount shipped pages and components. Their provider, import and
-execution data is simulated. They do not substitute for the live acceptance above.
+Recursive typecheck, production build, Storybook build, token gates, map checks,
+and catalog checks passed. Full-suite result: **pending final Linux run**. All
+55 PR check contexts were successful, skipped, or neutral on implementation
+614a2d1. Greptile reviewed that exact implementation at 5/5 with no findings;
+all previous review threads were resolved at that review. GitHub CLI subsequently
+returned 401; reconnecting it is required to publish the final report and merge.
+The PR remains gated on final-head
+checks after this evidence-only update.
 
-Recursive typecheck and production build passed in the reconciled worktree.
-Token gates, map checks, catalog structure and migration safety passed. The new
-renumbered migration replay test passed with a real embedded database, preserving
-installed content, project provenance, scheduling and setup identities.
-The reviewed-head local full suite failed: 17,687 tests passed, two tests failed,
-383 skipped, and 18 files failed (mostly database startup/hook failures). Logs
-identified macOS shared-memory exhaustion; the public-MCP test also timed out.
-A passing final full run and latest-head CI remain required. The local full suite and PR review are tracked separately;
-the feature is not declared complete from focused tests alone.
+Earlier local full runs failed. macOS runs encountered database startup/hook
+failures from shared-memory exhaustion and a public-MCP timeout. The first Linux
+setup omitted generated SDK builds; the second lacked standard test utilities
+and was stopped after that diagnosis. Those attempts are not passing evidence.
+Two pre-existing login tests also assumed an x64 host. Their intended native
+and legacy platforms are now explicit, and all 13 login cases passed on ARM64.
+The final Linux run uses Node 24, built workspace dependencies, pinned Rust,
+and the standard process, shell, SSH and JSON test tools in an isolated container.
+No host credentials or production data are mounted.
+
+The ownership-checked acceptance cleanup passed: runtime, loopback port 3107,
+and its embedded database stopped cleanly; disposable data and evidence remain
+retained. All owned Storybook previews and the temporary reconciliation checkout
+were removed after their captures and verification logs were preserved.
+
+## Experience review and limitations
 
 Manual real-app inspection covered mobile, intermediate and desktop in both
-themes. Additional Storybook inspection covered long names at intermediate dark,
-validation warnings at mobile dark, an empty repository at mobile light, paused
-updates at intermediate light, a retained removed skill at desktop light, and an
-80-skill list at desktop dark. The list had no horizontal overflow and its footer
-was reachable by keyboard. A cramped provenance layout and missing repair focus return were found
-and fixed. The repair footer was reachable on mobile, and keyboard saving worked.
-The routine and empty-source defects found in this inspection were fixed and
-covered by the focused browser cases. This sampling does not claim interaction
-coverage for all 27 new exports. These macOS captures
-are inspection evidence; no Linux screenshot baseline was compared or updated.
+themes. Storybook inspection included long names, validation warnings, empty and
+paused sources, retained removed skills, private project unions, and an 80-skill
+list. The list had no horizontal overflow and its footer was keyboard reachable.
+A cramped provenance layout, missing repair focus return, and blank simulated
+routine section were found, fixed and covered by regression journeys.
+
+The final concurrent-repair story also passed manual inspection at 390px in dark
+mode. The selected account remained checked after a 409, its error and footer
+fit on screen, keyboard retry succeeded, and focus returned to source actions.
+Sampling does not claim interaction coverage for all **27 new exports**. No Linux
+screenshot baseline was compared or updated.
+
+The existing Storybook deployment workflow published implementation 614a2d1:
+[review guide](https://github.com/paperclipai/paperclip/blob/614a2d1d72892128c7fc949d2485308756e7c687/ui/storybook/stories/skills/project-repository-skills/README.md),
+[project creation](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38345492092-1/?path=/story/skills-project-repository-skills-02-journeys--create-project),
+[repair retry](https://d1p6rlowie26tp.cloudfront.net/storybook/branches/codex-project-repository-skills-8ad0b8be51ae75bc/builds/38345492092-1/?path=/story/skills-project-repository-skills-02-journeys--repair-conflict).
+Published deployment metadata and story IDs were verified over HTTP. The in-app
+browser blocked CloudFront navigation, so hands-on inspection used the identical
+local built artifact. No browser security warning was bypassed.
 
 ## Inspectable captures
 
@@ -162,10 +186,13 @@ Real completed routine execution:
 
 ![Real routine execution](../../ui/storybook/public/project-skills-evidence/routine-execution.jpg)
 
-## Final review fixes
+## Review fixes
 
-Greptile's 3008f4f review scored 5/5 but had two open P2 findings; it was not treated as approval to merge. Initial-import and scheduled-refresh queries now exclude live leases before their bounded batches. A real database regression places ten leased records ahead of eligible work and verifies the eligible import and refresh proceed. The project-source suite passed 12 cases.
+Initial-import and scheduled-refresh queries exclude live leases before bounding
+batches. A real database regression places ten leased records ahead of eligible
+work and verifies import and refresh still proceed. Connection repair derives
+its source from the current query and reloads the revision after a conflict while
+retaining the chosen account. Runtime-test teardown drains tracked execution
+writes before truncation, resolving a reproduced database teardown deadlock.
 
-Connection repair now follows the current source row and reloads it after a revision conflict while retaining the selected account. Eleven browser journeys passed against the rebuilt Storybook, including a conflict followed by successful repair without reopening the dialog. Runtime-test cleanup now drains tracked execution/wakeup writes before truncating its database; the source/runtime suites passed 16 cases after reproducing a teardown deadlock. Recursive typecheck passed after these fixes.
-
-The first isolated Linux full run used source 3008f4f and failed because fresh dependencies lacked generated SDK entry points. It reported 206 failed files, 695 passed, five skipped, and 136 failed tests. This setup attempt is not passing qualification. The next run must build prerequisites before executing the full suite.
+![Mobile concurrent repair](../../ui/storybook/public/project-skills-evidence/repair-conflict-mobile.jpg)

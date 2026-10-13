@@ -18,7 +18,27 @@ checks, a live GitHub-to-routine update journey and a reviewable PR with evidenc
 - Legacy projects adopt explicitly. Existing imported sources update automatically.
 - Advanced reference pin UI and GitHub push webhooks are deferred.
 
-## Progress
+## Current qualification — 2026-10-13 UTC
+
+Production behavior, the live GitHub-to-routine update, eleven built-browser
+journeys and responsive review passed on 614a2d1. PR #16066 had all 55 checks
+successful/skipped/neutral and Greptile 5/5 with no findings on that implementation.
+A test-only follow-up, 411d614, makes two existing login cases independent of the
+host architecture; all 13 login cases passed. Recursive typecheck and production
+build passed again. The full Linux test run is active; its result is still required.
+
+GitHub CLI's credential subsequently became invalid (401). The user was asked to
+reconnect it. Publishing the final evidence update and merging require restored
+authentication and green checks on the final head. Merge is already authorized;
+no further merge permission is needed.
+
+The temporary reconciliation checkout and obsolete previews have been stopped
+and removed. Final local acceptance data and evidence are retained. See the
+[acceptance report](2026-10-12-project-skills-acceptance.md) for current outcomes
+and limits. The process notes below are historical and do not supersede this
+checkpoint.
+
+## Historical progress
 
 - Repository implementation and verification paths inspected; worktree started clean.
 - Persistence, attachment jobs, background checks, manual refresh, project access, runtime snapshots and Sources UI implemented; integration review remains.
