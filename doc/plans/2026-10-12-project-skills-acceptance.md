@@ -329,3 +329,15 @@ local edits. Membership, project visibility and deletion remain dynamic. Generat
 migration 0341 makes source identity uniqueness apply only to active rows. The
 regression matrix covers public re-adoption, direct private file/version denial,
 private fork preservation, original-workspace adoption, and membership revocation.
+
+Final qualification of the retained-audience correction (`4f7df5e683`) passed
+232 tests across 14 pinned Node 24 suites. One scanner subprocess deadline failed
+under concurrent build/install load; the unchanged full batch passed on retry.
+The 37 source/privacy cases also passed on macOS. Final typecheck and production
+build passed after installing two test dependencies added by concurrent master.
+Repository policy leaves lockfile publication to its scheduled refresh bot; no
+lockfile change remains in this PR. The rebuilt artifact passes all 14 interactive
+browser cases. Maps, token gates and catalog tests pass; the catalog inventories
+227 files and 2,252 stories without claiming all were rendered. Application and
+preview processes owned by this task were stopped with their evidence retained.
+Current-head GitHub checks and review results are recorded on the PR.

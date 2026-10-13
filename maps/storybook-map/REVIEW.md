@@ -586,3 +586,14 @@ unreviewed classifications. Seven overlapping entries differ from master only
 in the already reviewed recovery recipe or task-detail recovery notice wiring.
 Refreshed those combined-source fingerprints and regenerated the index. No new
 creation-visibility acceptance or visual baseline is claimed.
+
+## Final project-skills reconciliation — 2026-10-13
+
+Compared master 1e64c875 with the previous integrated master. The changed review
+sources are connection, liveness and recovery recipes, the task detail/recovery
+subjects, and the generated feature index. Saved-work recovery now belongs to the
+harness; the task omits the obsolete shutdown form. Retained each suite's prior
+classification and stable ID. Refreshed 32 dependent source fingerprints only
+after this source comparison. No unrelated suite gained browser or provider
+proof. All 14 project-skills interactive browser cases pass on the rebuilt
+artifact; the catalog contains 227 files and 2,252 stories.
