@@ -36,6 +36,14 @@ See [Project Repository Checkouts](DEVELOPING.md#project-repository-checkouts) f
 ignore rules, and reuse behavior. Responsible-user credential rules still apply.
 A repository selection never delegates credentials.
 
+Fresh tasks using the default repository workspace can clone the same authorized
+remote into a company- and task-scoped source directory when an existing project
+checkout contains another task's restricted workspace. The clone uses the run's
+Git connection and keeps separate Git metadata. Source access checks still apply
+before the task workspace is published. This fallback does not copy unpublished
+local changes or replace reused workspaces, explicit workspace selections, pinned
+branches, or repositories that only exist on the local filesystem.
+
 ## Discovery and setup
 
 The server checks company membership, grant ownership/status, and organization-grant

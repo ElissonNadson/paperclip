@@ -1,5 +1,5 @@
 import { execFile as execFileCallback } from "node:child_process";
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile, access, rename } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, readdir, rm, writeFile, access, rename, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -19,6 +19,8 @@ import { workspaceOperationService } from "../workspace-operations.js";
 import { nativeWorkspaceSyncInternals, prepareNativeWorkspaceSync } from "../native-runtime/native-workspace-sync.js";
 import { createHeartbeatWorkspaceResolver, prepareProjectRepositoryWorkspaces, resolveExecutionWorkspaceReuseRequestForIssue } from "./workspaces.js";
 import { prepareHeartbeatWorkspace, type HeartbeatWorkspacePreparationInput } from "./workspace-preparation.js";
+import * as managedRepositoryCheckout from "../managed-repository-checkout.js";
+import { isolatedRemoteSourcePath } from "../isolated-remote-workspace-source.js";
 
 const execFile = promisify(execFileCallback);
 const support = await getEmbeddedPostgresTestSupport();
@@ -114,6 +116,41 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     expect(input.nativeRunnerPreparationSpans.map(span => span.name)).toEqual(["environment.acquire", "environment.workspace.realize"]);
     expect(input.nativeRunnerPreparationSpans.every(span => span.parentName === "task.provider_session")).toBe(true);
     expect(input.controllerLease.assertOwned).toHaveBeenCalledTimes(2);
+  });
+
+  it("clones a fresh default remote source without copying a nested private workspace and reuses that source", async () => {
+    const { input, source, issue } = await fixture(true);
+    const remoteUrl = "https://example.test/public/repository.git";
+    await db.update(projectWorkspaces).set({ repoUrl: remoteUrl }).where(eq(projectWorkspaces.id, issue.projectWorkspaceId!));
+    const [privateIssue] = await db.insert(issues).values({ companyId: issue.companyId, title: "Private work",
+      visibility: "private", projectId: issue.projectId }).returning();
+    const privateCwd = join(source, "private-work");
+    await mkdir(privateCwd);
+    await writeFile(join(privateCwd, "confidential.txt"), "Private source must not be copied");
+    const [privateWorkspace] = await db.insert(executionWorkspaces).values({ companyId: issue.companyId,
+      name: "Private workspace", projectId: issue.projectId, sourceIssueId: privateIssue.id, cwd: privateCwd, mode: "isolated_workspace",
+      strategyType: "project_primary", status: "idle" }).returning();
+    await db.update(issues).set({ executionWorkspaceId: privateWorkspace.id }).where(eq(issues.id, privateIssue.id));
+    const clone = vi.spyOn(managedRepositoryCheckout, "materializeManagedProjectWorkspace").mockImplementation(async (cwd, options) => {
+      expect(options.repoUrl).toBe(remoteUrl);
+      expect(options.localSource).toBeUndefined();
+      expect(options.resolveGitAuth).toBeTypeOf("function");
+      await execFile("git", ["clone", "--no-hardlinks", source, cwd]);
+      await execFile("git", ["-C", cwd, "remote", "set-url", "origin", remoteUrl]);
+      return { cwd, warning: null };
+    });
+    const result = await prepareHeartbeatWorkspace(db, input);
+    const isolatedSource = isolatedRemoteSourcePath(issue.companyId, issue.id);
+    expect(result.executionWorkspace.baseCwd).toBe(isolatedSource);
+    expect(await readFile(join(result.executionWorkspace.cwd, "README.md"), "utf8")).toBe("source content\n");
+    await expect(access(join(result.executionWorkspace.cwd, "private-work"))).rejects.toMatchObject({ code: "ENOENT" });
+    expect(clone).toHaveBeenCalledOnce();
+    await reuse(input, result.persistedExecutionWorkspace!);
+    const resumed = await prepareHeartbeatWorkspace(db, input);
+    expect(resumed.persistedExecutionWorkspace!.id).toBe(result.persistedExecutionWorkspace!.id);
+    expect(resumed.executionWorkspace.baseCwd).toBe(await realpath(isolatedSource));
+    expect(clone).toHaveBeenCalledOnce();
+    expect((await readIssue(privateIssue.id)).visibility).toBe("private");
   });
 
   it.each(["sandbox", "ssh", "local", null] as const)("uses the selected %s placement for controller provisioning", async driver => {

@@ -29,6 +29,7 @@ import { readNativeWorkspaceSyncReference, readNativeWorkspaceSyncLocalCwd } fro
 import { parseObject } from "../../adapters/utils.js";
 import { materializeNativeChatTaskRoot } from "../native-runtime/native-chat-workspace.js";
 import { materializeIsolatedTaskDirectory } from "../isolated-task-directory.js";
+import { canIsolateRemoteWorkspaceSource, materializeIsolatedRemoteWorkspaceSource } from "../isolated-remote-workspace-source.js";
 import {
   assertIsolatedWorkspaceSourceReadAccess,
   retainIsolatedWorkspaceSourceAccess,
@@ -484,12 +485,27 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
   );
   const isolatedWorkspaceSourceActor = { type: "agent" as const, source: "agent_jwt" as const, companyId: agent.companyId,
     agentId: agent.id, runId: run.id, onBehalfOfUserId: responsibleUserId === "local-board" ? null : responsibleUserId };
-  const isolatedWorkspaceSourceAccess = !isDotRun && issueId && !persistedNativeExecutionInput && !nativeRecoveryExecutionWorkspaceId
+  let isolatedWorkspaceSourceAccess = null;
+  if (!isDotRun && issueId && !persistedNativeExecutionInput && !nativeRecoveryExecutionWorkspaceId
     && (latestWorkspaceStrategyType === "git_worktree"
-      || (workspaceReuseProvisioningPolicy.shouldRestoreExistingWorkspace && reusableExistingExecutionWorkspace?.strategyType === "git_worktree"))
-    ? await assertIsolatedWorkspaceSourceReadAccess(db, {
+      || (workspaceReuseProvisioningPolicy.shouldRestoreExistingWorkspace && reusableExistingExecutionWorkspace?.strategyType === "git_worktree"))) {
+    try {
+      isolatedWorkspaceSourceAccess = await assertIsolatedWorkspaceSourceReadAccess(db, {
         companyId: agent.companyId, sourceCwd: executionWorkspaceBase.baseCwd, actor: isolatedWorkspaceSourceActor,
-      }) : null;
+      });
+    } catch (error) {
+      if (!canIsolateRemoteWorkspaceSource({ error, repoUrl: executionWorkspaceBase.repoUrl,
+        reuseExisting: requestedShouldReuseExisting, hasExistingWorkspace: Boolean(existingExecutionWorkspace),
+        selection: input.task.workspaceSelection ?? issueRef?.workspaceSelection, strategy: parseObject(hostExecutionWorkspaceConfig.workspaceStrategy) })) throw error;
+      const cwd = await materializeIsolatedRemoteWorkspaceSource({ companyId: agent.companyId,
+        issueId, repoUrl: executionWorkspaceBase.repoUrl!, resolveGitAuth: workspaceGitAuthProvider });
+      executionWorkspaceBase.baseCwd = cwd;
+      resolvedWorkspace.cwd = cwd;
+      isolatedWorkspaceSourceAccess = await assertIsolatedWorkspaceSourceReadAccess(db, {
+        companyId: agent.companyId, sourceCwd: cwd, actor: isolatedWorkspaceSourceActor,
+      });
+    }
+  }
   const beforeIsolatedSourceCopy = isolatedWorkspaceSourceAccess
     ? (sourceCwd: string, targetCwd: string) => retainIsolatedWorkspaceSourceAccess(db, {
         companyId: agent.companyId, sourceCwd, targetCwd,
