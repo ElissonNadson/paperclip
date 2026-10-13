@@ -496,7 +496,8 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
     } catch (error) {
       if (!canIsolateRemoteWorkspaceSource({ error, repoUrl: executionWorkspaceBase.repoUrl,
         reuseExisting: requestedShouldReuseExisting, hasExistingWorkspace: Boolean(existingExecutionWorkspace),
-        selection: input.task.workspaceSelection, strategy: parseObject(hostExecutionWorkspaceConfig.workspaceStrategy) })) throw error;
+        selection: input.task.workspaceSelection, strategy: parseObject(hostExecutionWorkspaceConfig.workspaceStrategy),
+        trustPresetKind: trustPreset.kind })) throw error;
       const cwd = await materializeIsolatedRemoteWorkspaceSource({ companyId: agent.companyId,
         issueId, repoUrl: executionWorkspaceBase.repoUrl!, resolveGitAuth: workspaceGitAuthProvider });
       executionWorkspaceBase.baseCwd = cwd;

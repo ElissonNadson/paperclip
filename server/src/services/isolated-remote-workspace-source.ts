@@ -23,9 +23,10 @@ export function canIsolateRemoteWorkspaceSource(input: {
   hasExistingWorkspace: boolean;
   selection: TaskWorkspaceIntent | null | undefined;
   strategy: Record<string, unknown>;
+  trustPresetKind: string;
 }): boolean {
   const error = input.error as { status?: unknown; message?: unknown } | null;
-  if (error?.status !== 403 || error.message !== "Task workspace access is no longer available"
+  if (input.trustPresetKind !== "standard" || error?.status !== 403 || error.message !== "Task workspace access is no longer available"
     || input.reuseExisting || input.hasExistingWorkspace || input.strategy.existingBranch
     || (input.selection && !["project", "task_default", "legacy"].includes(input.selection.source))) return false;
   if (!input.repoUrl) return false;

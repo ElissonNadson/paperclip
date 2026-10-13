@@ -9,6 +9,7 @@ const allowed = {
   hasExistingWorkspace: false,
   selection: null,
   strategy: { type: "git_worktree" },
+  trustPresetKind: "standard",
 };
 
 describe("isolated remote source admission", () => {
@@ -26,6 +27,9 @@ describe("isolated remote source admission", () => {
     { repoUrl: "/private/source" },
     { repoUrl: "https://user:password@example.test/repo" },
     { repoUrl: null },
+    { trustPresetKind: "low_trust_review" },
+    { trustPresetKind: "denied" },
+    { trustPresetKind: "unknown" },
   ])("preserves the original denial for %j", patch => {
     expect(canIsolateRemoteWorkspaceSource({ ...allowed, ...patch })).toBe(false);
   });
