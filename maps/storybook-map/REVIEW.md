@@ -267,6 +267,10 @@ limits remain unchanged. Project skill pages and journeys are unchanged.
 
 Preserved master’s capability associations, optional overview home field, feature-map additions, and viewer-specific toast eligibility. Source-only review covers changed map text, generated feature index and overview associations; no story classifications were upgraded. The merged socket retains project skill authorization, and Sources cache invalidation remains intact.
 
+## Task collection integration — 2026-10-13
+
+Preserved master’s human/automation creation filter in Issues and ProjectDetail and the corresponding task recipe. Reviewed those query keys and includeAgentCreatedTasks/listAll calls against the project-skill journeys. Five source fingerprints retain their existing classifications; rebuilt browser results remain separate from this source review.
+
 ## Withdrawn connection request recovery — 2026-10-13
 
 The real supported-client probe exposed a withdrawn AI request retaining an active Fix connection action. Reviewed the production terminal-state branch, regression test, and AiWithdrawn story using the same component. The test fails before the fix; 70 interaction/Sources UI/API cases pass after it. Catalog classifications remain unchanged. Updated the connection-setup recipe and retained the existing authorization boundaries.

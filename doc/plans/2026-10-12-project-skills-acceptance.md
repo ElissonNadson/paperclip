@@ -311,3 +311,11 @@ The final compatibility review also found provider settings skipped for generate
 Codex homes. A launch-level regression failed for both default and explicit
 credential homes. Provider settings now apply to generated skill homes while
 caller-owned homes remain untouched; the three Codex suites pass 33 cases.
+
+Final qualification passed 213 service/runtime cases on pinned Node 24, 70
+interaction/Sources UI/API cases, and 14 rebuilt Storybook browser journeys.
+Typecheck, build, token gates, maps and catalog checks passed. The restarted
+real app on source `c9a5897bb0843ee5ac89ee0bb9210ca864d6ceca` shows the
+withdrawn request as inactive after reload, alongside the completed CLI result.
+The updated CLI capture records this corrected recovery state. Final head checks
+and merge status remain authoritative on the PR.

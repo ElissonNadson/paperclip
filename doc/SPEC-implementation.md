@@ -2230,3 +2230,23 @@ including its immutable source versions and an empty inventory. Revocation and
 version changes select a separate home and session store while retaining the
 selected model account’s credential source. Repository skill auto-update trusts
 its upstream authors; operators can pause updates to review changes manually.
+
+### Task collection creation visibility (2026-10-13)
+
+Tasks and project collections default to hiding agent/system-created tasks and
+provide a saved **show agent-created tasks** filter. Classify creation using
+creator identity and origin; assignee/responsible users do not imply human
+authorship. Routine executions remain automated even when manually triggered.
+Creator-less ordinary tasks are system-created. All chat-channel tasks count as
+bot-created for this filter, including human-initiated inbound conversations.
+Human ordinary and onboarding tasks remain visible. Apply collection creation filters before search limits and
+pagination, and retrieve hierarchy context separately under existing access checks.
+Context does not count as independent results or board cards. Bounded context
+reads retain loaded rows while users reveal more of the tree.
+
+Inbox membership, archives, unread state, and badges retain existing participation
+rules, including assignment, comments, and manual routine runs. Responsibility and
+read-only activity do not admit scheduled work. Inbox discovery/Blocked preserve
+participated automation and hide unrelated automation by default. Agent profile
+history, routine history, and task-detail subtasks remain complete. API consumers
+that omit the optional creation filter retain their existing list behavior.
