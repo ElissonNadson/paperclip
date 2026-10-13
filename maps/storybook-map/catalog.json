@@ -260,7 +260,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Wrapper mounts production Layout and AgentChat; conversation selection and sends use in-memory routes. Directory name is not prototype evidence.",
+      "notes": "Wrapper mounts production Layout and AgentChat; conversation selection and sends use in-memory routes. Directory name is not prototype evidence. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/agent-chat.md",
@@ -281,7 +281,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat-sidebar.stories.tsx"
       ],
-      "fingerprint": "aeea37e51418ab1d78eca93cfd4b51636941ac22c8dbadf7fe1a70de74b7ae8b",
+      "fingerprint": "c109f42384ead922c553ab75476f509f682ad754ece840369d7acf442503643d",
       "stableId": "design-explorations-agent-chat-sidebar-pages",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat sidebar/Pages"
     },
@@ -319,7 +319,7 @@
       "status": "mixed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Production conversation/task routes with a local ChatEntryLanding. Default-agent behavior and fallback API responses remain outside current-product parity.",
+      "notes": "Production conversation/task routes with a local ChatEntryLanding. Default-agent behavior and fallback API responses remain outside current-product parity. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/agent-chat.md",
@@ -340,7 +340,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat.stories.tsx"
       ],
-      "fingerprint": "b04974700adf2b2fc95565066e4385c68979e509da1f97443ae31a653947255e",
+      "fingerprint": "04a26cfb82ab9d6c8a6664d470c4824fe5ac2b67efa80e0e0178d7886b48d0c0",
       "stableId": "design-explorations-agent-chat",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat"
     },
@@ -472,7 +472,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/agents.md",
@@ -487,7 +487,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/agents/agent-persona-pages.stories.tsx"
       ],
-      "fingerprint": "4c76c6a1c6f5ac036140b649bcf8a0a02978273550a8f784d772a8756358b34a",
+      "fingerprint": "e4b3a4e8d345e1f8fb8e7c0ac7d6207eb899f2b2a13ef492c0c560d655f1fd54",
       "stableId": "agents-personas-full-pages",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Personas/Full pages"
     },
@@ -1408,7 +1408,7 @@
       "status": "historical",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Retained first-created-agent sidebar/landing design predates personal primary-agent selection. Shared production conversation components remain useful.",
+      "notes": "Retained first-created-agent sidebar/landing design predates personal primary-agent selection. Shared production conversation components remain useful. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/agent-chat.md",
@@ -1429,7 +1429,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/chat-entry.stories.tsx"
       ],
-      "fingerprint": "8e43da9f1bb33d31007ceb6adb20ed6ece6a0cbc99f87ab0cea2172d11d4d2e4",
+      "fingerprint": "4dbc054ef9d5914e1dee9b6fa940033cbb3eedf346a7bfe371f3e585b1771f61",
       "replacement": "ui/storybook/stories/agents/primary-agent/05-chat.stories.tsx",
       "stableId": "design-explorations-chat-entry",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Chat entry"
@@ -1821,7 +1821,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1833,7 +1833,7 @@
         "ui/storybook/stories/secrets/credential-access/02-task-page.stories.tsx",
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx"
       ],
-      "fingerprint": "b7f5b355919f9e11c7d079955113f365d3a41e956fd6cc6746e4c3fdddae644e",
+      "fingerprint": "fd49c53e49cfa99ad40970cf623e2981ad618160c1e0310101379c12c49c1678",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -2171,20 +2171,23 @@
     {
       "file": "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx",
       "capabilities": [
-        "recovery/diagnosis"
+        "recovery/diagnosis",
+        "recovery/workspace"
       ],
       "purpose": "Task chat/Recovery notice",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior. Added file verification, board access, successful recording and rejected stop-proof examples. API responses are fixtures and do not prove real workspace integrity.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/ExecutionBlockerNotice.tsx",
-        "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx"
+        "ui/src/components/WorkspaceFileRecovery.tsx",
+        "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx",
+        "ui/storybook/support/workspace-file-recovery/fixture.tsx"
       ],
-      "fingerprint": "19fa3d95095bbcd67c5306d6ad3c8c00ae526bab9d8cbc49e69ca36c15a873c2",
+      "fingerprint": "d5d7cea030e3c18056d5862eaa9e3a20ad2dbd572d9b6ff4d203ff4865014d71",
       "stableId": "task-chat-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Task chat/Recovery notice"
     },
@@ -3291,7 +3294,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3304,7 +3307,7 @@
         "ui/storybook/prototypes/originating-tasks/OriginatingTasks.tsx",
         "ui/storybook/stories/task-coordination/originating-tasks.stories.tsx"
       ],
-      "fingerprint": "e16a7c6351086b45005478d57101377fe51d5c2e8f8ae59ee0f3a32b1811d09d",
+      "fingerprint": "da22e46474c1685575cb142d27f9715f6f494fa7d09f042ae3cc20c9e98fb91e",
       "stableId": "ux-labs-tasks-created-from-a-task",
       "sidebarTitle": "Tasks and conversations/Delegation, dependencies, and signoff/UX Labs/Tasks Created From a Task"
     },
@@ -3715,7 +3718,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/access.md",
@@ -3733,7 +3736,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "03b3b019f9495280cc89648b901f4f49396c97e6cb8f25354d170f47ec968ffb",
+      "fingerprint": "ff76f81a17321ca966a244f36639b5dd3a4b53b3e41d4c97255954f6ca598c0c",
       "stableId": "private-tasks-01-creation",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/01 Creation"
     },
@@ -3861,7 +3864,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/access.md",
@@ -3879,7 +3882,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "bbdceb12f6ba702663f243dd3986c5295677c7e9e007ffbed7cbe3efb385ab52",
+      "fingerprint": "16cca5c4d7a003b4a96e0fa5853e39d860bd63bfe8dda6c56bb1ab998f3e8257",
       "stableId": "private-tasks-06-full-product-pages",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/06 Full product pages"
     },
@@ -3893,7 +3896,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/access.md",
@@ -3926,7 +3929,7 @@
         "ui/storybook/stories/access/private-tasks/07-user-stories.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "361fb8ed1b95d3668529e2fa2c2d3951524909468134613f6e0c00d062a3ac82",
+      "fingerprint": "8ecac927a8effacee9e8ffded2237520d8225f80580c5adfb92db38eceb7f03d",
       "stableId": "private-tasks-07-user-stories",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/07 User stories"
     },
@@ -5231,7 +5234,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the optional retained-file recovery form; existing fixtures without a task status keep their previous notice behavior.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/tasks.md",
@@ -5240,7 +5243,7 @@
         "ui/src/components/chat/ExternallyConnectedTaskBanner.tsx",
         "ui/storybook/stories/tasks/task-context-notices.stories.tsx"
       ],
-      "fingerprint": "87bfd426fdddcc330f0850b036102dd3f1f023e4c0df26f0519dce43cadd1901",
+      "fingerprint": "80956b63abbde77d714006ac38e4b07fd50cd9c9b276353e41c3d19fd3f796cb",
       "stableId": "tasks-context-notices",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Tasks/Context notices"
     },
