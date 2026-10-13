@@ -1744,10 +1744,11 @@ export function AgentOverview({
     queryKey: [...queryKeys.agents.identity(agent.id), lastRun?.id, lastRun?.status],
     queryFn: () => agentsApi.getIdentity(agent.id, agent.companyId),
   });
+  const hasHumanCreator = Boolean(humanAgentCreatorUserId(agent.createdByUserId));
   const userDirectory = useQuery({
     queryKey: queryKeys.access.companyUserDirectory(agent.companyId),
     queryFn: () => accessApi.listUserDirectory(agent.companyId),
-    enabled: Boolean(humanAgentCreatorUserId(agent.createdByUserId)),
+    enabled: hasHumanCreator,
     retry: false,
   });
   const creatorLabel = resolveAgentCreatorLabel(agent.createdByUserId, userDirectory.data?.users);
@@ -1772,7 +1773,7 @@ export function AgentOverview({
               ) : <span className="text-sm">Board</span>}
             </SummaryRow>
             <SummaryRow label="Direct reports"><span className="text-sm tabular-nums">{directReportCount}</span></SummaryRow>
-            {userDirectory.isError ? (
+            {hasHumanCreator && userDirectory.isError ? (
               <SummaryRow label="Created by"><span className="text-sm text-destructive">Could not load creator</span></SummaryRow>
             ) : creatorLabel ? (
               <SummaryRow label="Created by"><span className="text-sm">{creatorLabel}</span></SummaryRow>

@@ -78,7 +78,7 @@ describe("AgentOverview", () => {
     expect(markup).not.toContain("Created by");
   });
 
-  function renderOverview(createdByUserId: string, client: QueryClient) {
+  function renderOverview(createdByUserId: string | null, client: QueryClient) {
     const agent = {
       id: "agent-2",
       companyId: "company-1",
@@ -133,15 +133,25 @@ describe("AgentOverview", () => {
     expect(markup).not.toContain("Created by");
   });
 
-  it("shows an error when the company user directory cannot be loaded", () => {
+  function failedDirectoryClient() {
     const client = new QueryClient({ defaultOptions: { queries: { retryOnMount: false } } });
     client.getQueryCache().build(client, { queryKey: queryKeys.access.companyUserDirectory("company-1") }).setState({
       status: "error",
       error: new Error("Directory unavailable"),
       fetchStatus: "idle",
     });
-    const markup = renderOverview("user-alice", client);
+    return client;
+  }
+
+  it("shows an error when the company user directory cannot be loaded", () => {
+    const markup = renderOverview("user-alice", failedDirectoryClient());
     expect(markup).toContain("Created by");
     expect(markup).toContain("Could not load creator");
+  });
+
+  it.each([null, "local-board"])("keeps the creator row hidden for creator %s when the directory failed", (createdByUserId) => {
+    const markup = renderOverview(createdByUserId, failedDirectoryClient());
+    expect(markup).not.toContain("Created by");
+    expect(markup).not.toContain("Could not load creator");
   });
 });

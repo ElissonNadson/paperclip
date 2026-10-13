@@ -4,7 +4,7 @@
 
 [Contract and maintenance](README.md) · [Review findings](REVIEW.md)
 
-223 story files; 2210 indexed stories. Counts describe inventory, not passed tests or complete feature coverage.
+223 story files; 2211 indexed stories. Counts describe inventory, not passed tests or complete feature coverage.
 
 Status describes product alignment; implementation describes the rendered subject; boundary describes simulated data. Sources and limitations are in catalog.json. Related capabilities cross-list one canonical story file.
 
@@ -51,7 +51,7 @@ Status describes product alignment; implementation describes the rendered subjec
 
 | Story suite | Capabilities | Product / implementation / data | Stories / play functions | Review note |
 | --- | --- | --- | --- | --- |
-| [Agents and reusable capabilities/Hiring, configuration, and organization/Pages/Agent Detail](../../ui/storybook/stories/agents/agent-detail.stories.tsx) | `agents/lifecycle`, `agents/instructions` | unreviewed / production / fixtures | 1 / 0 | Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. |
+| [Agents and reusable capabilities/Hiring, configuration, and organization/Pages/Agent Detail](../../ui/storybook/stories/agents/agent-detail.stories.tsx) | `agents/lifecycle`, `agents/instructions` | unreviewed / production / fixtures | 2 / 0 | Shipped subjects identified through imports and local wrappers; SharedCompanyShowsCreator seeds the company user directory to show the Overview creator row. Full state, fixture-contract and route parity remain unreviewed. |
 | [Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Persistent files](../../ui/storybook/stories/agents/agent-files.stories.tsx) | `agents/instructions` | unreviewed / production / fixtures | 9 / 7 | Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. |
 | [Agents and reusable capabilities/Hiring, configuration, and organization/Product/Agent Management](../../ui/storybook/stories/agents/agent-management.stories.tsx) | `agents/lifecycle`, `agents/instructions` | unreviewed / production / fixtures | 3 / 0 | Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. |
 | [Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Personas/Full pages](../../ui/storybook/stories/agents/agent-persona-pages.stories.tsx) | `agents/organization`, `navigation-preferences/profile` | unreviewed / production / fixtures | 6 / 0 | Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. |

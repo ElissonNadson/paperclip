@@ -261,7 +261,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Wrapper mounts production Layout and AgentChat; conversation selection and sends use in-memory routes. Directory name is not prototype evidence.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "ui/src/components/AgentChatPicker.tsx",
@@ -281,7 +281,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat-sidebar.stories.tsx"
       ],
-      "fingerprint": "aeea37e51418ab1d78eca93cfd4b51636941ac22c8dbadf7fe1a70de74b7ae8b",
+      "fingerprint": "15f2ed3ebacc8463e00ea0ab64a04dd3d4f80463efc3dc2b2af62f0bc0d6feeb",
       "stableId": "design-explorations-agent-chat-sidebar-pages",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat sidebar/Pages"
     },
@@ -320,7 +320,7 @@
       "implementation": "mixed",
       "boundary": "fixtures",
       "notes": "Production conversation/task routes with a local ChatEntryLanding. Default-agent behavior and fallback API responses remain outside current-product parity.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "ui/src/components/AgentChatPicker.tsx",
@@ -340,7 +340,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat.stories.tsx"
       ],
-      "fingerprint": "b04974700adf2b2fc95565066e4385c68979e509da1f97443ae31a653947255e",
+      "fingerprint": "aaaabbab1c74121cc2517089749d795aa8cf94d45352133926f2a8ef1d07caaf",
       "stableId": "design-explorations-agent-chat",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat"
     },
@@ -401,15 +401,15 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; SharedCompanyShowsCreator seeds the company user directory to show the Overview creator row. Full state, fixture-contract and route parity remain unreviewed.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "ui/src/pages/AgentDetail.tsx",
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/agents/agent-detail.stories.tsx"
       ],
-      "fingerprint": "11057146b400c257fbdc3ec5c20da9b55eacc6735121632f2fa55e72af29e777",
+      "fingerprint": "1efccc963712f2253b798b5b7e190ad2692b6bc6ef0feae0abfc016e18375eb0",
       "stableId": "pages-agent-detail",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Pages/Agent Detail"
     },
@@ -423,14 +423,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "ui/src/pages/AgentDetail.tsx",
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/agents/agent-files.stories.tsx"
       ],
-      "fingerprint": "d7976922e4431b6432f966c2f120b9a57f66437bfe519694007d76a790318043",
+      "fingerprint": "175a958b60094b70b034238c7927815a4ec497f1ac201ed083830746222fdd63",
       "stableId": "agents-persistent-files",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Persistent files"
     },
@@ -473,7 +473,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "maps/feature-map/navigation-preferences.md",
@@ -487,7 +487,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/agents/agent-persona-pages.stories.tsx"
       ],
-      "fingerprint": "4c76c6a1c6f5ac036140b649bcf8a0a02978273550a8f784d772a8756358b34a",
+      "fingerprint": "7840d5fee7dbaf79333fbdf6b0afb0f7e6a09e47d5752f95ff7907330f67da73",
       "stableId": "agents-personas-full-pages",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Personas/Full pages"
     },
@@ -527,7 +527,7 @@
       "implementation": "mixed",
       "boundary": "fixtures",
       "notes": "Production configuration panels in a locally composed settings shell; full AgentDetail route parity remains unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "ui/src/components/AgentActionButtons.tsx",
@@ -548,7 +548,7 @@
         "ui/storybook/prototypes/new-agent-fixtures.ts",
         "ui/storybook/stories/agents/agent-settings-redesign.stories.tsx"
       ],
-      "fingerprint": "0d438c68efa2c8b29d359c95944bc7aa55bd90808ea4f6229f144ffb4a16ffe4",
+      "fingerprint": "a1f14ea6ce5c54de6c9d80ac6434a48fae863287df2339e0073f87cc9829f0cd",
       "stableId": "agents-configuration-refresh",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Configuration refresh"
     },
@@ -1409,7 +1409,7 @@
       "implementation": "mixed",
       "boundary": "fixtures",
       "notes": "Retained first-created-agent sidebar/landing design predates personal primary-agent selection. Shared production conversation components remain useful.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "ui/src/components/AgentChatPicker.tsx",
@@ -1429,7 +1429,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/chat-entry.stories.tsx"
       ],
-      "fingerprint": "8e43da9f1bb33d31007ceb6adb20ed6ece6a0cbc99f87ab0cea2172d11d4d2e4",
+      "fingerprint": "72a3674782b54c919bc5b4fa77017349cfe45d2bd33a3446860d85d273751e83",
       "replacement": "ui/storybook/stories/agents/primary-agent/05-chat.stories.tsx",
       "stableId": "design-explorations-chat-entry",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Chat entry"
@@ -1822,7 +1822,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "maps/feature-map/secrets.md",
@@ -1833,7 +1833,7 @@
         "ui/storybook/stories/secrets/credential-access/02-task-page.stories.tsx",
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx"
       ],
-      "fingerprint": "b7f5b355919f9e11c7d079955113f365d3a41e956fd6cc6746e4c3fdddae644e",
+      "fingerprint": "9ca5ffab8b75afd77aa545ac72a2999bc60d5c960f52a91f4f36a8dcd0fd3973",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -3429,7 +3429,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3448,7 +3448,7 @@
         "ui/storybook/stories/agents/primary-agent/01-components.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "158129bcc28622cc3de88f13b51620bcc3e7b634b1f69938c7f4ff9892b7d356",
+      "fingerprint": "53507de8a405b86419ab30d313efd41ce1cbc5e5f91b755671aacbc7f059156b",
       "stableId": "primary-agent-01-components",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/01 Components"
     },
@@ -3464,7 +3464,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3482,7 +3482,7 @@
         "ui/storybook/stories/agents/primary-agent/02-sidebar.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "3ad1e1e519d3a0e02ec2fd09cb64cd1dbf2e592712a6418e03d075c3a462fa75",
+      "fingerprint": "325936b87763a7520d382e6b667fe49be62965ae49269231e52f01ad99e7a5ab",
       "stableId": "primary-agent-02-sidebar",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/02 Sidebar"
     },
@@ -3498,7 +3498,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3516,7 +3516,7 @@
         "ui/storybook/stories/agents/primary-agent/03-agents.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "a9a767d5708e58e8d5ab4a893a6723c96a9cb17f90459dab19104701dcd2850b",
+      "fingerprint": "64b9149c9ef7d2cd89d8dbf414af2df099c378c2ad4a3c1a46e0f5f86c7a9fdb",
       "stableId": "primary-agent-03-agents",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/03 Agents"
     },
@@ -3532,7 +3532,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3550,7 +3550,7 @@
         "ui/storybook/stories/agents/primary-agent/04-new-task.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "b8e2d721f79dcc64210f4c7b35f09536262a6a23f72241174f3a832fbed2bba3",
+      "fingerprint": "2e2a1ed7dee46c1785107beb9d7b70096ad15c139a6bb3fac73de7ab994399cc",
       "stableId": "primary-agent-04-new-task",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/04 New task"
     },
@@ -3566,7 +3566,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3584,7 +3584,7 @@
         "ui/storybook/stories/agents/primary-agent/05-chat.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "e05752da7c5a429dbb4922bb995fb9579ac7163e6c4af65cf22c8e8d82008f33",
+      "fingerprint": "b91999bc7c82f6125b3db64d84dcc86ae6b61da6827511f367325ba5f7e4292b",
       "stableId": "primary-agent-05-chat",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/05 Chat"
     },
@@ -3600,7 +3600,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3618,7 +3618,7 @@
         "ui/storybook/stories/agents/primary-agent/06-journeys.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "3e6310ce06cb3d7528ea93c1717696fcd4ccff72f36171c2b608ac2e1b18d86e",
+      "fingerprint": "b77a08597cb4884930b85879341a1cc2671b59cf77f7392cc578a70cfe0fc5cd",
       "stableId": "primary-agent-06-journeys",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/06 Journeys"
     },
@@ -3634,7 +3634,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agent-chat.md",
         "maps/feature-map/agents.md",
@@ -3652,7 +3652,7 @@
         "ui/storybook/stories/agents/primary-agent/07-confirmation.stories.tsx",
         "ui/storybook/support/primary-agent/PrimaryAgentStory.tsx"
       ],
-      "fingerprint": "eebd68443ba087a528b29589b085f89c6f968f94ce289e92e75278878da194db",
+      "fingerprint": "4d7c7c61f2764531c6d0f35a03691e4a6ff5b627ef2511f50abe0b4a2bfe16b1",
       "stableId": "primary-agent-07-confirmation",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Primary Agent/07 Confirmation"
     },
@@ -4045,7 +4045,7 @@
       "implementation": "mixed",
       "boundary": "fixtures",
       "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
         "ui/src/components/AdapterLoginChrome.tsx",
@@ -4081,7 +4081,7 @@
         "ui/storybook/prototypes/provider-routing/story-support.ts",
         "ui/storybook/stories/runs-adapters/provider-routing-01-onboarding.stories.tsx"
       ],
-      "fingerprint": "17ed706f27cb9282f6918dd855160aeb6a63c003d7891c6fa6a336cd7cec1f8b",
+      "fingerprint": "a2b6e43684b27379a7ce28d9c881f0f4dddf5b7d56e7563196065e1bc7af010a",
       "stableId": "ai-connections-provider-routing-01-onboarding",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/01 Onboarding"
     },
@@ -4126,7 +4126,7 @@
       "implementation": "mixed",
       "boundary": "fixtures",
       "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
         "ui/src/components/AdapterLoginChrome.tsx",
@@ -4162,7 +4162,7 @@
         "ui/storybook/prototypes/provider-routing/story-support.ts",
         "ui/storybook/stories/runs-adapters/provider-routing-03-agent.stories.tsx"
       ],
-      "fingerprint": "dd04df0958753c6b4e3fbf97b118e1d69543c8e213970f2cfeffebdc5a7ecc91",
+      "fingerprint": "f5632009dcdaee2bdcac086bcc15c10d74f0ae326001febdfa29c602dd9a17b8",
       "stableId": "ai-connections-provider-routing-03-agent",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/03 Agent"
     },
