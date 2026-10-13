@@ -269,7 +269,7 @@ export function installFixtures(empty: boolean, needsConnection: boolean, option
     if (options.saving) await wait(3600000);
     const source = sourceFixture();
     Object.assign(source, { id: `source-${sources.length + 1}`, packageMode: input.packageMode, repositoryPackage: input.packageMode === 'repository' ? repositoryFixture(options.packageScenario) : null, repositoryUrl: input.repositoryUrl, fullName: input.repositoryUrl.replace("https://github.com/", ""), trackingRef: input.trackingRef || "main", connectionId: input.connectionId ?? null });
-    source.entries = repositoryCandidates(options.packageScenario).filter(entry => discoveryCandidates.some(candidate => candidate.path === entry.path)).map((entry, index) => ({ ...entry, id: `entry-${index}`, sourceId: source.id, present: true, selection: 'new', skillId: null }));
+    source.entries = repositoryCandidates(options.packageScenario).filter(entry => discoveryCandidates.some(candidate => candidate.path === entry.path)).map((entry, index) => ({ ...entry, id: `entry-${sources.length * 100 + index}`, sourceId: source.id, present: true, selection: 'new', skillId: null }));
     sources.push(source);
     return save(source, input.selectedPaths, input.excludedFolders ?? []);
   };

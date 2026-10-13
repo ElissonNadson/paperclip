@@ -22,7 +22,7 @@ checks, a live GitHub-to-routine update journey and a reviewable PR with evidenc
 
 - Repository implementation and verification paths inspected; worktree started clean.
 - Persistence, attachment jobs, background checks, manual refresh, project access, runtime snapshots and Sources UI implemented; integration review remains.
-- Generated migration: `0336_lovely_bloodstorm.sql`.
+- Initial preview migration was `0336_lovely_bloodstorm.sql`; master reconciliation replaces preview migrations with replay-safe generated `0339_certain_warpath.sql`.
 - Focused source persistence tests passed (13 existing cases); new project source tests passed (3 lifecycle/access cases).
 - Source API/UI regression tests passed: 69 tests. Runtime-skill regression suite also passed.
 - UI/server direct TypeScript checks passed after building workspace dependencies; repeat after latest changes.
@@ -169,3 +169,11 @@ not be published or attached.
   reviewed head before handoff. Acceptance screenshots and minimized execution
   receipts are now in ui/storybook/public/project-skills-evidence/ for the existing
   Storybook artifact workflow. No credential or identity key files are included.
+
+## Reconciliation checkpoint — 2026-10-12 evening
+
+Master integration preserves the durable task-workspace changes alongside project skill authorization and execution snapshots. The regenerated migration follows master's 0338 and its real database replay regression passed. Recursive typecheck and production build passed in the temporary reconciliation worktree. Ten focused Storybook journeys passed, including project creation, second repository attachment and immutable simulated routine revisions. Final built-artifact checks, full-suite qualification, updated PR review and a current implementation acceptance run remain.
+
+The reviewed-head full run ended with 17,687 tests passing, two failing, 383 skipped and 18 failed files. Database startup errors identify host shared-memory exhaustion; public MCP also timed out. This is a failed run, not completion evidence. The owned acceptance server was stopped after recording successful reviewed-head run e2cbfc2b-aa07-4fa0-b240-82033d6d1035, and its data/evidence remain available.
+
+The user authorized merging once final PR checks pass. Do not merge an incomplete or conflicting head.

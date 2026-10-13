@@ -19,7 +19,7 @@ function Journey({ scenario = 'ready' }: { scenario?: Scenario }) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     const cleanup = installProjectSkillFixtures(scenario, client);
-    initial.current(scenario === 'new-project' ? '/projects' : scenario === 'latest' ? `/routines/${ROUTINE_ID}` : '/skills/sources', { replace: true });
+    initial.current(scenario === 'new-project' ? '/projects' : scenario === 'attach-repository' ? '/projects/project-skills/configuration' : scenario === 'latest' ? `/routines/${ROUTINE_ID}` : '/skills/sources', { replace: true });
     setReady(true); return cleanup;
   }, [scenario, client]);
   if (!ready) return null;
@@ -29,7 +29,8 @@ function Journey({ scenario = 'ready' }: { scenario?: Scenario }) {
     <Route path="skills/sources" element={<SkillSources />} />
     <Route path="skills/sources/:sourceId" element={<SkillSources />} />
     <Route path="skills/*" element={<CompanySkills />} />
-    <Route path="routines/:routineId/*" element={<RoutineDetail />} />
+    <Route path="routines/:routineId" element={<RoutineDetail />} />
+    <Route path="routines/:routineId/:section" element={<RoutineDetail />} />
     <Route path="routines" element={<Routines />} />
     <Route path="issues/:issueId" element={<IssueDetail />} />
   </Route></Routes></PluginLauncherProvider>;
@@ -58,3 +59,5 @@ export const InvalidUpdate: Story = { name: '16 · Invalid upstream content', ar
 export const ConnectionRepair: Story = { name: '17 · Repair setup connection', args: { scenario: 'repair' } };
 export const TwoPrivateProjects: Story = { name: '18 · Two private projects', args: { scenario: 'shared-private' } };
 export const ManySkills: Story = { name: '19 · Large skill list', args: { scenario: 'many' } };
+
+export const AttachRepository: Story = { name: '20 · Attach another repository', args: { scenario: 'attach-repository' } };

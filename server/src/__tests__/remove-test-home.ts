@@ -19,13 +19,13 @@ export function removeTestHome(home: string): void {
   try {
     fs.rmSync(home, options);
   } catch (error) {
-    if (!isPermissionError(error)) throw error;
+    if (!isReadOnlyDirectoryRemovalError(error)) throw error;
     makeDirectoriesWritable(home);
     fs.rmSync(home, options);
   }
 }
 
-function isPermissionError(error: unknown): boolean {
+function isReadOnlyDirectoryRemovalError(error: unknown): boolean {
   const code = (error as NodeJS.ErrnoException | null)?.code;
   // Node on macOS can report the blocked child as a nonempty parent instead.
   return code === "EACCES" || code === "EPERM" || code === "ENOTEMPTY";

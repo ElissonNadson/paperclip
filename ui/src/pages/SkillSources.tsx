@@ -116,6 +116,9 @@ export function SkillSources() {
               </Link>
             </li>)}
           </ul>}
+          {installed.length === 0 && source.entries.length === 0 && source.syncState !== 'refreshing' && !source.lastError && <p className="ml-8 text-sm text-muted-foreground">
+            No skills found yet.{source.enabled && source.automaticUpdates && source.importNewSkills ? ' New skills will be imported automatically.' : ''}
+          </p>}
           {localError && <p role="alert" className="text-sm text-destructive">{localError}</p>}
           <SkillImportWarnings warnings={skillImportWarnings(source.entries.filter(entry => entry.selection === 'selected'), source.repositoryPackage)} />
           {source.lastError && source.lastAttemptAt && <p className="text-xs text-muted-foreground">Last attempt {timeAgo(source.lastAttemptAt)}</p>}

@@ -49,6 +49,12 @@ review access path.
 | `2db73573-eeaf-420e-aad8-898a87377342` | `1ccdfa45-4a82-44ad-96cb-9ffa6e20fc64` | `project-skill-v1` |
 | `ae685356-02a9-4369-9bb3-b76bb112bcce` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 | `f003baa3-37d7-4203-bd4d-a0c4b45171ca` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
+| `e2cbfc2b-aa07-4fa0-b240-82033d6d1035` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
+
+A fresh real execution also passed on reviewed implementation
+`da5eace45e37546606c171f3acaaf4e19eacbea8`. It recorded the same four selected
+immutable versions, excluded the unassigned addition, and kept the first run's
+v1 snapshot. Its exact v2 output hash matched the earlier v2 result.
 
 Initial upstream commit: `d7e95f01903678531981ce684e721191ecb0a7da`.
 Updated upstream commit: `f4b35ea0082150bda320cda7b3c0777d263bf430`.
@@ -105,21 +111,41 @@ identities, private forks/publication, runtime access checks, and explicit
 inaccessible references. OAuth refresh and larger failure matrices use
 deterministic provider boundaries; no live OAuth-expiry claim is made.
 
-Six built-Storybook browser journeys passed. They cover adoption with navigation,
+Six built-Storybook browser journeys passed before reconciliation. Ten focused
+journeys passed against the owned reconciled Storybook development server. The
+additional cases cover project creation without a second import flow, attaching
+another repository with distinct skill identities, an explained empty source,
+and unchanged routine instructions producing a new version while the earlier
+simulated execution retains its original version. A blank routine body caused
+by a missing section route was reproduced and fixed. These new cases must also
+pass against the final built artifact.
+
+The original six cases cover adoption with navigation,
 background additions, failed refresh/retry, keyboard preferences and focus,
 emulated mobile touch taps without horizontal overflow, and connection repair.
 The stories mount shipped pages and components. Their provider, import and
 execution data is simulated. They do not substitute for the live acceptance above.
 
-Recursive typecheck, production build, token gates, map checks, Storybook build,
-and catalog tests passed before the last review fixes. Final checks must qualify
-the reviewed head. The local full suite and PR review are tracked separately;
+Recursive typecheck and production build passed in the reconciled worktree.
+Token gates, map checks, catalog structure and migration safety passed. The new
+renumbered migration replay test passed with a real embedded database, preserving
+installed content, project provenance, scheduling and setup identities.
+The reviewed-head local full suite failed: 17,687 tests passed, two tests failed,
+383 skipped, and 18 files failed (mostly database startup/hook failures). Logs
+identified macOS shared-memory exhaustion; the public-MCP test also timed out.
+A passing final full run and latest-head CI remain required. The local full suite and PR review are tracked separately;
 the feature is not declared complete from focused tests alone.
 
-Manual real-app inspection covered mobile in both themes and intermediate/desktop
-in light. A cramped provenance layout and missing repair focus return were found
+Manual real-app inspection covered mobile, intermediate and desktop in both
+themes. Additional Storybook inspection covered long names at intermediate dark,
+validation warnings at mobile dark, an empty repository at mobile light, paused
+updates at intermediate light, a retained removed skill at desktop light, and an
+80-skill list at desktop dark. The list had no horizontal overflow and its footer
+was reachable by keyboard. A cramped provenance layout and missing repair focus return were found
 and fixed. The repair footer was reachable on mobile, and keyboard saving worked.
-Finish the remaining theme/state inspection before handoff. These macOS captures
+The routine and empty-source defects found in this inspection were fixed and
+covered by the focused browser cases. This sampling does not claim interaction
+coverage for all 26 new exports. These macOS captures
 are inspection evidence; no Linux screenshot baseline was compared or updated.
 
 ## Inspectable captures

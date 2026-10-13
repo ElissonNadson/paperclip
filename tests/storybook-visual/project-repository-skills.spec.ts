@@ -2,6 +2,75 @@ import { expect, test } from '@playwright/test';
 
 const story = (name: string) => `/iframe.html?id=skills-project-repository-skills-02-journeys--${name}&viewMode=story&globals=theme:dark`;
 
+test('creating a project imports repository skills without another setup flow', async ({ page }) => {
+  await page.goto(story('create-project'));
+  await page.getByRole('button', { name: 'Add Project', exact: true }).first().click();
+  const dialog = page.getByRole('dialog', { name: 'Create project', exact: true });
+  await dialog.getByRole('textbox', { name: 'Project name', exact: true }).fill('Repository project');
+  await dialog.getByRole('button', { name: 'Add GitHub repo', exact: true }).click();
+  await page.getByRole('option', { name: 'acme/team-skills My GitHub account · Acme engineering', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Create project', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await page.getByRole('link', { name: 'Skills', exact: true }).click();
+  await page.getByLabel('Skills', { exact: true }).getByRole('link', { name: 'Sources', exact: true }).click();
+  const source = page.getByRole('region', { name: 'acme/team-skills', exact: true });
+  await expect(source.getByText('Code review', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Import skills', exact: true })).toHaveCount(0);
+});
+
+test('attaching another repository imports skills and keeps the original source', async ({ page }) => {
+  await page.goto(story('attach-repository'));
+  await page.getByRole('button', { name: 'Add another repo', exact: true }).click();
+  await page.getByRole('option', { name: 'maya/research-skills My GitHub account', exact: true }).click();
+  await page.getByRole('button', { name: 'Save changes', exact: true }).click();
+  await expect(page.getByText('Changes saved', { exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Skills', exact: true }).click();
+  await page.getByLabel('Skills', { exact: true }).getByRole('link', { name: 'Sources', exact: true }).click();
+  const original = page.getByRole('region', { name: 'acme/team-skills', exact: true });
+  const added = page.getByRole('region', { name: 'maya/research-skills', exact: true });
+  await expect(original.getByText('Code review', { exact: true })).toBeVisible();
+  await expect(added.getByText('Code review', { exact: true })).toBeVisible();
+  expect(await original.getByRole('link', { name: /^Code review / }).getAttribute('href'))
+    .not.toBe(await added.getByRole('link', { name: /^Code review / }).getAttribute('href'));
+});
+
+test('empty repositories explain automatic discovery of future skills', async ({ page }) => {
+  await page.goto(story('empty-repository'));
+  await expect(page.getByText('No skills found yet. New skills will be imported automatically.', { exact: true })).toBeVisible();
+});
+
+test('routine instructions stay stable while new executions follow updated skill content', async ({ page }) => {
+  await page.goto(story('routine-reference'));
+  const description = page.getByRole('region', { name: 'Description', exact: true });
+  await expect(description.getByRole('link', { name: '/code-review', exact: true })).toBeVisible();
+  const instructions = await description.innerText();
+  await page.getByRole('button', { name: 'Run now', exact: true }).click();
+  await page.getByRole('button', { name: 'Run routine', exact: true }).click();
+  await page.getByRole('link', { name: 'Open PAP-124: Review project changes', exact: true }).click();
+  const outcome = page.getByText(/^Completed using code review version /);
+  await expect(outcome).toContainText('version-entry-1 at commit a17d36');
+  await expect(outcome).toBeVisible();
+  const first = await outcome.textContent();
+  expect(first).toContain('version-entry-1 at commit a17d36');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await page.getByRole('link', { name: 'Skills', exact: true }).click();
+  await page.getByLabel('Skills', { exact: true }).getByRole('link', { name: 'Sources', exact: true }).click();
+  await page.getByRole('region', { name: 'acme/team-skills', exact: true }).getByRole('button', { name: 'Refresh', exact: true }).click();
+  await expect(page.getByText('Security review', { exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Routines', exact: true }).click();
+  await page.getByRole('main').getByText('Review project changes', { exact: true }).click();
+  await page.getByLabel('Routine navigation', { exact: true }).getByRole('link', { name: 'Overview', exact: true }).click();
+  await expect(description).toHaveText(instructions, { useInnerText: true });
+  await page.getByRole('button', { name: 'Run now', exact: true }).click();
+  await page.getByRole('button', { name: 'Run routine', exact: true }).click();
+  await page.getByRole('link', { name: 'Open PAP-125: Review project changes', exact: true }).click();
+  await expect(outcome).toContainText('version-entry-1-updated at commit bbbbbbbb');
+  await page.getByRole('link', { name: 'Routine', exact: true }).click();
+  await page.getByLabel('Routine navigation', { exact: true }).getByRole('link', { name: 'Runs', exact: true }).click();
+  await page.getByRole('link', { name: 'Open PAP-124: Review project changes', exact: true }).click();
+  await expect(outcome).toHaveText(first);
+});
+
 test('legacy adoption imports directly and survives navigation within the journey', async ({ page }, info) => {
   await page.goto(story('legacy-adoption'));
   const source = page.getByRole('region', { name: 'acme/team-skills', exact: true });
