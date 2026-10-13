@@ -3371,7 +3371,7 @@
       "status": "unreviewed",
       "implementation": "guide",
       "boundary": "static",
-      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage.",
+      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage. Reviewed the regenerated liveness capability description against the feature recipe; the guide remains a static index and does not prove live readiness.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/src/components/ui/badge.tsx",
@@ -3381,7 +3381,7 @@
         "ui/storybook/generated/feature-index.json"
       ],
       "exception": "Shared foundations or contributor guide; no single business capability owns this suite.",
-      "fingerprint": "408bb736ebe6591fb5a397db6d8b3d3d0b37741a66ed2a7edc84781c67d5c6c7",
+      "fingerprint": "284371c46ef5f5d50d24d80f4cd67a976c4a59d20c4bfd2074c1340695b83594",
       "stableId": "overview-storybook-guide",
       "sidebarTitle": "Overview/Storybook Guide"
     },
