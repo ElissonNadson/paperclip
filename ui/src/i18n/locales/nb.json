@@ -5,5 +5,41 @@
       "description": "Kom i gang ved å opprette et selskap.",
       "newCompany": "Nytt selskap"
     }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "inbox": "Inbox",
+    "decisions": "Decisions",
+    "status": "Status",
+    "work": "Work",
+    "tasks": "Tasks",
+    "goals": "Goals",
+    "agents": "Agents",
+    "projects": "Projects",
+    "settings": "Settings",
+    "search": "Search",
+    "newTask": "New Task",
+    "newProject": "New Project",
+    "newAgent": "New Agent"
+  },
+  "common": {
+    "saveAndExit": "Save & exit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "decline": "Decline",
+    "approve": "Approve",
+    "reject": "Reject",
+    "back": "Back"
+  },
+  "tasks": {
+    "status": {
+      "backlog": "Backlog",
+      "inProgress": "In Progress",
+      "done": "Done",
+      "blocked": "Blocked",
+      "canceled": "Canceled"
+    }
   }
 }

@@ -3,9 +3,28 @@ import { initReactI18next, useTranslation as useReactI18nextTranslation } from "
 
 import { DEFAULT_LOCALE, i18nextResources, supportedLocales } from "./locales";
 
+function resolveInitialLocale(): string {
+  if (typeof window !== "undefined") {
+    const saved = window.localStorage.getItem("paperclip.locale");
+    if (saved && supportedLocales.includes(saved)) {
+      return saved;
+    }
+  }
+  if (typeof navigator !== "undefined" && navigator.language) {
+    const nav = navigator.language;
+    if (supportedLocales.includes(nav)) return nav;
+    if (nav.startsWith("pt") && supportedLocales.includes("pt-BR")) return "pt-BR";
+    const base = nav.split("-")[0];
+    if (supportedLocales.includes(base)) return base;
+  }
+  return DEFAULT_LOCALE;
+}
+
+const initialLocale = resolveInitialLocale();
+
 const i18nextOptions: InitOptions = {
   resources: i18nextResources,
-  lng: DEFAULT_LOCALE,
+  lng: initialLocale,
   fallbackLng: DEFAULT_LOCALE,
   supportedLngs: supportedLocales,
   defaultNS: "translation",
@@ -17,6 +36,19 @@ const i18nextOptions: InitOptions = {
 void i18n.use(initReactI18next).init(i18nextOptions).catch((error: unknown) => {
   console.error("Failed to initialize i18next", error);
 });
+
+export function changeLanguage(locale: string) {
+  if (supportedLocales.includes(locale)) {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("paperclip.locale", locale);
+    }
+    void i18n.changeLanguage(locale);
+  }
+}
+
+export function getCurrentLocale(): string {
+  return i18n.language || DEFAULT_LOCALE;
+}
 
 export function t(key: string, options: TOptions = {}) {
   return i18n.t(key, options);

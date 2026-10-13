@@ -5,5 +5,41 @@
       "description": "Comece por criar uma empresa.",
       "newCompany": "Nova empresa"
     }
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "inbox": "Caixa de Entrada",
+    "decisions": "Decisões",
+    "status": "Estado",
+    "work": "Trabalho",
+    "tasks": "Tarefas",
+    "goals": "Objetivos",
+    "agents": "Agentes",
+    "projects": "Projetos",
+    "settings": "Definições",
+    "search": "Pesquisar",
+    "newTask": "Nova Tarefa",
+    "newProject": "Novo Projeto",
+    "newAgent": "Novo Agente"
+  },
+  "common": {
+    "saveAndExit": "Guardar e sair",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "decline": "Recusar",
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "back": "Voltar"
+  },
+  "tasks": {
+    "status": {
+      "backlog": "Backlog",
+      "inProgress": "Em Curso",
+      "done": "Concluído",
+      "blocked": "Bloqueado",
+      "canceled": "Cancelado"
+    }
   }
 }
