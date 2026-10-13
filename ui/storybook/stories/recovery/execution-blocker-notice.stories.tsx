@@ -13,6 +13,7 @@ const meta = {
   id: "task-chat-recovery-notice",
   title: "Projects and execution/Recovery/Task chat/Recovery notice",
   component: ExecutionBlockerNotice,
+  parameters: { docs: { story: { inline: false } } },
   decorators: [(Story, context) => <FileRecoveryApiFixture response={context.parameters.fileRecoveryResponse ?? "success"}><QueryClientProvider client={client}><div className="max-w-2xl"><Story /></div></QueryClientProvider></FileRecoveryApiFixture>],
   args: {
     companyId: "storybook-company", issueId: "storybook-recovery", onRetried: () => {},
@@ -43,7 +44,7 @@ export const FileRecoveryRecorded: StoryObj<typeof meta> = {
     await userEvent.type(canvas.getByRole("textbox"), "The original workspace files were recovered into the attached archive and verified against both repository heads.");
     await userEvent.click(canvas.getByRole("checkbox"));
     await userEvent.click(button);
-    await expect(await canvas.findByRole("status")).toHaveTextContent("The task status is unchanged.");
+    await expect(await canvas.findByText("File recovery recorded. The task status is unchanged. Continue the task when it is ready.")).toBeVisible();
   },
 };
 export const FileRecoveryRejected: StoryObj<typeof meta> = {
