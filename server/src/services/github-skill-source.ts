@@ -50,6 +50,12 @@ export async function scanGitHubSkillsWithPackageFallback(input: SkillScanInput,
     if (input.packageMode !== 'repository' || !(error instanceof Error) || !/^Repository package exceeds/.test(error.message)) throw error;
     options.signal?.throwIfAborted();
     const scan = await scanGitHubSkills({ ...input, packageMode: 'skills' }, providerRead, options);
+    for (const skill of scan.skills) {
+      if (!skill.error && skill.inspection?.references.length) {
+        skill.error = 'The repository exceeds the supported package size, and this skill depends on files that its imported package cannot provide. Its dependencies could not be preserved.';
+      }
+    }
+    scan.candidates = scan.skills.map(({ files: _files, ...candidate }) => candidate);
     scan.warnings.push('Only skill packages were imported because the repository exceeds the supported package size.');
     return scan;
   }

@@ -398,6 +398,52 @@ describe.skipIf(!support.supported)('skill source persistence', () => {
     await expect(fs.stat(path.join(runtime.source, '.paperclip-repository/shared/tools'))).rejects.toMatchObject({ code: 'ENOENT' });
   });
 
+  it.each([false, true])('retains installed repository dependencies after an oversized refresh (scheduled: %s)', async scheduled => {
+    const temporaryCompany = randomUUID();
+    await db.insert(companies).values({ id: temporaryCompany, name: 'Repository fallback', issuePrefix: 'FBK' });
+    let repoFiles = {
+      'skills/main/SKILL.md': md('main') + '\nRead [shared](../../shared/guide.md) and [helper](../helper/SKILL.md).',
+      'skills/helper/SKILL.md': md('helper'),
+      'shared/guide.md': 'Working shared instructions',
+    };
+    let head = sha;
+    const localContext = { ...context, read: () => {
+      const fixture = githubFixture(repoFiles, {}, head);
+      const open = fixture.openSnapshot;
+      fixture.openSnapshot = async (...args) => {
+        const snapshot = await open(...args);
+        for (const entry of snapshot.entries) if (entry.path.startsWith('generated/')) entry.size = 1024 * 1024;
+        return snapshot;
+      };
+      return fixture;
+    } };
+    try {
+      const service = skillSourceService(db), library = companySkillService(db);
+      const installed = await service.create(temporaryCompany, { repositoryUrl: 'https://github.com/acme/skills', packageMode: 'repository',
+        selectedPaths: ['skills/main/SKILL.md', 'skills/helper/SKILL.md'] }, localContext);
+      const main = installed.imported.find(skill => skill.name === 'main')!;
+      const versions = await library.listVersions(temporaryCompany, main.id);
+      head = 'f'.repeat(40);
+      repoFiles = { ...repoFiles, 'shared/guide.md': 'New shared instructions',
+        ...Object.fromEntries(Array.from({ length: 62 }, (_, i) => [`generated/${i}.bin`, 'x'])) };
+      await expect(service.refresh(temporaryCompany, installed.source.id, localContext, undefined, undefined, { checkCommit: scheduled }))
+        .rejects.toThrow('Installed repository skills and their dependencies were kept');
+      const retained = await service.detail(temporaryCompany, installed.source.id);
+      expect(retained.packageMode).toBe('repository');
+      expect(retained.lastScanCommit).toBe(sha);
+      expect(retained.lastError).toContain('dependencies were kept');
+      expect(await library.listVersions(temporaryCompany, main.id)).toEqual(versions);
+      expect((await library.readFile(temporaryCompany, main.id, '.paperclip-repository/shared/guide.md'))?.content).toBe('Working shared instructions');
+      expect((await library.readFile(temporaryCompany, main.id, '.paperclip-repository/skills/helper/SKILL.md'))?.content).toBe(md('helper'));
+      repoFiles = { 'skills/main/SKILL.md': repoFiles['skills/main/SKILL.md'], 'skills/helper/SKILL.md': md('helper'), 'shared/guide.md': 'New shared instructions' };
+      await service.refresh(temporaryCompany, installed.source.id, localContext);
+      expect((await service.detail(temporaryCompany, installed.source.id)).lastError).toBeNull();
+      expect((await library.readFile(temporaryCompany, main.id, '.paperclip-repository/shared/guide.md'))?.content).toBe('New shared instructions');
+    } finally {
+      await deleteCompany(db, temporaryCompany);
+    }
+  });
+
   it('cascades repository snapshots and referencing versions when the owning company is deleted', async () => {
     const temporaryCompany = randomUUID();
     await db.insert(companies).values({ id: temporaryCompany, name: 'Temporary repository company', issuePrefix: 'TMP' });

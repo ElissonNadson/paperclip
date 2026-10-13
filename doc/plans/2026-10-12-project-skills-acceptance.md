@@ -1,11 +1,10 @@
 # Project repository skills: acceptance evidence
 
 The live GitHub update journey, production-component browser journeys, and
-manual responsive review passed. Full qualification on commit 411d614 reached
-900 passing server files, then found a repository-defaults UI reset. Its fix
-passed 38 focused UI cases; a final full rerun and final-head PR checks remain
-required. This report separates live outcomes from deterministic tests and
-Storybook simulations.
+manual responsive review passed, including another real routine execution after
+master reconciliation. Final qualification and exact-head review after the
+repository-fallback correction remain required. This report separates live
+outcomes from deterministic tests and Storybook simulations.
 
 ## Environment and artifacts
 
@@ -54,13 +53,23 @@ review access path.
 | `f003baa3-37d7-4203-bd4d-a0c4b45171ca` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 | `e2cbfc2b-aa07-4fa0-b240-82033d6d1035` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 | `b91818ac-9e9a-4a98-bd6b-63c0a58e4a1a` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
+| `83f6f277-5a4a-4814-ba55-8a7ed4a517e1` | `2bd9801c-1b96-417b-b081-2867e65afdcf` | `project-skill-v2` |
 
-The final real execution passed on implementation
+The earlier reviewed real execution passed on implementation
 `614a2d1d72892128c7fc949d2485308756e7c687`. It delivered four selected immutable
 versions, excluded the unassigned addition, and preserved the first run's v1
 snapshot. The uploaded output was exactly 17 bytes, with the v2 SHA-256 hash in
 the receipt. The model was `gpt-6.1-sol`; its successful heartbeat execution is
 `b91818ac-9e9a-4a98-bd6b-63c0a58e4a1a`.
+
+After master reconciliation, another real execution passed on
+`cea9e474ba462ed9385ce2f8acb58c245585b310`. The unchanged routine completed
+through the real API and supported runner; the completed task was inspected in
+the browser. It wrote a fresh 17-byte workspace file matching v2 exactly, delivered
+the same four immutable versions, and left the original execution on v1. Startup
+checked the unchanged upstream source successfully at 11:45:25 UTC. This output
+is a verified workspace file; the earlier reviewed execution also proved upload.
+The new receipt and capture distinguish those two evidence paths.
 
 Initial upstream commit: `d7e95f01903678531981ce684e721191ecb0a7da`.
 Updated upstream commit: `f4b35ea0082150bda320cda7b3c0777d263bf430`.
@@ -197,7 +206,7 @@ Shipped mobile repair dialog with Storybook fixtures:
 
 Real completed routine execution:
 
-![Real routine execution](../../ui/storybook/public/project-skills-evidence/routine-execution.jpg)
+![Real routine execution](../../ui/storybook/public/project-skills-evidence/routine-execution-final.jpg)
 
 ## Review fixes
 
@@ -209,3 +218,11 @@ retaining the chosen account. Runtime-test teardown drains tracked execution
 writes before truncation, resolving a reproduced database teardown deadlock.
 
 ![Mobile concurrent repair](../../ui/storybook/public/project-skills-evidence/repair-conflict-mobile.jpg)
+
+The final review identified an oversized-repository refresh that could drop shared
+dependencies. Installed repository sources now retain their immutable versions
+instead of automatically downgrading to package-only content. Initial fallback
+rejects dependent packages while allowing valid self-contained ones. All 56 scanner
+and source-service cases passed, including manual and scheduled oversized refresh,
+retained shared/sibling files, unchanged versions, and recovery after size reduction.
+The signoff fixture retry also passed ten real browser/API cases across two runs.

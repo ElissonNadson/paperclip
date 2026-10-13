@@ -254,6 +254,10 @@ export function skillSourceService(db: Db) {
       const scan = staged ?? await scanGitHubSkills({ repositoryUrl: source.repositoryUrl, trackingRef: source.trackingRef, packageMode: selection?.packageMode ?? source.packageMode }, reader, { signal: options.signal });
       if (source.repositoryId && source.repositoryId !== scan.repositoryId) throw conflict('The repository at this URL has changed identity. Add it as a new source.');
       const current = await detail(companyId, id);
+      if (source.packageMode === 'repository' && scan.packageMode === 'skills'
+        && selection?.packageMode !== 'skills' && current.entries.some(entry => entry.skillId)) {
+        throw unprocessable('The repository exceeds the supported package size. Installed repository skills and their dependencies were kept. Reduce the repository package size before refreshing.');
+      }
       const selectedPaths = selection?.selectedPaths ?? current.entries.filter(entry => entry.selection === 'selected').map(entry => entry.path);
       if (!selection && source.importNewSkills) {
         for (const candidate of scan.skills) {

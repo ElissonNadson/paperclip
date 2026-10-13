@@ -20,13 +20,13 @@ checks, a live GitHub-to-routine update journey and a reviewable PR with evidenc
 
 ## Current qualification — 2026-10-13 UTC
 
-Production behavior, the live GitHub-to-routine update, eleven built-browser
-journeys and responsive review passed on 614a2d1. PR #16066 had all 55 checks
-successful/skipped/neutral and Greptile 5/5 with no findings on that implementation.
-A test-only follow-up, 411d614, makes two existing login cases independent of the
-host architecture; all 13 login cases passed. Recursive typecheck and production
-build passed again. The 4 GB Linux run passed all server cases, then found a repository-defaults UI
-reset. Its correction passed 38 focused cases; final full qualification remains.
+Live GitHub-to-routine updates, private-access API matrices and responsive review
+passed. After master reconciliation, eleven built-browser journeys, thirty
+conflict-resolution cases and another real v2 routine execution passed on cea9e474.
+All CI jobs passed that head; review then found a repository-size fallback that
+could omit dependencies. Its correction passed all 56 scanner/source-service
+cases, including retained versions and recovery. Final-head checks after that
+correction and completion of the serialized local phase remain required.
 
 GitHub CLI authentication was restored by the user. Local and browser-published
 histories were reconciled with an unchanged, identical tree. Final-head checks
