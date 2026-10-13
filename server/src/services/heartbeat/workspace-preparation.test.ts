@@ -119,7 +119,7 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     expect(input.controllerLease.assertOwned).toHaveBeenCalledTimes(2);
   });
 
-  it.each(["create", "failed-save", "literal-branch"] as const)("preserves restricted source isolation during %s", async scenario => {
+  it.each(["create", "failed-save", "shared-retry-after-failed-save", "literal-branch"] as const)("preserves restricted source isolation during %s", async scenario => {
     const { input, source, issue } = await fixture(true);
     const remoteUrl = "https://example.test/public/repository.git";
     await db.update(projectWorkspaces).set({ repoUrl: remoteUrl }).where(eq(projectWorkspaces.id, issue.projectWorkspaceId!));
@@ -163,7 +163,7 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
       await expect(access(isolatedSource)).rejects.toMatchObject({ code: "ENOENT" });
       return;
     }
-    if (scenario === "failed-save") {
+    if (scenario === "failed-save" || scenario === "shared-retry-after-failed-save") {
       vi.spyOn(input.services.executionWorkspacesSvc, "create").mockRejectedValueOnce(new Error("Workspace persistence failed"));
       await expect(prepareHeartbeatWorkspace(db, input)).rejects.toThrow("Workspace persistence failed");
       const worktrees = (await execFile("git", ["-C", isolatedSource, "worktree", "list", "--porcelain"])).stdout;
@@ -171,6 +171,26 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
       await expect(execFile("git", ["-C", isolatedSource, "rev-parse", "--verify", "refs/heads/test-WSP-1"])).rejects.toBeDefined();
       expect((await readIssue(issue.id)).executionWorkspaceId).toBeNull();
       expect(await readFile(join(privateCwd, "confidential.txt"), "utf8")).toBe("Private source must not be copied");
+      if (scenario === "shared-retry-after-failed-save") {
+        await execFile("git", ["-C", source, "remote", "add", "origin", remoteUrl]);
+        await db.update(issues).set({ visibility: "open" }).where(eq(issues.id, privateIssue.id));
+        const saved = await prepareHeartbeatWorkspace(db, input);
+        const workspace = saved.persistedExecutionWorkspace!;
+        expect(saved.executionWorkspace.baseCwd).toBe(source);
+        expect(workspace.metadata?.isolatedRemoteSource).toBeUndefined();
+        await writeFile(join(workspace.cwd!, "unpublished-work.txt"), "Keep the shared-source task commits\n");
+        await execFile("git", ["-C", workspace.cwd!, "add", "unpublished-work.txt"]);
+        await execFile("git", ["-C", workspace.cwd!, "commit", "-m", "Unpublished task work"]);
+        const branchTip = (await execFile("git", ["-C", workspace.cwd!, "rev-parse", "HEAD"])).stdout.trim();
+        await expect(execFile("git", ["-C", isolatedSource, "cat-file", "-e", branchTip])).rejects.toBeDefined();
+        await execFile("git", ["-C", source, "worktree", "remove", "--force", workspace.cwd!]);
+        await reuse(input, workspace);
+        const rebuilt = await prepareHeartbeatWorkspace(db, input);
+        expect(rebuilt.executionWorkspace.baseCwd).toBe(await realpath(source));
+        expect((await execFile("git", ["-C", rebuilt.executionWorkspace.cwd, "rev-parse", "HEAD"])).stdout.trim()).toBe(branchTip);
+        expect(await readFile(join(rebuilt.executionWorkspace.cwd, "unpublished-work.txt"), "utf8")).toBe("Keep the shared-source task commits\n");
+        expect(clone).toHaveBeenCalledOnce();
+      }
       return;
     }
     const result = await prepareHeartbeatWorkspace(db, input);
