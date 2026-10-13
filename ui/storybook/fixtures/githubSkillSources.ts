@@ -181,6 +181,13 @@ export function installFixtures(empty: boolean, needsConnection: boolean, option
     return structuredClone({ source, imported, updated: [], unchanged, warnings });
   }
   skillSourcesApi.list = async () => structuredClone(sources);
+  skillSourcesApi.projectRepositories = async () => [];
+  skillSourcesApi.settings = async (_companyId, id, input) => {
+    const source = sources.find(item => item.id === id)!;
+    Object.assign(source, { automaticUpdates: input.automaticUpdates ?? source.automaticUpdates ?? true,
+      importNewSkills: input.importNewSkills ?? source.importNewSkills ?? false, revision: source.revision + 1 });
+    return structuredClone(source);
+  };
   const repositoryScenario = options.repositories ?? 'single';
   skillSourcesApi.repositories = async () => {
     if (repositoryScenario === 'loading') return new Promise(() => {});

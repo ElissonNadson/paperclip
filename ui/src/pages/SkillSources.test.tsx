@@ -14,7 +14,7 @@ vi.mock('@/lib/router', () => ({
   useNavigate: () => context.navigate,
   useParams: () => ({ sourceId: context.sourceId }),
 }));
-vi.mock('@/api/skillSources', () => ({ skillSourcesApi: { list: vi.fn(), repositories: vi.fn(), discoverStream: vi.fn(), create: vi.fn(), select: vi.fn(), refresh: vi.fn(), disconnect: vi.fn() } }));
+vi.mock('@/api/skillSources', () => ({ skillSourcesApi: { list: vi.fn(), projectRepositories: vi.fn(), adoptProject: vi.fn(), settings: vi.fn(), repositories: vi.fn(), discoverStream: vi.fn(), create: vi.fn(), select: vi.fn(), refresh: vi.fn(), disconnect: vi.fn() } }));
 
 const repos = {
   connections: [{ id: 'personal', name: 'Personal' }, { id: 'shared', name: 'Engineering' }],
@@ -48,6 +48,7 @@ beforeEach(() => {
   vi.stubGlobal('ResizeObserver', class { observe() {} unobserve() {} disconnect() {} });
   vi.spyOn(HTMLElement.prototype, 'scrollIntoView').mockImplementation(() => {});
   vi.mocked(skillSourcesApi.list).mockResolvedValue([]);
+  vi.mocked(skillSourcesApi.projectRepositories).mockResolvedValue([]);
   vi.mocked(skillSourcesApi.repositories).mockResolvedValue(structuredClone(repos));
   vi.mocked(skillSourcesApi.discoverStream).mockResolvedValue(discovery);
   context.sourceId = 'new';
