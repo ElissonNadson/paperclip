@@ -140,6 +140,11 @@ setup omitted generated SDK builds; the second lacked standard test utilities
 and was stopped after that diagnosis. Those attempts are not passing evidence.
 Two pre-existing login tests also assumed an x64 host. Their intended native
 and legacy platforms are now explicit, and all 13 login cases passed on ARM64.
+The subsequent 2 GB heap run exited unsuccessfully: 18,422 tests passed,
+76 skipped, and one worker aborted from JavaScript heap exhaustion in the
+existing setup-token route suite. Its 30 cases passed with an explicit 4 GB
+heap. The full command is now running with that same isolated verifier setting;
+it is not yet passing qualification.
 The final Linux run uses Node 24, built workspace dependencies, pinned Rust,
 and the standard process, shell, SSH and JSON test tools in an isolated container.
 No host credentials or production data are mounted.
