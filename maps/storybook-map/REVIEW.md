@@ -267,6 +267,10 @@ limits remain unchanged. Project skill pages and journeys are unchanged.
 
 Preserved master’s capability associations, optional overview home field, feature-map additions, and viewer-specific toast eligibility. Source-only review covers changed map text, generated feature index and overview associations; no story classifications were upgraded. The merged socket retains project skill authorization, and Sources cache invalidation remains intact.
 
+## Withdrawn connection request recovery — 2026-10-13
+
+The real supported-client probe exposed a withdrawn AI request retaining an active Fix connection action. Reviewed the production terminal-state branch, regression test, and AiWithdrawn story using the same component. The test fails before the fix; 70 interaction/Sources UI/API cases pass after it. Catalog classifications remain unchanged. Updated the connection-setup recipe and retained the existing authorization boundaries.
+
 ## Project source removal integration — 2026-10-13
 
 Reviewed the production Sources keep/delete dialog, preserved automatic update and connection-repair controls, and the upstream GitHub fixture removal handler and new removal journey. Project copies retain their originating access restrictions; removed tracking uses durable provenance. The five affected catalog fingerprints retain their prior classifications. Browser and service verification are recorded in the acceptance report.

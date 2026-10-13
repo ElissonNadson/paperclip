@@ -191,3 +191,12 @@ test('cancelling source removal keeps tracking and allows refresh', async ({ pag
   await source.getByRole('button', { name: 'Refresh', exact: true }).click();
   await expect(source.getByText('Security review', { exact: true })).toBeVisible();
 });
+
+
+test('withdrawn setup requests remain terminal on a narrow light layout', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/iframe.html?id=connections-in-task-connections--ai-withdrawn&viewMode=story&globals=theme:light');
+  await expect(page.getByTestId('connection-intent-terminal')).toBeVisible();
+  await expect(page.getByText('Connection request withdrawn', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Fix connection', exact: true })).toHaveCount(0);
+});

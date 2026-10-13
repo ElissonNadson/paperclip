@@ -23,14 +23,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppLogo.tsx",
         "ui/storybook/stories/connection-setup/AppLogoRegistry.stories.tsx"
       ],
-      "fingerprint": "c2cabf44446b0ae5ffba2959df65fb9aba16e635b9b5e63fa1a0e36cfb959f8b",
+      "fingerprint": "2381250eecb81320c8cdf02e618bb7b542cadc8f439df7f5b431f05307933182",
       "stableId": "apps-canonical-icon-registry",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Canonical icon registry"
     },
@@ -48,7 +48,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -61,7 +61,7 @@
         "ui/storybook/stories/connection-setup/ArcadeConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "e613c96bf5fdfca19508ffe5d74ed027d757a38110029a59ca66d471f4e829f9",
+      "fingerprint": "53b91223892f2a97f89d06edd70c7c93c62dd11fe4d283012b818fd040e620b8",
       "stableId": "apps-connections-arcade",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Arcade"
     },
@@ -79,7 +79,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -92,7 +92,7 @@
         "ui/storybook/stories/connection-setup/ComposioConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "b5f0945453ee1e8b040bb77577723ea0a0caf13a91d2b367835d331c0d9af9cb",
+      "fingerprint": "54bcce843038ab9a429715da98aab9d0353fbc12798c7d8e34f744a732a8a154",
       "stableId": "apps-connections-composio",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Composio"
     },
@@ -105,8 +105,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/components/JsonSchemaForm.tsx",
@@ -119,7 +119,7 @@
         "ui/storybook/prototypes/RemoteMcpConnectionReview.tsx",
         "ui/storybook/stories/connection-setup/ConnectionProviderChoice.stories.tsx"
       ],
-      "fingerprint": "046ab725fad4b30c0b6c51d0064725e9688012a67c9106290fde7cb9413c3715",
+      "fingerprint": "fbc0df807061ec1d7d470c0755295b1d26f21d6085ce2c41c6402e3be2575abb",
       "stableId": "apps-connections-provider-choice",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Provider choice"
     },
@@ -137,7 +137,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -150,7 +150,7 @@
         "ui/storybook/stories/connection-setup/ExecutorConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "402206b2ff037110ee05a2d00e80f7ee2f9346b211829030eddf4b95541a2e30",
+      "fingerprint": "cf01cc386c11602caa7f787ef20fdba9db5192750551deeb3b24f8c3b4621d5a",
       "stableId": "apps-connections-executor",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Executor"
     },
@@ -168,7 +168,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -181,7 +181,7 @@
         "ui/storybook/stories/connection-setup/ZapierConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "c0593ea1b08ecf7ac978943e1cba6b04289234676caf498aeccd5a45be7fda16",
+      "fingerprint": "dc9eb40407314608e661720df5e487bf079ae1b0d6031ec235f990d3690aae5c",
       "stableId": "apps-connections-zapier",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Zapier"
     },
@@ -589,8 +589,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "maps/feature-map/gateways-profiles.md",
@@ -605,7 +605,7 @@
         "ui/storybook/fixtures/routineTriggerWizard.tsx",
         "ui/storybook/stories/connection-setup/agent-setup-prompt.stories.tsx"
       ],
-      "fingerprint": "5628f9ddbb4484f964e4b95d3c342e982f9b10e1c39e8cfbaa49a0ab2cb2a484",
+      "fingerprint": "502c996906ffd9784326502f320712657474df275e3fbd90a1c8c69a897421ce",
       "stableId": "components-agent-setup-prompt",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Components/Agent setup prompt"
     },
@@ -660,7 +660,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -670,7 +670,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/agentmail-onboarding.stories.tsx"
       ],
-      "fingerprint": "22c79d5f6a714efbaeaaa0023284707b696aa73cddbb66067d8c5a3dde116859",
+      "fingerprint": "61d1181147014f65fa695f6c99b66a49342e82a09f638234115db1af6b7243f9",
       "stableId": "connections-agentmail-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/AgentMail setup"
     },
@@ -768,8 +768,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
         "ui/src/components/BreadcrumbBar.tsx",
@@ -792,7 +792,7 @@
         "ui/storybook/prototypes/AiTaskConnectionReview.tsx",
         "ui/storybook/stories/runs-adapters/ai-connections.stories.tsx"
       ],
-      "fingerprint": "9a5d741ffbff64ab6e14e03130a1b7a53403d6e69ee48108ba1358d0093facf2",
+      "fingerprint": "ef2b19e2855d861bd375968a4867d68f2f3cdd0819e3774c51bcfdfee0d655ed",
       "stableId": "ai-connections-review",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Review"
     },
@@ -848,8 +848,8 @@
       "status": "proposed",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/Browse.tsx",
@@ -857,7 +857,7 @@
         "ui/storybook/prototypes/ConnectorCatalogNavigation.tsx",
         "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx"
       ],
-      "fingerprint": "5157a890fe6825a1f89d138a582e5b11791aceef4a0d7cfb6c5cc968c06ee7f6",
+      "fingerprint": "23cda96140dc806298cac622869285bfab4002f3e5e66b0fc482618f9291a05e",
       "stableId": "apps-catalog-source-selection",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Catalog source selection"
     },
@@ -870,15 +870,15 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppsConnect.tsx",
         "ui/src/pages/tools/PasteConfigTab.tsx",
         "ui/storybook/stories/connection-setup/apps-connect-discoverability.stories.tsx"
       ],
-      "fingerprint": "bd84a617cba9cc83a08f36d133e954a54a8f60c94ae805382736f560e41c3bdd",
+      "fingerprint": "ed772602886d1e6a6cd203dbafdfd693a8076db66858c671e9c189f52e79d4f0",
       "stableId": "apps-connect-discoverability-pap-11091",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connect discoverability (PAP-11091)"
     },
@@ -891,14 +891,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppsConnect.tsx",
         "ui/storybook/stories/connection-setup/apps-connect-name.stories.tsx"
       ],
-      "fingerprint": "cf644220c06d38aa70e94b35519698b7bb4f00cc0565dc7d9cd4840293d15630",
+      "fingerprint": "ade23e109a5b22a7452a7e5972eb1577ec2384580440d0d2d753400b8837e227",
       "stableId": "apps-connect-name-at-create-time-pap-11283",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connect name at create time (PAP-11283)"
     },
@@ -1283,8 +1283,8 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/components/task-side-panel/TaskBrowserPanel.tsx",
@@ -1292,7 +1292,7 @@
         "ui/storybook/fixtures/browser-use.tsx",
         "ui/storybook/stories/connection-setup/browser-use-settings.stories.tsx"
       ],
-      "fingerprint": "03d6a432d16ecfb9bea1c75108ee7c70d23d283b47bd28f287547f4b6c23f7f3",
+      "fingerprint": "073e52bb544f7a5a7048d7de2866a3ac3bf02c05c96af6d9fba2551394cb9381",
       "stableId": "connections-browser-use-cloud-settings",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Connections/Browser Use Cloud/Settings"
     },
@@ -1668,8 +1668,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "maps/feature-map/connection-setup.md",
@@ -1682,7 +1682,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/connection-setup/connection-instructions.stories.tsx"
       ],
-      "fingerprint": "8f34f47beca85eea7d4cd012422422a37cd2d47ce7068bce9103dfc9d934e9dd",
+      "fingerprint": "cec29b9d52d7dda6c7ad570ea82cf277ff53678f9d80c1857e1ffbbc2e64dc7f",
       "stableId": "design-explorations-connections-agent-instructions",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Design explorations/Connections/Agent instructions"
     },
@@ -1696,8 +1696,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "maps/feature-map/runs-adapters.md",
@@ -1709,7 +1709,7 @@
         "ui/storybook/prototypes/ConnectionPoolConnectorHost.tsx",
         "ui/storybook/stories/runs-adapters/connection-pool-connector.stories.tsx"
       ],
-      "fingerprint": "f6208d2a6b919cbd511baefdb5e45f79eb2c2d851e6035ea9778a13fc827544c",
+      "fingerprint": "885c8c38c2aade420777d0d5bffe9deaa8113971720755aa44d23d00fa95259f",
       "stableId": "connectors-pool-host",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/Connectors/Pool host"
     },
@@ -1749,7 +1749,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1760,7 +1760,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/questions-and-approvals/connection-reviews.stories.tsx"
       ],
-      "fingerprint": "1fd693af15b9cc5669e91fb5eaa67e21ad60866aac16f7f8c40ad6f8d8ec6bb9",
+      "fingerprint": "61b5f1f27356dcdcf277d8106cf7741b1e50ab626ccba07818fd2ada8977bb23",
       "stableId": "chat-comments-connection-reviews",
       "sidebarTitle": "Tasks and conversations/Questions and approvals/Chat & Comments/Connection Reviews"
     },
@@ -2168,8 +2168,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppsConnect.tsx",
@@ -2177,7 +2177,7 @@
         "ui/src/pages/apps/app-detail/AdvancedPanel.tsx",
         "ui/storybook/stories/connection-setup/enterpret-connect-flow.stories.tsx"
       ],
-      "fingerprint": "4b82e0db0a71ad569c10f32553084e884a89cb58eac33782ca07ae272e7411c1",
+      "fingerprint": "7f2f1ae50eddb25d2549697e792ff967dbcfd28a58bb62bf1db1ee5ffb98c28d",
       "stableId": "apps-enterpret-connector",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Enterpret connector"
     },
@@ -2401,8 +2401,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "maps/feature-map/routines.md",
@@ -2421,7 +2421,7 @@
         "ui/storybook/fixtures/routineWebhooks.tsx",
         "ui/storybook/stories/connection-setup/fireflies-pr.stories.tsx"
       ],
-      "fingerprint": "9b0cba486a7ffe25a016065882c39b90a51b4807aa7d299e2994285bc4bcc097",
+      "fingerprint": "6b4f620a4d07a78fb241fe246268c892dff883777cd5b7694ccc7f61a61bb726",
       "stableId": "pr-reviews-fireflies-and-app-webhooks",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/PR reviews/Fireflies and app webhooks"
     },
@@ -2632,7 +2632,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2644,7 +2644,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/github-connections.stories.tsx"
       ],
-      "fingerprint": "53ef79816b0825618e15a4bbb501df31efea9a1fb62ccdf066a81e26c71a838c",
+      "fingerprint": "7c97f13f89e75540e5becda9dbb022e47c3623f81090ce14e2d6cc47d8e1458b",
       "stableId": "connections-github-and-code-review-bot",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/GitHub and Code Review Bot"
     },
@@ -2786,7 +2786,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2803,7 +2803,7 @@
         "ui/storybook/stories/chat-channels/imessage-photon.stories.tsx",
         "maps/feature-map/connection-setup.md"
       ],
-      "fingerprint": "0b0f92f8f30d54870b9f1996cc40293cd124ecc22e70e917356f4e1720aa19b6",
+      "fingerprint": "3a3a061157b03a68e259b7ee9eabc42d1d1af7e6cbd71a9481c77f0e5d428ddd",
       "stableId": "connections-imessage-photon",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/iMessage Photon"
     },
@@ -2816,7 +2816,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2827,7 +2827,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/connection-setup/in-feed-connections.stories.tsx"
       ],
-      "fingerprint": "ee52243b469f3e9581f41c2d1fb88c769d85b80fd6e667591445c261d9b8fcf9",
+      "fingerprint": "d01eae64ec200738a4f3463cffbe8cdec21bcf969745acfa3b16d8dc12aa3f56",
       "stableId": "connections-in-task-connections",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Connections/In-task connections"
     },
@@ -3007,14 +3007,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/PaperclipCloudOAuthHandoff.tsx",
         "ui/storybook/stories/connection-setup/managed-cloud-oauth-handoff.stories.tsx"
       ],
-      "fingerprint": "990d6bc169b5150f28c7e07eb8e9acb13056e4d71459217c36a637c5ef256d15",
+      "fingerprint": "d37eaaf379f0be7a34cd8dd8717dbf0db60b45e439633cd00182ba1cc77923ee",
       "stableId": "apps-managed-cloud-oauth-handoff",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Managed Cloud OAuth handoff"
     },
@@ -3028,8 +3028,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
         "maps/feature-map/connection-setup.md",
@@ -3038,7 +3038,7 @@
         "ui/src/pages/apps/Browse.tsx",
         "ui/storybook/stories/connection-setup/memory-connectors.stories.tsx"
       ],
-      "fingerprint": "f7e104c4e8b912b93fab037be9811583b3437e3c2d8a906eba343e70107dfc80",
+      "fingerprint": "2a866a4128a84e9fea03c9a24cb3f3d6a2986ba2512eb8ad8bc8d571b21cef4e",
       "stableId": "apps-connections-memory",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Memory"
     },
@@ -3251,8 +3251,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppLogo.tsx",
@@ -3263,7 +3263,7 @@
         "ui/src/pages/apps/app-detail/SetupPanel.tsx",
         "ui/storybook/stories/connection-setup/notion-connect-flow.stories.tsx"
       ],
-      "fingerprint": "d1cedce55a218e81ba61a5f60d073b61cf6ce7235707a22de2305e10c3621544",
+      "fingerprint": "65123f470c803be19d703225575d4f315833ae50623dc3d2e0a486158b1cafdb",
       "stableId": "apps-notion-mcp-connect-flow-pap-16650",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Notion MCP connect flow (PAP-16650)"
     },
@@ -3439,14 +3439,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/app-detail/IdentitiesSection.tsx",
         "ui/storybook/stories/connection-setup/personal-connection-identity.stories.tsx"
       ],
-      "fingerprint": "2ac1d0214d0f286f3c35bd2ef7d50c59bc038ba314976e22f2900918e18e876a",
+      "fingerprint": "c59adb2e9c7cd0d078891e86d4081c5c73658361d8e472987ea1fa756cbf50fb",
       "stableId": "reviews-pap-17835-personal-connection-identity",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Reviews/PAP-17835 Personal connection identity"
     },
@@ -4268,8 +4268,8 @@
       "status": "mixed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
         "ui/src/components/AdapterLoginChrome.tsx",
@@ -4280,7 +4280,7 @@
         "ui/storybook/prototypes/provider-routing/story-support.ts",
         "ui/storybook/stories/runs-adapters/provider-routing-05-recovery.stories.tsx"
       ],
-      "fingerprint": "fe9596ebe4de1f2e315d6e024c636f56e0b253b3af5d3a9c4cd6a3015309e7e7",
+      "fingerprint": "79b078cfe091cb3e05f1a10ac8fd2c252a645b44b1fea3745b2f3e3f7b717be1",
       "stableId": "ai-connections-provider-routing-05-recovery",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/05 Recovery"
     },
@@ -4956,7 +4956,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -4967,7 +4967,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/slack-automatic-setup.stories.tsx"
       ],
-      "fingerprint": "6d8c13f5ebed08a43b9f146f49a2506c9c5e1ac9305121b94e9cd5bb9c060476",
+      "fingerprint": "c2834bd08deccae989b994c0344d94c10502ab49d4fda8fe866662f05b432761",
       "stableId": "connections-slack-automatic-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/Slack/Automatic setup"
     },
@@ -5025,7 +5025,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -5036,7 +5036,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/slack-managed-setup.stories.tsx"
       ],
-      "fingerprint": "59d4e5ebb276a491e22d6461fe9c9bab36778097d15ab2203d6cd95a4151e371",
+      "fingerprint": "05adf289bfd58f9275de059e48702b05d4d4024677c36d3d00c83c62de73fee6",
       "stableId": "connections-slack-managed-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/Slack/Managed setup"
     },

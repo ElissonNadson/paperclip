@@ -285,3 +285,29 @@ the matching removed repository/ref in its transaction. Codex launches against a
 home scoped to its permitted immutable inventory, including an empty inventory,
 with the selected credential source preserved. Three Codex launch/injection/sync
 suites pass 32 cases; final service and real-provider results are recorded on the PR.
+
+Post-review verification passed 212 cases across 13 pinned Node 24 suites,
+plus the full typecheck and build. A fresh real ACP routine execution (`PRO-7`,
+`95d14fcf-5643-4d5f-9512-d160efcb2446`) delivered four pinned versions and
+reported the v2 marker. The CLI probe exposed the host’s old Codex 0.153.4
+client: both requested models were rejected before model work. The repository
+already pins Codex 0.160.0. With that client and the original `gpt-6.1-sol` model,
+`PRO-9` succeeded in run `d94d7009-8787-4483-81e4-71ec0b512ed6`, marked its
+task done, and independently verified the existing 17-byte v2 evidence file
+without rewriting it. Its invocation used `skill-runtimes/<agent>/<inventory digest>`;
+the selected account remained usable. The v1 execution still identified version
+`1ccdfa45-4a82-44ad-96cb-9ffa6e20fc64`. Eight successful execution receipts
+now distinguish newly written files from provider-reported or preserved outputs.
+Failed probes are recorded separately. The disposable agent’s original settings
+were restored and the superseded probe task was cancelled.
+
+The live walkthrough also reproduced a withdrawn AI connection request still
+showing an active “Fix connection” action after a successful task. A failing
+regression test captured it. Withdrawn requests now use the existing terminal
+card renderer; 70 interaction/Sources UI/API cases pass. A production-component
+Storybook state and a narrow light-theme browser case preserve this recovery state.
+
+The final compatibility review also found provider settings skipped for generated
+Codex homes. A launch-level regression failed for both default and explicit
+credential homes. Provider settings now apply to generated skill homes while
+caller-owned homes remain untouched; the three Codex suites pass 33 cases.

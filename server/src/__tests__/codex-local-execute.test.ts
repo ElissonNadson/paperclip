@@ -1643,7 +1643,7 @@ process.exit(1);
     }
   });
 
-  it("isolates permitted private skills and clears discovery after revocation, even when saved versions remain", async () => {
+  it.each([false, true])("isolates private skills and keeps custom routing with an explicit credential home: %s", async (explicitHome) => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "paperclip-private-codex-"));
     const workspace = path.join(root, "workspace");
     const command = path.join(root, "codex");
@@ -1664,7 +1664,11 @@ process.exit(1);
     const invoke = async (agentId: string, digest: string | null, source = skillSource, connectorSkillInstructions = "") => {
       const config = {
         engine: "cli", command, cwd: workspace,
-        env: { CODEX_HOME: sourceHome, PAPERCLIP_TEST_CAPTURE_PATH: capture },
+        env: { ...(explicitHome ? { CODEX_HOME: sourceHome } : {}), PAPERCLIP_TEST_CAPTURE_PATH: capture,
+          PAPERCLIP_CODEX_PROVIDERS: JSON.stringify({ providers: { test_gateway: {
+            name: "Fixture gateway", base_url: "https://gateway.example/v1", wire_api: "responses",
+          } }, model_provider: "test_gateway" }),
+        },
 
         paperclipSkillSync: { desiredSkills: digest ? ["paperclipai/paperclip/agentmail"] : [] },
         paperclipRuntimeSkills: digest ? [{ key: "paperclipai/paperclip/agentmail", runtimeName: "agentmail", source }] : [],
@@ -1681,6 +1685,8 @@ process.exit(1);
     try {
       const first = await invoke("agent-1", "a".repeat(64));
       expect(first.codexHome).toContain("skill-runtimes/agent-1/");
+      expect(first.codexConfigContents).toContain('model_provider = "test_gateway"');
+      expect(first.codexConfigContents).toContain('base_url = "https://gateway.example/v1"');
       expect(await fs.realpath(path.join(first.codexHome!, "auth.json"))).toBe(await fs.realpath(path.join(sourceHome, "auth.json")));
       expect(await fs.readFile(path.join(first.codexHome!, "skills/agentmail/SKILL.md"), "utf8")).toContain("inbox one");
       await expect(fs.stat(path.join(sourceHome, "skills/agentmail"))).rejects.toMatchObject({ code: "ENOENT" });
@@ -1702,6 +1708,7 @@ process.exit(1);
       // The old saved files still exist; exclusion is enforced by the launch home.
       expect(await fs.readFile(path.join(first.codexHome!, "skills/agentmail/SKILL.md"), "utf8")).toContain("inbox one");
       expect(removed.codexHome).not.toBe(first.codexHome);
+      expect(removed.codexConfigContents).toContain('model_provider = "test_gateway"');
       expect(await fs.realpath(path.join(removed.codexHome!, "auth.json"))).toBe(await fs.realpath(path.join(sourceHome, "auth.json")));
       expect(removed.codexHome).not.toBe(sourceHome);
       expect(removed.codexHome).toContain("skill-runtimes/agent-1/");
