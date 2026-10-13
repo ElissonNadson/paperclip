@@ -1261,6 +1261,7 @@ export interface CapabilityRunnerdCodexTransportOptions {
   runnerBinary?: string;
   codexCommand?: string;
   codexArgs?: string[];
+  disableCodexProjectInstructions?: boolean;
   /** Controller-visible Codex home used only to seed the isolated runner home. */
   sourceCodexHome?: string | null;
   opencodeCommand?: string;
@@ -3462,20 +3463,24 @@ export function createRunnerdCodexAppServerArgs(input: {
   codexCommand?: string;
   readOnlyRoots?: string[];
   instructionWorkingCopyRoot?: string;
+  disableProjectInstructions?: boolean;
 }): string[] {
   // The filesystem policy denies HOME and CODEX_HOME to keep credentials and
   // runner state outside provider reach. Always bind those names to the actual
   // isolated runner home; a stale controller environment must never cause the
   // execution workspace itself to become an explicit deny root.
-  return createIsolatedCodexAppServerArgs(
-    {
-      ...input.environment,
-      HOME: input.codexHome,
-      CODEX_HOME: input.codexHome,
-    },
-    [...(input.readOnlyRoots ?? []), ...codexExecutableReadOnlyRoots(input.environment ?? {}, input.codexCommand)],
-    input.instructionWorkingCopyRoot,
-  );
+  return [
+    ...(input.disableProjectInstructions ? ["-c", "project_doc_max_bytes=0"] : []),
+    ...createIsolatedCodexAppServerArgs(
+      {
+        ...input.environment,
+        HOME: input.codexHome,
+        CODEX_HOME: input.codexHome,
+      },
+      [...(input.readOnlyRoots ?? []), ...codexExecutableReadOnlyRoots(input.environment ?? {}, input.codexCommand)],
+      input.instructionWorkingCopyRoot,
+    ),
+  ];
 }
 
 export function unwrapToolResponse(response: Record<string, unknown>, preserveEnvelope = false): {
@@ -5028,6 +5033,7 @@ class DurablePrpCodexTransport implements CodexAppServerTransport {
                           codexHome,
                           codexCommand: effectiveCodexCommand,
                           instructionWorkingCopyRoot: runtimeContext?.instructions.workingCopy?.rootPath,
+                          disableProjectInstructions: this.options.disableCodexProjectInstructions,
                           readOnlyRoots: [
                             ...trustedRuntimeReadOnlyRoots(
                               this.options.environment,
@@ -5523,6 +5529,7 @@ class DurablePrpCodexTransport implements CodexAppServerTransport {
             codexHome,
             codexCommand: typeof recordedCommand === "string" ? recordedCommand : this.options.codexCommand,
             instructionWorkingCopyRoot: runtimeContext?.instructions.workingCopy?.rootPath,
+            disableProjectInstructions: this.options.disableCodexProjectInstructions,
             readOnlyRoots: [
               ...trustedRuntimeReadOnlyRoots(this.options.environment),
               ...(runtimeContext
@@ -7211,6 +7218,7 @@ export async function probeNativeRunnerEnvironment(options: {
     stateDirectory: options.runtimeDirectory,
     environment,
     externallySandboxed: options.transportOptions?.externallySandboxed === true,
+    disableCodexProjectInstructions: true,
     closeGraceMs: 10_000,
     lifecyclePolicy: { mode: "per_turn", idleTimeoutMs: null },
   });

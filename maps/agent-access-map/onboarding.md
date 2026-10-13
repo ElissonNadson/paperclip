@@ -102,6 +102,10 @@ target, as task execution does. This is an internal transport choice, not a
 request/configuration permission. Local and SSH setup keep Codex isolation;
 caller-supplied environment flags do not authorize an external sandbox. Existing
 company, account, probe and registration-cleanup gates still apply.
+The bounded hello probe retains read-only permissions and no dynamic tools. Its
+trusted launch skips project-instruction discovery in the new, empty setup
+workspace. This grants no filesystem or networking permission and does not
+change instruction discovery for ordinary task execution.
 
 Scoped source review: 2026-10-13, exact baseline
 `1a0ca66242121e39d88455aa2b52a07acc4a07d9` plus the privately composed onboarding

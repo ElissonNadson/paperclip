@@ -38,6 +38,15 @@ export async function provisionFirstTaskFixtures(input: {
   }
   const required = managed ? [execution.profile.credential, "DAYTONA_API_KEY" as const] : [execution.profile.credential];
   for (const name of required) if (!credentials[name]) throw new Error(`Missing credential ${name}`);
+  const previousSettings = managed ? await api.get<{
+    defaultEnvironmentId: string | null;
+    experimental: { enableManagedSandboxOnly: boolean };
+  }>("/api/instance/settings") : null;
+  if (managed && (!previousSettings ||
+    (previousSettings.defaultEnvironmentId !== null && typeof previousSettings.defaultEnvironmentId !== "string") ||
+    typeof previousSettings.experimental?.enableManagedSandboxOnly !== "boolean")) {
+    throw new Error("Managed onboarding fixture prior instance settings could not be read");
+  }
   await api.patch(`/api/companies/${company.id}`, { budgetMonthlyCents: 500 });
   let localEnvironment: LiveFixtureValues["environment"] | undefined;
   if (!managed) {
@@ -59,9 +68,37 @@ export async function provisionFirstTaskFixtures(input: {
     await installFixtureDaytonaProvider(remoteApi, execution);
     environment = await remoteApi.post<LiveFixtureValues["environment"]>(`/api/companies/${company.id}/environments`,
       execution.environment.buildEnvironment({ secretRefs, daytonaImage: input.daytonaImage, executionId: nonce }));
-    teardown = () => deleteDaytonaEnvironment(remoteApi, environment.id);
+    let restoreDefault = false;
+    let restoreManagedOnly = false;
+    let environmentDeleted = false;
+    teardown = async () => {
+      const failures: unknown[] = [];
+      if (restoreManagedOnly) {
+        try {
+          await api.patch("/api/instance/settings/experimental", { enableManagedSandboxOnly: previousSettings!.experimental.enableManagedSandboxOnly });
+          restoreManagedOnly = false;
+        } catch (error) { failures.push(error); }
+      }
+      if (restoreDefault) {
+        try {
+          await api.patch("/api/instance/settings", { defaultEnvironmentId: previousSettings!.defaultEnvironmentId });
+          restoreDefault = false;
+        } catch (error) { failures.push(error); }
+      }
+      if (!restoreDefault && !environmentDeleted) {
+        try {
+          await deleteDaytonaEnvironment(remoteApi, environment.id);
+          environmentDeleted = true;
+        } catch (error) { failures.push(error); }
+      }
+      if (failures.length) throw new AggregateError(failures, restoreDefault
+        ? "Managed onboarding fixture cleanup failed; instance default restoration is unconfirmed and environment deletion was not attempted"
+        : "Managed onboarding fixture cleanup failed");
+    };
     try {
+      restoreDefault = true;
       await api.patch("/api/instance/settings", { defaultEnvironmentId: environment.id });
+      restoreManagedOnly = true;
       await api.patch("/api/instance/settings/experimental", { enableManagedSandboxOnly: true });
     } catch (error) {
       try { await teardown(); } catch (cleanup) { throw new AggregateError([error, cleanup], "Managed onboarding fixture setup and cleanup failed"); }

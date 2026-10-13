@@ -1450,10 +1450,151 @@ describe("managed onboarding through the production wizard", () => {
   const image = `registry.example.test/runtime@sha256:${"a".repeat(64)}`;
   const execution = () => runnerMatrix.find(entry => entry.id === MANAGED_FIRST_TASK_CELL)!;
 
+  function managedFixtureApi(previousDefault: string | null = "previous-default", previousManagedOnly = false) {
+    const state = { defaultEnvironmentId: previousDefault, experimental: { enableManagedSandboxOnly: previousManagedOnly, enableAgentChat: true } };
+    const calls: string[] = [];
+    const api = {
+      get: vi.fn(async () => structuredClone(state)),
+      patch: vi.fn(async (path: string, data: any) => {
+        calls.push(`PATCH ${path}`);
+        if (path === "/api/instance/settings") state.defaultEnvironmentId = data.defaultEnvironmentId;
+        if (path === "/api/instance/settings/experimental") Object.assign(state.experimental, data);
+        return structuredClone(state);
+      }),
+      postSensitive: vi.fn(async (_path: string, data: any) => ({ id: `encrypted-${data.key}` })),
+      post: vi.fn(async (path: string, data: any) => {
+        calls.push(`POST ${path}`);
+        return path === "/api/plugins/install" ? { id: "plugin", status: "ready" } : { id: "environment", driver: "sandbox", config: data.config };
+      }),
+      delete: vi.fn(async (path: string) => { calls.push(`DELETE ${path}`); }),
+    };
+    const provision = () => provisionFirstTaskFixtures({ api: api as any, execution: execution(), nonce: "private", company: { id: "company", name: "Fresh" },
+      daytonaImage: image, credentials: { OPENAI_API_KEY: "synthetic-key", DAYTONA_API_KEY: "synthetic-platform" } });
+    return { api, state, calls, provision };
+  }
+
+  it.each([[null, false], ["previous-default", false], ["previous-default", true]] as const)(
+    "restores prior default %s and managed-only %s before deleting the managed fixture", async (previousDefault, previousManagedOnly) => {
+      const h = managedFixtureApi(previousDefault, previousManagedOnly);
+      const fixtures = await h.provision();
+      expect(h.state).toMatchObject({ defaultEnvironmentId: "environment", experimental: { enableManagedSandboxOnly: true } });
+      let deletedState: typeof h.state | undefined;
+      h.api.delete.mockImplementation(async () => { deletedState = structuredClone(h.state); });
+      await fixtures.teardown();
+      expect(deletedState).toMatchObject({ defaultEnvironmentId: previousDefault, experimental: { enableManagedSandboxOnly: previousManagedOnly } });
+      expect(h.api.get).toHaveBeenCalledExactlyOnceWith("/api/instance/settings");
+      expect(h.api.patch).toHaveBeenLastCalledWith("/api/instance/settings", { defaultEnvironmentId: previousDefault });
+      expect(h.state.experimental.enableAgentChat).toBe(true);
+      expect(h.api.delete).toHaveBeenCalledExactlyOnceWith("/api/environments/environment?destroyReusableSandboxLeases=true", { allowNotFound: true });
+    },
+  );
+
+  it.each(["default", "managed-only"])("restores a %s setup write whose response is lost after committing", async phase => {
+    const h = managedFixtureApi();
+    const patch = h.api.patch.getMockImplementation()!;
+    let failed = false;
+    h.api.patch.mockImplementation(async (path, data) => {
+      const result = await patch(path, data);
+      if (!failed && (phase === "default" ? data.defaultEnvironmentId === "environment" : data.enableManagedSandboxOnly === true)) {
+        failed = true;
+        throw new Error("Setup response lost after commit");
+      }
+      return result;
+    });
+    await expect(h.provision()).rejects.toThrow("Setup response lost after commit");
+    expect(h.state).toEqual({ defaultEnvironmentId: "previous-default", experimental: { enableManagedSandboxOnly: false, enableAgentChat: true } });
+    expect(h.api.delete).toHaveBeenCalledTimes(1);
+    if (phase === "default") expect(h.api.patch.mock.calls.some(([path]) => path === "/api/instance/settings/experimental")).toBe(false);
+  });
+
+  it("retains setup and restoration failures instead of deleting an unconfirmed instance default", async () => {
+    const h = managedFixtureApi();
+    const patch = h.api.patch.getMockImplementation()!;
+    h.api.patch.mockImplementation(async (path, data) => {
+      if (path === "/api/instance/settings/experimental" && data.enableManagedSandboxOnly === true) throw new Error("Managed mode setup failed");
+      if (path === "/api/instance/settings" && data.defaultEnvironmentId === "previous-default") throw new Error("Default restoration failed");
+      return patch(path, data);
+    });
+    const error = await h.provision().catch(error => error);
+    expect(error).toBeInstanceOf(AggregateError);
+    expect(error.errors[0].message).toBe("Managed mode setup failed");
+    expect(error.errors[1].errors[0].message).toBe("Default restoration failed");
+    expect(error.errors[1].message).toContain("environment deletion was not attempted");
+    expect(h.api.delete).not.toHaveBeenCalled();
+    expect(h.state.defaultEnvironmentId).toBe("environment");
+  });
+
+  it("keeps failed default restoration outstanding and only deletes after a later confirmed restoration", async () => {
+    const h = managedFixtureApi();
+    const fixtures = await h.provision();
+    const patch = h.api.patch.getMockImplementation()!;
+    h.api.patch.mockImplementation(async (path, data) => {
+      if (path === "/api/instance/settings") throw new Error("Default restoration failed");
+      return patch(path, data);
+    });
+    await expect(fixtures.teardown()).rejects.toThrow("environment deletion was not attempted");
+    expect(h.state).toMatchObject({ defaultEnvironmentId: "environment", experimental: { enableManagedSandboxOnly: false } });
+    expect(h.api.delete).not.toHaveBeenCalled();
+    h.api.patch.mockImplementation(patch);
+    await fixtures.teardown();
+    await fixtures.teardown();
+    expect(h.state.defaultEnvironmentId).toBe("previous-default");
+    expect(h.api.delete).toHaveBeenCalledTimes(1);
+  });
+
+  it("reports failed managed-mode restoration while still removing an environment that is no longer the default", async () => {
+    const h = managedFixtureApi();
+    const fixtures = await h.provision();
+    h.state.experimental.enableAgentChat = false;
+    const patch = h.api.patch.getMockImplementation()!;
+    h.api.patch.mockImplementation(async (path, data) => {
+      if (path === "/api/instance/settings/experimental") throw new Error("Managed mode restoration failed");
+      return patch(path, data);
+    });
+    const error = await fixtures.teardown().catch(error => error);
+    expect(error).toBeInstanceOf(AggregateError);
+    expect(error.errors.map((error: Error) => error.message)).toEqual(["Managed mode restoration failed"]);
+    expect(h.state.defaultEnvironmentId).toBe("previous-default");
+    expect(h.api.delete).toHaveBeenCalledTimes(1);
+    h.api.patch.mockImplementation(patch);
+    await fixtures.teardown();
+    expect(h.state.experimental).toEqual({ enableManagedSandboxOnly: false, enableAgentChat: false });
+    expect(h.api.delete).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps failed environment deletion red after successful settings restoration", async () => {
+    const h = managedFixtureApi();
+    const fixtures = await h.provision();
+    h.api.delete.mockRejectedValue(new Error("Provider cleanup unconfirmed"));
+    vi.useFakeTimers();
+    try {
+      const rejected = expect(fixtures.teardown()).rejects.toThrow("Managed onboarding fixture cleanup failed");
+      await vi.runAllTimersAsync();
+      await rejected;
+      expect(h.state).toMatchObject({ defaultEnvironmentId: "previous-default", experimental: { enableManagedSandboxOnly: false } });
+      h.api.delete.mockResolvedValue();
+      await fixtures.teardown();
+      const deletes = h.api.delete.mock.calls.length;
+      await fixtures.teardown();
+      expect(h.api.delete).toHaveBeenCalledTimes(deletes);
+    } finally { vi.useRealTimers(); }
+  });
+
+  it.each(["read-failure", "missing-default", "missing-mode"])("fails before fixture mutations when prior settings have %s", async mode => {
+    const h = managedFixtureApi();
+    if (mode === "read-failure") h.api.get.mockRejectedValue(new Error("Settings read failed"));
+    else h.api.get.mockResolvedValue((mode === "missing-default" ? { experimental: { enableManagedSandboxOnly: false } } : { defaultEnvironmentId: null, experimental: {} }) as any);
+    await expect(h.provision()).rejects.toThrow(mode === "read-failure" ? "Settings read failed" : "prior instance settings could not be read");
+    expect(h.api.patch).not.toHaveBeenCalled();
+    expect(h.api.postSensitive).not.toHaveBeenCalled();
+    expect(h.api.post).not.toHaveBeenCalled();
+    expect(h.api.delete).not.toHaveBeenCalled();
+  });
+
   it("prepares only encrypted credentials and an immutable managed default, with no fixture probe or agent", async () => {
     const calls: string[] = [];
     const api = {
-      get: vi.fn(async () => []),
+      get: vi.fn(async () => ({ defaultEnvironmentId: null, experimental: { enableManagedSandboxOnly: false } })),
       patch: vi.fn(async (path: string) => { calls.push(`PATCH ${path}`); return {}; }),
       postSensitive: vi.fn(async (_path: string, data: any) => ({ id: `encrypted-${data.key}` })),
       post: vi.fn(async (path: string, data: any) => {

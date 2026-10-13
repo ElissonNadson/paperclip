@@ -70,11 +70,14 @@ themselves allocate no target. A valid measured unsupported target follows the
 server's Legacy default. Named Cloud snapshots remain a separate unqualified
 boot-identity and fresh-signup gap.
 
-Selected native setup must use the same isolation as task execution. A resolved
-sandbox transport uses the provider's outer isolation; local and SSH transports
-retain Codex isolation. An injected environment flag cannot establish that
-transport identity. Verify these boundaries with the existing native setup
-controls and a real managed task/follow-up; source checks alone are insufficient.
+Selected native setup derives its target isolation as task execution does. The
+hello probe retains its read-only permission profile, approval-never policy and
+bounded provider turn. It skips Codex's project-instruction discovery in its new,
+empty private workspace; ordinary tasks still load their project instructions.
+Local and SSH transports retain Codex isolation. An injected environment flag
+cannot establish an outer sandbox identity. Verify these boundaries with the
+existing native setup controls and a real managed task/follow-up; source checks
+alone are insufficient.
 
 The explicit manual Product E2E cell
 `confirmation-replies.runner-codex.daytona.task-card-accept` covers this fresh
