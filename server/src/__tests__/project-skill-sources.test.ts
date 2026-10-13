@@ -12,6 +12,7 @@ import { enqueueProjectSkillSource, detachProjectSkillSource } from '../services
 import { skillSourceSyncService } from '../services/skill-source-sync.js';
 import { skillSourceService, type SkillSourceContext } from '../services/skill-sources.js';
 import { companySkillService } from '../services/company-skills.js';
+import { projectService } from '../services/projects.js';
 import { skillAccessService, withSkillActor } from '../services/skill-access.js';
 import type { AuthorizationActor } from '../services/authorization.js';
 import { unprocessable } from '../errors.js';
@@ -119,6 +120,7 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     expect(binding!.status, binding!.lastError ?? 'initial private binding').toBe('ready');
     const source = await skillSourceService(db).detail(companyId, binding!.sourceId!);
     const skillId = source.entries[0]!.skillId!;
+    let privateSnapshotPath = '';
     for (const user of ['alice', 'bob']) {
       await db.insert(authUsers).values({ id: user, name: user, email: `${user}@example.test`, createdAt: new Date(), updatedAt: new Date() });
       await db.insert(companyMemberships).values({ companyId, principalType: 'user', principalId: user, membershipRole: 'member', status: 'active' });
@@ -127,6 +129,10 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     await withSkillActor(actor('alice'), async () => {
       expect(await companySkillService(db).getById(companyId, skillId)).not.toBeNull();
       expect((await companySkillService(db).list(companyId)).some(skill => skill.id === skillId)).toBe(true);
+      const skill = (await companySkillService(db).getById(companyId, skillId))!;
+      const [runtime] = await companySkillService(db).listRuntimeSkillEntries(companyId, { onlyKeys: new Set([skill.key]) });
+      privateSnapshotPath = runtime!.source;
+      await expect(companySkillService(db).importFromSource(companyId, runtime!.source)).rejects.toThrow(/Project-derived skill/);
       const fork = await companySkillService(db).forkSkill(companyId, skillId, { slug: 'private-copy' });
       expect(fork.skill.accessSourceId).toBe(source.id);
       await expect(companySkillService(db).updateSkill(companyId, fork.skill.id, { sharingScope: 'public_link' })).rejects.toThrow(/public link/);
@@ -135,6 +141,7 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       await expect(companySkillService(db).createLocalSkill(companyId, { name: 'Unsafe publication', forkedFromSkillId: skillId, sharingScope: 'public_link' })).rejects.toThrow(/public link/);
     });
     await withSkillActor(actor('bob'), async () => {
+      await expect(companySkillService(db).importFromSource(companyId, privateSnapshotPath)).rejects.toThrow(/not found/);
       expect(await companySkillService(db).getById(companyId, skillId)).toBeNull();
       expect(await companySkillService(db).readFile(companyId, skillId, 'SKILL.md')).toBeNull();
       expect((await skillSourceService(db).list(companyId)).some(item => item.id === source.id)).toBe(false);
@@ -310,5 +317,106 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     expect(result.warnings.join(' ')).toContain('repository exceeds');
     expect(result.source.entries[0]!.skillId).toBe(skillId);
     expect(result.updated).toHaveLength(1);
+  });
+
+  it('enqueues repository changes atomically, leaves ordinary legacy edits alone and retains old references', async () => {
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    const legacy = await workspace('lifecycle');
+    const service = projectService(db, { captureWorkspaceUpdates: false });
+    await service.updateWorkspace(legacy.projectId, legacy.id, { name: 'Renamed older workspace' });
+    expect(await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, legacy.id))).toHaveLength(0);
+
+    await expect(db.transaction(async tx => {
+      await projectService(tx as unknown as typeof db, { captureWorkspaceUpdates: false }).createWorkspace(legacy.projectId,
+        { repoUrl: 'https://github.com/acme/skills', defaultRef: 'rolled-back' });
+      throw new Error('Required project audit failed');
+    })).rejects.toThrow('Required project audit failed');
+    expect(await db.select().from(projectWorkspaces).where(eq(projectWorkspaces.defaultRef, 'rolled-back'))).toHaveLength(0);
+    expect(await db.select().from(projectSkillSources).where(eq(projectSkillSources.trackingRef, 'rolled-back'))).toHaveLength(0);
+
+    files = { 'lifecycle/SKILL.md': md('lifecycle') }; commit = '6'.repeat(40);
+    const created = (await service.createWorkspace(legacy.projectId,
+      { repoUrl: 'https://github.com/acme/skills', defaultRef: 'lifecycle-created' }))!;
+    const worker = skillSourceSyncService(db, { context: async () => context });
+    await worker.tick();
+    const [originalBinding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, created.id));
+    const source = await skillSourceService(db).detail(companyId, originalBinding!.sourceId!);
+    const skillId = source.entries[0]!.skillId!;
+    const versionId = (await companySkillService(db).getById(companyId, skillId))!.currentVersionId;
+
+    await service.updateWorkspace(legacy.projectId, created.id, { defaultRef: 'lifecycle-next' });
+    await worker.tick();
+    const bindings = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, created.id));
+    expect(bindings).toHaveLength(2);
+    expect(bindings.find(binding => binding.id === originalBinding!.id)?.active).toBe(false);
+    const current = bindings.find(binding => binding.active)!;
+    expect(current.sourceId).not.toBe(source.id);
+    const retained = (await companySkillService(db).getById(companyId, skillId))!;
+    expect(retained.currentVersionId).toBe(versionId);
+    const newSource = await skillSourceService(db).detail(companyId, current.sourceId!);
+    expect(newSource.entries[0]!.skillId).not.toBe(skillId);
+
+    await service.updateWorkspace(legacy.projectId, created.id, { defaultRef: 'lifecycle-next' });
+    expect(await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, created.id))).toHaveLength(2);
+    await service.removeWorkspace(legacy.projectId, created.id);
+    expect(await skillSourceService(db).detail(companyId, current.sourceId!)).toMatchObject({ trackingActive: false });
+    expect(await companySkillService(db).getById(companyId, skillId)).not.toBeNull();
+  });
+
+  it('lets API-key agents attach repositories without inventing a setup person', async () => {
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    const project = await workspace('key-agent-parent');
+    const [agent] = await db.insert(agents).values({ companyId, name: 'API-key project creator', adapterType: 'codex_local', status: 'idle' }).returning();
+    const keyActor: AuthorizationActor = { type: 'agent', source: 'agent_key', agentId: agent!.id, companyId, onBehalfOfUserId: 'unverified-person' };
+    const attached = await withSkillActor(keyActor, () => projectService(db, { captureWorkspaceUpdates: false }).createWorkspace(project.projectId,
+      { repoUrl: 'https://github.com/acme/skills', defaultRef: 'key-agent' }));
+    expect(attached).not.toBeNull();
+    const [binding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, attached!.id));
+    expect(binding).toMatchObject({ status: 'pending', refreshUserId: null, refreshAgentId: agent!.id, refreshLocalTrusted: false, sourceId: null });
+    await detachProjectSkillSource(db, companyId, attached!.id);
+  });
+
+  it('follows a changed default branch while an explicit branch remains fixed', async () => {
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    let defaultBranch = 'main';
+    const originalFiles = { 'workflow/SKILL.md': md('original default') }, nextFiles = { 'workflow/SKILL.md': md('new default') };
+    const moving: SkillSourceContext = { ...context, read: () => {
+      const reader = (async (url: string) => {
+        if (url === '/repos/acme/skills') return { id: 42, full_name: 'acme/skills', default_branch: defaultBranch };
+        if (url.startsWith('/repos/acme/skills/commits/')) return { sha: decodeURIComponent(url.split('/commits/')[1]!) === 'main' ? '7'.repeat(40) : '8'.repeat(40) };
+        throw new Error('Unexpected request');
+      }) as ReturnType<SkillSourceContext['read']>;
+      reader.openSnapshot = async (input, options) => githubFixture(input.ref === 'main' ? originalFiles : nextFiles, {}, input.ref === 'main' ? '7'.repeat(40) : '8'.repeat(40)).openSnapshot(input, options);
+      return reader;
+    } };
+    const implicit = await workspace('HEAD');
+    await enqueueProjectSkillSource(db, implicit);
+    const worker = skillSourceSyncService(db, { context: async () => moving });
+    await worker.tick();
+    const [defaultBinding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, implicit.id));
+    const sourceService = skillSourceService(db);
+    const original = await sourceService.detail(companyId, defaultBinding!.sourceId!);
+    expect(original.trackingRef).toBe('HEAD');
+    const skillId = original.entries[0]!.skillId!;
+    const versionId = (await companySkillService(db).getById(companyId, skillId))!.currentVersionId;
+
+    const explicit = await workspace('main');
+    await enqueueProjectSkillSource(db, explicit);
+    await worker.tick();
+    const [fixedBinding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, explicit.id));
+    expect(fixedBinding!.sourceId).not.toBe(original.id);
+    defaultBranch = 'next-default';
+    await worker.tick(new Date(Date.now() + 6 * 60_000));
+    expect(await sourceService.detail(companyId, original.id)).toMatchObject({ trackingRef: 'HEAD', lastScanCommit: '8'.repeat(40) });
+    expect(await sourceService.detail(companyId, fixedBinding!.sourceId!)).toMatchObject({ trackingRef: 'main', lastScanCommit: '7'.repeat(40) });
+    const latest = (await companySkillService(db).getById(companyId, skillId))!;
+    expect(latest.currentVersionId).not.toBe(versionId);
+    expect(latest.markdown).toBe(md('new default'));
+    expect((await companySkillService(db).getVersion(companyId, skillId, versionId!))!.fileInventory[0]!.content).toBe(md('original default'));
+    const repeated = await workspace('HEAD');
+    await enqueueProjectSkillSource(db, repeated);
+    await worker.tick();
+    const [reused] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, repeated.id));
+    expect(reused!.sourceId).toBe(original.id);
   });
 });

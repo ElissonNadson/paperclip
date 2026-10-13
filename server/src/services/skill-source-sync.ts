@@ -159,21 +159,20 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
       const reader = context.read(binding.connectionId);
       const scan = await scanGitHubSkillsWithPackageFallback({ repositoryUrl: binding.repositoryUrl, trackingRef: binding.trackingRef, packageMode: 'repository' }, reader, { signal: shutdown.signal });
       const [existing] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId),
-        eq(companySkillSources.repositoryUrl, scan.repositoryUrl), or(eq(companySkillSources.trackingRef, scan.trackingRef),
-          ...(scan.trackingRef === scan.defaultBranch ? [eq(companySkillSources.trackingRef, 'HEAD')] : []))));
+        eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef)));
       let sourceId: string;
       if (existing) {
         await context.authorize('skills.import', { sourceType: 'git', sourceLocator: existing.repositoryUrl });
         sourceId = existing.id;
       } else {
         try {
-          const result = await sources.create(binding.companyId, { repositoryUrl: scan.repositoryUrl, trackingRef: scan.trackingRef,
+          const result = await sources.create(binding.companyId, { repositoryUrl: scan.repositoryUrl, trackingRef: binding.trackingRef,
             commitSha: scan.commitSha, packageMode: scan.packageMode, selectedPaths: scan.candidates.map(candidate => candidate.path),
             connectionId: scan.connectionId ?? binding.connectionId }, { ...context, projectBindingId: binding.id, projectBindingLeaseToken: token }, scan);
           sourceId = result.source.id;
         } catch (error) {
           if (!(error instanceof Error && 'status' in error && error.status === 409)) throw error;
-          const [concurrent] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId), eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, scan.trackingRef)));
+          const [concurrent] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId), eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef)));
           if (!concurrent) throw error;
           sourceId = concurrent.id;
         }

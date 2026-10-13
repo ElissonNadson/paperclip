@@ -8,11 +8,13 @@ import { forbidden } from '../errors.js';
 export async function projectSkillSetupIdentity(db: Db, companyId: string) {
   const actor = currentSkillActor();
   let userId = actor?.type === 'board' ? actor.userId ?? null : null;
-  if (actor?.type === 'agent') {
-    if (actor.source !== 'agent_jwt' || !actor.runId || !actor.agentId || actor.companyId !== companyId) throw forbidden('Project skill setup requires an authenticated agent run.');
+  if (actor?.type === 'agent' && actor.source === 'agent_jwt') {
+    if (!actor.runId || !actor.agentId || actor.companyId !== companyId) throw forbidden('Project skill setup requires an authenticated agent run.');
     const identity = await captureRunIdentity(db, { companyId, agentId: actor.agentId, runId: actor.runId });
     userId = identity.run.responsibleUserId;
   }
+  // An API key can attach repositories, but cannot supply a setup person.
+  // Keep the durable job so an authorized person can adopt it from Sources.
   return { refreshUserId: userId, refreshAgentId: actor?.type === 'agent' ? actor.agentId ?? null : null,
     refreshLocalTrusted: actor?.source === 'local_implicit' || userId === 'local-board' };
 }

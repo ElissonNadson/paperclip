@@ -180,9 +180,11 @@ export function skillSourceService(db: Db) {
       eq(sources.companyId, source.companyId), eq(sources.trackingRef, scan.trackingRef),
       or(eq(sources.repositoryId, scan.repositoryId), eq(sources.repositoryUrl, scan.repositoryUrl)),
     )) : [];
+    const [defaultBinding] = source.trackingRef === 'HEAD' ? await tx.select({ id: projectSkillSources.id }).from(projectSkillSources)
+      .where(and(eq(projectSkillSources.companyId, source.companyId), eq(projectSkillSources.sourceId, source.id), eq(projectSkillSources.trackingRef, 'HEAD'))).limit(1) : [];
     await tx.update(sources).set({ repositoryId: scan.repositoryId, repositoryUrl: scan.repositoryUrl, fullName: scan.fullName,
       packageMode: mode, repositoryPackage: scan.repositoryPackage ?? null,
-      trackingRef: existingBranch ? 'HEAD' : scan.trackingRef, excludedFolders, lastSuccessAt: new Date(), lastScanCommit: scan.commitSha, lastError: null,
+      trackingRef: existingBranch || defaultBinding || (source.accessScope === 'projects' && source.trackingRef === 'HEAD') ? 'HEAD' : scan.trackingRef, excludedFolders, lastSuccessAt: new Date(), lastScanCommit: scan.commitSha, lastError: null,
       revision: source.revision + 1, leaseToken: null, leaseExpiresAt: null, failureCount: 0, nextSyncAt: new Date(Date.now() + 5 * 60_000) }).where(scope(source.companyId, source.id));
     await context.audit(tx, source.id, 'company.skill_source_refreshed', { commit: scan.commitSha, importedCount: imported.length, updatedCount: updated.length, unchanged, warningCount: warnings.length });
     return { imported, updated, unchanged, warnings: [...new Set(warnings)] };
@@ -191,7 +193,7 @@ export function skillSourceService(db: Db) {
     await context.authorize('skills.import', { sourceType: 'git', sourceLocator: input.repositoryUrl });
     const reader = context.read(input.connectionId ?? null);
     const scan = staged ?? await scanGitHubSkills(input, reader);
-    if (scan.trackingRef === scan.defaultBranch && (await list(companyId)).some(source => source.repositoryUrl.toLowerCase() === scan.repositoryUrl.toLowerCase() && source.trackingRef === 'HEAD')) {
+    if (!context.projectBindingId && scan.trackingRef === scan.defaultBranch && (await list(companyId)).some(source => source.repositoryUrl.toLowerCase() === scan.repositoryUrl.toLowerCase() && source.trackingRef === 'HEAD')) {
       throw conflict('This repository is already in Sources. Manage its skills there.');
     }
     const id = randomUUID();
@@ -202,7 +204,7 @@ export function skillSourceService(db: Db) {
     }
     const published = await db.transaction(async tx => {
       const [source] = await tx.insert(sources).values({ id, companyId, repositoryId: scan.repositoryId, repositoryUrl: scan.repositoryUrl, fullName: scan.fullName,
-        packageMode: scan.packageMode ?? 'skills', trackingRef: scan.trackingRef, connectionId: scan.connectionId ?? input.connectionId ?? null, lastAttemptAt: new Date(),
+        packageMode: scan.packageMode ?? 'skills', trackingRef: context.projectBindingId && input.trackingRef === 'HEAD' ? 'HEAD' : scan.trackingRef, connectionId: scan.connectionId ?? input.connectionId ?? null, lastAttemptAt: new Date(),
         accessScope: context.projectBindingId ? 'projects' : 'company', importNewSkills: Boolean(context.projectBindingId),
         refreshUserId: context.setup?.userId, refreshAgentId: context.setup?.agentId, refreshLocalTrusted: context.setup?.localTrusted ?? false, refreshGrantId: reader.grantId ?? context.setup?.grantId }).onConflictDoNothing().returning();
       if (!source) throw conflict('This repository and branch are already in Sources. Manage its skills there.');

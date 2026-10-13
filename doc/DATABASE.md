@@ -773,3 +773,9 @@ those identities are deleted. Refresh then requires explicit repair; deletion ca
 silently substitute board authority or another connection. Execution snapshots keep
 only the delivered skill keys and their immutable version IDs. New executions resolve
 the latest installed versions without an upstream fetch.
+
+Project-derived sources retain `HEAD` for an unspecified repository ref. It follows
+GitHub's current default branch. An explicitly configured branch has a separate
+source identity even if it currently resolves to that default branch. API-key
+agents without an authenticated run may attach repositories; their durable import
+jobs have no setup person and require adoption by an authorized person.

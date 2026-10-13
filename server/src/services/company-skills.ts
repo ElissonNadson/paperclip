@@ -7,9 +7,9 @@ import { createHash, randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import os from "node:os";
-import { skillFileBytes, snapshotFile, assertSkillSnapshotPath } from "./skill-snapshot.js";
+import { skillFileBytes, snapshotFile, assertSkillSnapshotPath, skillSnapshotHash } from "./skill-snapshot.js";
 import { fileURLToPath } from "node:url";
-import { and, asc, desc, eq, inArray, isNull, lt, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull, isNotNull, lt, sql } from "drizzle-orm";
 import type { Db } from "@paperclipai/db";
 import {
   agents as agentsTable,
@@ -2995,6 +2995,25 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
         code: "skill_workspace_boundary_denied",
         remediation: "Import from a configured Paperclip workspace or the company managed-skill directory.",
       });
+    }
+    // A filesystem import cannot discard the provenance of installed private
+    // snapshots or their materialized copies, even for an authorized reader.
+    const restricted = await db.select({ id: companySkills.id, key: companySkills.key, slug: companySkills.slug,
+      sourceType: companySkills.sourceType, sourceLocator: companySkills.sourceLocator }).from(companySkills).where(and(
+      eq(companySkills.companyId, companyId), isNotNull(companySkills.accessSourceId)));
+    for (const skill of restricted) {
+      const localRoot = skill.sourceType === "local_path" || skill.sourceType === "catalog" ? normalizeSourceLocatorDirectory(skill.sourceLocator) : null;
+      const protectedRoots = [path.join(resolveManagedSkillsRoot(companyId), "__versions__", skill.id),
+        resolveRuntimeSkillMaterializedPath(companyId, skill), localRoot].filter((root): root is string => Boolean(root));
+      for (const root of protectedRoots) {
+        const canonical = await fs.realpath(root).catch(() => null);
+        if (canonical && (sourceRealPath === canonical || sourceRealPath.startsWith(`${canonical}${path.sep}`)
+          || canonical.startsWith(`${sourceRealPath}${path.sep}`))) {
+          await visibility().assertSkill(companyId, skill.id);
+          throw unprocessable("Project-derived skill files cannot be imported as a company-wide local source. Fork the installed skill to retain project access.",
+            { code: "skill_project_provenance_required" });
+        }
+      }
     }
   }
 
@@ -6132,18 +6151,25 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     for (let skill of skills) {
       if (selectedKeys && !selectedKeys.has(skill.key)) continue;
       let installedResolution: RuntimeSkillSourceResolution | null = null;
-      if (options.snapshotLatest && !skill.currentVersionId && !options.versionSelections?.get(skill.key)) {
+      const unpinned = !options.versionSelections?.get(skill.key);
+      const localDirectory = options.snapshotLatest && unpinned && skill.sourceType === "local_path"
+        ? await resolveExistingSkillDirectory(normalizeSkillDirectory(skill)) : null;
+      if (options.snapshotLatest && unpinned && (!skill.currentVersionId || localDirectory)) {
         // Capture installed bytes only. Older remote imports can have no
         // version yet; execution must not fetch their missing files upstream.
-        const installed = await resolveRuntimeSkillSource(companyId, skill, { ...options, snapshotLatest: false, materializeMissing: false });
+        const installed: RuntimeSkillSourceResolution | null = localDirectory ? { status: "available", source: localDirectory }
+          : await resolveRuntimeSkillSource(companyId, skill, { ...options, snapshotLatest: false, materializeMissing: false });
         const inventory = installed?.status === "available"
           ? await collectVersionFileInventoryFromDirectory(installed.source)
           : skill.fileInventory.length === 1 && skill.fileInventory[0]?.path === "SKILL.md" && skill.markdown
             ? [{ path: "SKILL.md", kind: "skill" as const, content: skill.markdown }] : null;
         if (inventory) {
-          const version = await createVersion(companyId, skill.id, { label: "Execution snapshot" }, { type: "system" },
-            { skipInventoryRefresh: true, skill, fileInventory: inventory });
-          skill = { ...skill, currentVersionId: version.id };
+          const previous = skill.currentVersionId ? await getVersion(companyId, skill.id, skill.currentVersionId) : null;
+          if (!previous || skillSnapshotHash(previous.fileInventory) !== skillSnapshotHash(inventory)) {
+            const version = await createVersion(companyId, skill.id, { label: "Execution snapshot" }, { type: "system" },
+              { skipInventoryRefresh: true, skill, fileInventory: inventory });
+            skill = { ...skill, currentVersionId: version.id };
+          }
         } else installedResolution = installed;
       }
       const sourceResolution = installedResolution ?? await resolveRuntimeSkillSource(companyId, skill, {

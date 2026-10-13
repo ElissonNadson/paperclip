@@ -52,13 +52,19 @@ test('automatic update preference is accessible and changes in place', async ({ 
   await expect(page.getByRole('button', { name: 'More actions for acme/team-skills', exact: true })).toBeFocused();
 });
 
-test('mobile source actions stay usable without horizontal overflow', async ({ page }, info) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(story('mobile'));
-  await expect(page.getByRole('heading', { name: 'Skill sources', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Refresh', exact: true })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await page.screenshot({ path: info.outputPath('sources-mobile.png') });
+test('mobile touch actions stay usable without horizontal overflow', async ({ browser }, info) => {
+  const context = await browser.newContext({ baseURL: info.project.use.baseURL, viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  try {
+    await page.goto(story('mobile'));
+    await expect(page.getByRole('heading', { name: 'Skill sources', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Refresh', exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.getByRole('button', { name: 'More actions for acme/team-skills', exact: true }).tap();
+    await page.getByRole('menuitemcheckbox', { name: 'Automatic updates', exact: true }).tap();
+    await expect(page.getByText('Automatic updates paused', { exact: true })).toBeVisible();
+    await page.screenshot({ path: info.outputPath('sources-mobile.png') });
+  } finally { await context.close(); }
 });
 
 test('connection repair keeps the installed skills and selections', async ({ page }) => {

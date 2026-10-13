@@ -145,3 +145,27 @@ not be published or attached.
 - Keep the full objective active. Still required: final suite result, complete
   requirements audit, remaining theme/state review, acceptance evidence handoff,
   template-compliant PR and review/check loops. No PR has been opened yet.
+
+## Review fixes and evidence checkpoint
+
+- PR #16066 is open in draft and attached to the Codex task. Initial CI passed;
+  Greptile requested fixes for API-key repository creation, default-branch tracking,
+  local file version freshness, and missing screenshots.
+- API-key agents can attach repositories without an authenticated run. Their jobs
+  retain no invented setup person. Default-branch bindings preserve HEAD, separate
+  from fixed branches. Fresh unpinned local executions capture changed installed
+  files; resumed/pinned executions keep their immutable selections.
+- A local-import path was proved to discard private snapshot provenance. It now
+  rejects known private snapshots/materialized copies as company-wide imports,
+  with an opaque not-found response for unauthorized readers.
+- All 27 focused source/runtime tests passed after these fixes. Six browser cases
+  passed with real emulated touch taps, keyboard controls and repair focus return.
+- The first post-rebase full run finished: 17,961 passed, six failed. Two failures
+  used pre-review module implementations alongside added tests. Four other cases
+  timed out or lost an HTTP/database connection and are being rerun in isolation.
+  Final qualification must use a fresh full run on the frozen reviewed code.
+- The approved initial Storybook preview published through the existing CODEOWNER
+  workflow. Its immutable build is 38329548539-1 for commit 3e82dada92. Publish the
+  reviewed head before handoff. Acceptance screenshots and minimized execution
+  receipts are now in ui/storybook/public/project-skills-evidence/ for the existing
+  Storybook artifact workflow. No credential or identity key files are included.
