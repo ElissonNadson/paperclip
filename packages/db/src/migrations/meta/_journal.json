@@ -2364,8 +2364,15 @@
     {
       "idx": 339,
       "version": "7",
-      "when": 1791910092469,
-      "tag": "0339_new_pride",
+      "when": 1791903526575,
+      "tag": "0339_luxuriant_iron_monger",
+      "breakpoints": true
+    },
+    {
+      "idx": 340,
+      "version": "7",
+      "when": 1791911743153,
+      "tag": "0340_open_warlock",
       "breakpoints": true
     }
   ]
