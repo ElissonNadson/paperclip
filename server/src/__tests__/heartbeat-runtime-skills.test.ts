@@ -147,7 +147,7 @@ describeEmbeddedPostgres("heartbeat runtime skill version pins", () => {
     await tempDb?.cleanup();
   });
 
-  it("snapshots changed installed local files for new executions and keeps resume versions", async () => {
+  it.each(["local_path", "catalog"] as const)("snapshots changed installed %s files for new executions and keeps resume versions", async (sourceType) => {
     const companyId = randomUUID();
     await db.insert(companies).values({ id: companyId, name: 'Local skill snapshots', issuePrefix: 'LSK' });
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'paperclip-local-snapshot-'));
@@ -160,6 +160,7 @@ describeEmbeddedPostgres("heartbeat runtime skill version pins", () => {
     const skills = companySkillService(db);
     const imported = await skills.importFromSource(companyId, directory);
     const key = imported.imported[0]!.key;
+    if (sourceType === "catalog") await db.update(companySkills).set({ sourceType }).where(eq(companySkills.key, key));
     const selected = { snapshotLatest: true, onlyKeys: new Set([key]) };
     const [first] = await skills.listRuntimeSkillEntries(companyId, selected);
     expect(first!.versionId).toBeTruthy();
@@ -167,7 +168,7 @@ describeEmbeddedPostgres("heartbeat runtime skill version pins", () => {
 
     // A reference-only change must be discovered even when SKILL.md is unchanged.
     await fs.writeFile(path.join(directory, 'references/marker.txt'), 'v2\n');
-    await skills.importFromSource(companyId, directory);
+    if (sourceType === "local_path") await skills.importFromSource(companyId, directory);
     const [latest] = await skills.listRuntimeSkillEntries(companyId, selected);
     expect(latest!.versionId).not.toBe(first!.versionId);
     expect(await fs.readFile(path.join(latest!.source, 'references/marker.txt'), 'utf8')).toBe('v2\n');

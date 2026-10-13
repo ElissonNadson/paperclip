@@ -341,3 +341,12 @@ browser cases. Maps, token gates and catalog tests pass; the catalog inventories
 227 files and 2,252 stories without claiming all were rendered. Application and
 preview processes owned by this task were stopped with their evidence retained.
 Current-head GitHub checks and review results are recorded on the PR.
+
+The final catalog review found stale immutable versions after installed catalog
+bytes changed. A reference-only update regression failed before the fix. New
+unpinned executions now compare installed catalog files, as they already did
+for local files, without network fetching; unchanged content reuses its version
+and pinned resumes preserve the old bytes. The runtime/catalog suites pass all
+17 cases. This final correction changes no UI; the published Storybook build
+38427815861 pins 6219538f75 and contains all eight successful execution receipts
+and the two explicitly classified old-client failures.

@@ -6154,12 +6154,12 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
       if (selectedKeys && !selectedKeys.has(skill.key)) continue;
       let installedResolution: RuntimeSkillSourceResolution | null = null;
       const unpinned = !options.versionSelections?.get(skill.key);
-      const localDirectory = options.snapshotLatest && unpinned && skill.sourceType === "local_path"
+      const installedDirectory = options.snapshotLatest && unpinned && (skill.sourceType === "local_path" || skill.sourceType === "catalog")
         ? await resolveExistingSkillDirectory(normalizeSkillDirectory(skill)) : null;
-      if (options.snapshotLatest && unpinned && (!skill.currentVersionId || localDirectory)) {
+      if (options.snapshotLatest && unpinned && (!skill.currentVersionId || installedDirectory)) {
         // Capture installed bytes only. Older remote imports can have no
         // version yet; execution must not fetch their missing files upstream.
-        const installed: RuntimeSkillSourceResolution | null = localDirectory ? { status: "available", source: localDirectory }
+        const installed: RuntimeSkillSourceResolution | null = installedDirectory ? { status: "available", source: installedDirectory }
           : await resolveRuntimeSkillSource(companyId, skill, { ...options, snapshotLatest: false, materializeMissing: false });
         const inventory = installed?.status === "available"
           ? await collectVersionFileInventoryFromDirectory(installed.source)
