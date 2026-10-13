@@ -821,7 +821,7 @@
         "activity/activity",
         "gateways-profiles/activity"
       ],
-      "purpose": "Apps/App detail · Activity (lifecycle)",
+      "purpose": "Apps/App detail \u00b7 Activity (lifecycle)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -835,8 +835,8 @@
         "ui/storybook/stories/activity/app-activity-lifecycle.stories.tsx"
       ],
       "fingerprint": "6c813a16621d93fe9f817b1b01d451a35b4b552727976168e938409d100b26e9",
-      "stableId": "apps-app-detail-·-activity-lifecycle",
-      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail · Activity (lifecycle)"
+      "stableId": "apps-app-detail-\u00b7-activity-lifecycle",
+      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail \u00b7 Activity (lifecycle)"
     },
     {
       "file": "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx",
@@ -1185,7 +1185,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation-visibility verification recipes were updated; this story scenario is unchanged and does not prove that journey. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation-visibility verification recipes were updated; this story scenario is unchanged and does not prove that journey. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1196,7 +1196,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/assigned-backlog-safeguards.stories.tsx"
       ],
-      "fingerprint": "d6e735a2c56092274f139709aba0c1c555f3f3cb0fbf9820d50ee02874907b79",
+      "fingerprint": "634be5456a6554553c9c19852941533fd657b48ea9aaf97ea2774a5b52fed8d0",
       "stableId": "paperclip-assigned-backlog-safeguards",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Assigned Backlog Safeguards"
     },
@@ -1210,7 +1210,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Creation visibility now defaults to hiding automated independent tasks, with a show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Creation visibility now defaults to hiding automated independent tasks, with a show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/inbox-search.md",
@@ -1220,7 +1220,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/inbox-search/blocked-inbox.stories.tsx"
       ],
-      "fingerprint": "70b54f5ce7c083b8e64c28501d66247d4753adabd732b377f7ad18309dc90ffe",
+      "fingerprint": "1ef985b27fe351ee34b584ca878c66819fd46986eb09dbce59c408c66b35a495",
       "stableId": "product-inbox-blocked-tab",
       "sidebarTitle": "Tasks and conversations/Inbox, decisions, and search/Product/Inbox/Blocked tab"
     },
@@ -1498,14 +1498,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/CloudAccessGate.tsx",
         "ui/storybook/stories/recovery/cloud-access-recovery.stories.tsx"
       ],
-      "fingerprint": "64b2422bdabe2b07b563354481000171455841e49ccbf6a72270066d4e27e9e0",
+      "fingerprint": "65051e49291a3917a3b62604fa76747d2df1825f2601f9abbf2e4ab45b5add9d",
       "stableId": "app-connection-recovery",
       "sidebarTitle": "Projects and execution/Recovery/App/Connection recovery"
     },
@@ -1828,7 +1828,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1836,7 +1836,7 @@
         "ui/src/components/task-chat/TaskChatMarker.tsx",
         "ui/storybook/stories/secrets/credential-access/01-notice.stories.tsx"
       ],
-      "fingerprint": "14757d026311d143e9301d6294d2f46f40dad25af8ea3f8d5cf1893b260f82db",
+      "fingerprint": "e80bcb66cd72d54b6279c44bcb2bbd94bffccced40e1b84526aefeacc4b7bf42",
       "stableId": "task-credential-access-01-notice",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/01 Notice"
     },
@@ -1850,7 +1850,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Source review covers the retained-file recovery form, source-bound evidence and unchanged task status; fixture APIs do not prove live provider recovery.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Source review covers the retained-file recovery form, source-bound evidence and unchanged task status; fixture APIs do not prove live provider recovery. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1862,7 +1862,7 @@
         "ui/storybook/stories/secrets/credential-access/02-task-page.stories.tsx",
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx"
       ],
-      "fingerprint": "cd2175c823d8d9eb0a4618af7aa147d1519c2ae9d5871a3b49ea6637b3af44e1",
+      "fingerprint": "4985395f29d97a915402cf2672dbc825bfba395ba6b02d566a49800e99c3ae46",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -2209,7 +2209,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the retained-file recovery form, source-bound evidence and unchanged task status; fixture APIs do not prove live provider recovery.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review covers the retained-file recovery form, source-bound evidence and unchanged task status; fixture APIs do not prove live provider recovery. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -2218,7 +2218,7 @@
         "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx",
         "ui/storybook/support/workspace-file-recovery/fixture.tsx"
       ],
-      "fingerprint": "b28e90d649ed680df25abc396ff18791ee548fd206f903fc91bfb90b1b718884",
+      "fingerprint": "cb2da1b3f76b1b644f7b11fb6f55c27950ae51ce3e590ead878d3703606588d7",
       "stableId": "task-chat-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Task chat/Recovery notice"
     },
@@ -2231,7 +2231,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -2242,7 +2242,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/execution-recovery.stories.tsx"
       ],
-      "fingerprint": "82ddff0cf6d98e558f9038d59960758347ad39f3c7a9aaf18f29214a8ad81756",
+      "fingerprint": "4cfa6fd775c9cf04e0586ed5a7218df3e8bb51dcaadf80b9a26a979aabf61e98",
       "stableId": "tasks-execution-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Execution recovery"
     },
@@ -2524,7 +2524,7 @@
       "capabilities": [
         "skills/authoring"
       ],
-      "purpose": "Product/Skill Studio · FrontmatterPanel",
+      "purpose": "Product/Skill Studio \u00b7 FrontmatterPanel",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -2536,8 +2536,8 @@
         "ui/storybook/stories/skills/frontmatter-panel.stories.tsx"
       ],
       "fingerprint": "e7b2ffabdadc43d7fa2f564465792539d25f15da54fb4f7fec31cc4a2f0aec76",
-      "stableId": "product-skill-studio-·-frontmatterpanel",
-      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio · FrontmatterPanel"
+      "stableId": "product-skill-studio-\u00b7-frontmatterpanel",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio \u00b7 FrontmatterPanel"
     },
     {
       "file": "ui/storybook/stories/gateways-profiles/gateways-tab.stories.tsx",
@@ -2862,7 +2862,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -2871,7 +2871,7 @@
         "ui/src/components/task-chat/TaskChatBlockerLinks.tsx",
         "ui/storybook/stories/recovery/issue-blocked-notice.stories.tsx"
       ],
-      "fingerprint": "52f861389de245bda4d9c582581b49ce0b9442d60ee7eff950adc6801aaca8a4",
+      "fingerprint": "90f1eae150c50bd1a428ce322a8d65ceec8b24b6addc8b3b4ea5e90231bc1a2c",
       "stableId": "product-issue-blocked-notice",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue/Blocked notice"
     },
@@ -3094,14 +3094,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueScheduledRetryCard.tsx",
         "ui/storybook/stories/recovery/model-capacity-retry.stories.tsx"
       ],
-      "fingerprint": "1db367a2b77b8c747ab5c81c1fe3317da02bf294308e9e09af827bcd12ee0b9f",
+      "fingerprint": "cc935eea1a2ffc27882364655db860c441c4dc059be3d4886a4bd7d3839752bf",
       "stableId": "tasks-model-capacity-retry",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Model capacity retry"
     },
@@ -4438,7 +4438,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -4448,7 +4448,7 @@
         "ui/storybook/prototypes/recovery-notice/RecoveryNoticePreview.tsx",
         "ui/storybook/stories/recovery/recovery-notice-preview.stories.tsx"
       ],
-      "fingerprint": "e83bcaf099227bfcd17d571f680121b5b51d5f605d76479165000a575229a884",
+      "fingerprint": "44d25bc1cf087902bc991cc7fd1dc2bc19880c18189960dae47c68a9284bc0f6",
       "stableId": "design-previews-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Design previews/Recovery notice"
     },
@@ -4536,7 +4536,7 @@
         "routines/management",
         "activity/routine-audit"
       ],
-      "purpose": "Product/Routines · Detail (variation C)",
+      "purpose": "Product/Routines \u00b7 Detail (variation C)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4555,8 +4555,8 @@
         "maps/feature-map/activity.md"
       ],
       "fingerprint": "853370d71e85c5e01b79d19831cba7f839f4b75af42fa51e7e94f84e31a6eb81",
-      "stableId": "product-routines-·-detail-variation-c",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Detail (variation C)"
+      "stableId": "product-routines-\u00b7-detail-variation-c",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Detail (variation C)"
     },
     {
       "file": "ui/storybook/stories/routines/routine-secrets.stories.tsx",
@@ -4564,7 +4564,7 @@
         "routines/definition",
         "secrets/runtime-delivery"
       ],
-      "purpose": "Product/Routines · Secrets tab",
+      "purpose": "Product/Routines \u00b7 Secrets tab",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4579,8 +4579,8 @@
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
       "fingerprint": "03c05c0cca01d220885ea96f13495bcc185121eecbbeb00918511b4d7de26016",
-      "stableId": "product-routines-·-secrets-tab",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
+      "stableId": "product-routines-\u00b7-secrets-tab",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Secrets tab"
     },
     {
       "file": "ui/storybook/stories/routines/routine-webhooks-ux.stories.tsx",
@@ -4645,7 +4645,7 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines · List (grouped cards)",
+      "purpose": "Product/Routines \u00b7 List (grouped cards)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4657,8 +4657,8 @@
         "ui/storybook/stories/routines/routines-list-groups.stories.tsx"
       ],
       "fingerprint": "02a433aeee5be2ecc3284f0a27c45c4222e3abf05cbd478e55bfb7462a301d19",
-      "stableId": "product-routines-·-list-grouped-cards",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · List (grouped cards)"
+      "stableId": "product-routines-\u00b7-list-grouped-cards",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 List (grouped cards)"
     },
     {
       "file": "ui/storybook/stories/tasks/runner-activity.stories.tsx",
@@ -4698,7 +4698,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -4707,7 +4707,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/scheduled-retry.stories.tsx"
       ],
-      "fingerprint": "f360f4207ef2b1cef18eee2307c50a7bce3a5f5bbf8966b24cd86b3ec50d21b4",
+      "fingerprint": "94225de83234003fe6c5bdc47767e50da8562f661dbf2c5678d9fb41490a86a5",
       "stableId": "product-issue-scheduled-retry-surfaces",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue Scheduled retry surfaces"
     },
@@ -5011,7 +5011,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review confirms ordinary recovery fixtures remain applicable after the native-owner resolution gate; native-owner stop verification has its own suite.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review confirms ordinary recovery fixtures remain applicable after the native-owner resolution gate; native-owner stop verification has its own suite. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5021,7 +5021,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/source-issue-recovery.stories.tsx"
       ],
-      "fingerprint": "949814263788ae0e3501b67bbd26118f150db219fc04e5cf653f18dd345ec8d5",
+      "fingerprint": "e83979b6d2737fef8666a36860817af9272d4d4df649a0784c04e4bc32b63028",
       "stableId": "paperclip-source-issue-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source Issue Recovery"
     },
@@ -5035,7 +5035,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5043,7 +5043,7 @@
         "ui/src/components/SourceResolvedFoldCallout.tsx",
         "ui/storybook/stories/recovery/source-resolved-fold.stories.tsx"
       ],
-      "fingerprint": "70cab38574df19267e35ab13c10c4a3eea444bb3b6e72c81f739f21cfc519df0",
+      "fingerprint": "6b42874521d91e0aa6323fb4d6744a6abd7931fda54e6591bdac9131fa2abaa4",
       "stableId": "paperclip-source-resolved-fold",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source-resolved Fold"
     },
@@ -5112,7 +5112,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation-visibility verification recipes were updated; this story scenario is unchanged and does not prove that journey. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation-visibility verification recipes were updated; this story scenario is unchanged and does not prove that journey. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5124,7 +5124,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/successful-run-handoff.stories.tsx"
       ],
-      "fingerprint": "27ad7c3c2b09acf5ac07163d44026511bd0c2b806387b591fef5fca343b0c63b",
+      "fingerprint": "58d58a28f56037e392ab0f52d971f4c21f8745f84337552bc45bbeeffd0c6655",
       "stableId": "paperclip-successful-run-handoff",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Successful Run Handoff"
     },
@@ -5576,7 +5576,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5584,7 +5584,7 @@
         "ui/storybook/stories/recovery/workspace-branch-recovery/01-component.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "eeaa7044a1d5a2b5355a8ac2375820e3611c71920e88c04d87e5d7ce64ed929a",
+      "fingerprint": "449d4ae2d427627089327567690e88219a14dfaeac3265bb3014cf1555e0da5d",
       "stableId": "workspace-branch-recovery-01-repair-card",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/01 Repair card"
     },
@@ -5597,7 +5597,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5609,7 +5609,7 @@
         "ui/storybook/stories/recovery/workspace-branch-recovery/02-task-journey.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "f8a090cfdbadfe77d8ee064b99fc11b8f5e097d4e72173df2496280ef52152d1",
+      "fingerprint": "c30653d1cd266832f7bdd401bc302a579d4170b7ea9b2523feccbdc66a58e997",
       "stableId": "workspace-branch-recovery-02-task-journey",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/02 Task journey"
     },
@@ -5684,7 +5684,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production quiet status; automatic restoration, legacy operator fallback, queued and resolved states. No task repair form, process details or API simulation. Provider proof is verified by separate server and harness tests.",
+      "notes": "Production quiet status; automatic restoration, legacy operator fallback, queued and resolved states. No task repair form, process details or API simulation. Provider proof is verified by separate server and harness tests. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5692,7 +5692,7 @@
         "ui/storybook/stories/recovery/workspace-finalization-recovery/01-notice.stories.tsx",
         "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
       ],
-      "fingerprint": "45bf8c793c91362634b7ce32ed0ec2007861b7fefbfd0e2da692c3dc804a53c9",
+      "fingerprint": "5026bd7133f40a9c61371e22ed6976efc67013fd3047bf85056026de86bf6cec",
       "stableId": "workspace-finalization-recovery-01-notice",
       "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/01 Notice"
     },
@@ -5706,7 +5706,7 @@
       "status": "unreviewed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Production shell, status, bubbles and composer in a local conversation composition; shows restoration and saved work waiting for confirmation. Fixture messages; not the shipped task page or live provider acceptance.",
+      "notes": "Production shell, status, bubbles and composer in a local conversation composition; shows restoration and saved work waiting for confirmation. Fixture messages; not the shipped task page or live provider acceptance. The added verification recipe documents source-only retained-file repair; existing fixtures do not establish live provider recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -5717,7 +5717,7 @@
         "ui/storybook/stories/recovery/workspace-finalization-recovery/02-task-journey.stories.tsx",
         "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
       ],
-      "fingerprint": "aa76cd28dde8d50abd208b34283249170f3a85435ba82fff169a1c33433dfca1",
+      "fingerprint": "934a8f1882d8b5f5381aba9d0f27026849870a1fa417178fb6bc4170c54b15ba",
       "stableId": "workspace-finalization-recovery-02-task-journey",
       "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/02 Task journey"
     }
