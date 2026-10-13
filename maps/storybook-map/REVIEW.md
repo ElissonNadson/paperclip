@@ -609,3 +609,52 @@ and prior classifications. No unrelated suite gained browser or provider proof.
 The rebuilt merged artifact passes all 14 project-skills browser cases. This
 adds executed proof for those journeys only, without changing unrelated suite
 classifications or claiming provider behavior from fixture interactions.
+
+## Verification routes for unassociated capabilities — 2026-10-13
+
+Source classification against merged master `5e8e992df2`: [VERIFICATION.md](VERIFICATION.md)
+accounts for all 60 capabilities without non-guide example associations. It
+records 49 UI example gaps with separate production contracts, eight CLI/operator
+operations and three browser verification boundaries. Existing tests are starting
+points; no new live journey, rendering, interaction or visual evidence is claimed.
+The targeted association revisit found no further justified links. This does not
+complete parity review of the 184 example suites still classified `unreviewed`.
+
+Master includes #16153's personal task-toast capability. Its upstream README and
+recipe were inspected; reconstructing the five inbox-suite and shared fingerprints
+with the pre-toast recipe bytes matches the stored baseline. No other declared
+source changed for those suites. Regeneration adds the capability/description to
+the feature index, which also changes the guide fingerprint. Refreshing those
+review fingerprints preserves statuses, associations and all 2,212 authored IDs.
+
+Catalog/map checks, 27 catalog/generator/map tests and maintenance-skill validation
+passed. The 60-row inventory and all local links were checked against current
+source. Repository-wide typecheck/tests/build and Storybook build are not run for
+this documentation and generated-data pass; runtime behavior is unchanged.
+
+Review correction: backup retention already has shipped controls in
+`InstanceGeneralSettings`, embedded in `CompanySettings`. The backup row therefore
+keeps missing retention UI examples alongside separate CLI backup/restore proof;
+it is not a wholesale Storybook exemption. No existing story mounts those controls.
+
+## Verification-parent merge reconciliation — 2026-10-13
+
+Reconciled master `da9af67415` while preserving its catalog records and both
+review histories. Inspected the intervening recipe changes for Telegram
+maintenance, liveness/readiness and trusted instance-secret lifecycle, and the
+soft-warning versus hard-stop budget UI. Refreshed only dependent review
+fingerprints with notes naming those boundaries; classifications remain unchanged.
+The generated feature index reflects the current recipes. No new rendering,
+provider journey or whole-suite parity review is claimed. Catalog/map validation
+and all 27 catalog/generator/map tests pass with the pinned Storybook parser.
+
+## Verification-inventory reconciliation — 2026-10-13
+
+Integrated master 252d9b5077 while retaining authored suites and stable IDs. The
+changed declared review sources are the maintenance instructions and generated
+feature descriptions. Reviewed those changes and refreshed 27 dependent hashes
+without promoting classifications. Recomputed 59 unassociated capabilities;
+the production RoutineDetail project-skills journey justifies a partial
+routines/run-now example, with variable-dialog and real persistence/access
+obligations retained separately. No additional feature canvas or provider proof
+is inferred from this documentation/catalog merge.

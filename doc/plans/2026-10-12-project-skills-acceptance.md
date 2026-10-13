@@ -405,3 +405,11 @@ no skips or changed deadlines. Its input records e3b107976f plus the one-line
 fixture correction and the corrected fixture hash. This supplements the 151
 merged service/runtime cases and 14 rebuilt browser journeys. Final PR checks
 remain the authoritative merge record.
+
+The last concurrent catalog merge integrates master 252d9b5077. Its background
+trace-context and runtime-skill suites pass all 12 cases; recursive typecheck
+and build pass. Feature controls and fixtures are unchanged from the 14-case
+built-browser qualification. The verification inventory now records 59 remaining
+gaps and preserves variable-dialog and production obligations for the partially
+covered routine-run journey. Catalog/map checks pass without treating source
+classification or test presence as additional execution proof.
