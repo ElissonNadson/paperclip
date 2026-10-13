@@ -77,7 +77,7 @@ export function skillSourceService(db: Db) {
       const old = previous.find(entry => entry.path === candidate.path);
       const skill = old?.skillId ? await skills.getById(source.companyId, old.skillId) : null;
       await context.authorize(skill ? 'skills.update' : 'skills.import', {
-        sourceType: 'git', sourceLocator: source.repositoryUrl, ...(skill ? { skillId: skill.id, skillKey: skill.key } : { skillKey: newSkillKey(scan, candidate.path, candidate.name, source.id) }),
+        sourceType: 'git', sourceLocator: source.repositoryUrl, ...(skill ? { skillId: skill.id, skillKey: skill.key } : { skillKey: newSkillKey(scan, candidate.path, candidate.name, source.id, source.revision) }),
       });
     }
   }
@@ -88,8 +88,10 @@ export function skillSourceService(db: Db) {
       if (skill) await context.authorize('skills.edit', { sourceType: 'git', sourceLocator: source.repositoryUrl, skillId: skill.id, skillKey: skill.key });
     }
   }
-  function newSkillKey(scan: ScannedSkillSource, skillPath: string, name: string, sourceId: string) {
-    const identity = createHash('sha256').update(`${scan.repositoryId}:${sourceId}:${skillPath}`).digest('hex').slice(0, 16);
+  function newSkillKey(scan: ScannedSkillSource, skillPath: string, name: string, sourceId: string, revision = 0) {
+    // New imports after removal must not overwrite retained editable copies.
+    // Existing entries keep their installed identity across later revisions.
+    const identity = createHash('sha256').update(`${scan.repositoryId}:${sourceId}${revision ? `:${revision}` : ''}:${skillPath}`).digest('hex').slice(0, 16);
     return `github/${scan.repositoryId}/${identity}/${normalizeAgentUrlKey(name) || 'skill'}`;
   }
   async function publish(tx: Tx, source: SourceRow, scan: ScannedSkillSource, selectedPaths: string[], excludedFolders: string[], context: SkillSourceContext, selectionReviewed: boolean): Promise<Omit<SkillSourceRefreshResult, 'source'>> {
@@ -124,7 +126,7 @@ export function skillSourceService(db: Db) {
       if (selection === 'selected' && !candidate.error) {
         const hash = repositoryHash ? createHash('sha256').update(`${repositoryHash}:${candidate.path}`).digest('hex') : skillSnapshotHash(candidate.files);
         const slug = normalizeAgentUrlKey(candidate.name) || 'skill';
-        const key = current?.key ?? newSkillKey(scan, candidate.path, candidate.name, source.id);
+        const key = current?.key ?? newSkillKey(scan, candidate.path, candidate.name, source.id, source.revision);
         const ownerRepo = scan.fullName.split('/');
         const metadata = { ...(current?.metadata ?? {}), sourceKind: 'github', hostname: 'github.com',
           owner: ownerRepo[0], repo: ownerRepo[1], ref: current?.metadata?.snapshotHash === hash && current.currentVersionId ? current.sourceRef : scan.commitSha, trackingRef: scan.trackingRef,

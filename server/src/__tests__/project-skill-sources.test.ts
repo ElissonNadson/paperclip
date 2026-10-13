@@ -221,8 +221,10 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       await worker.tick(new Date(Date.now() + 6 * 60_000));
       const restored = await service.detail(companyId, source.id);
       expect(restored.enabled).toBe(true);
+      expect(restored.lastError).toBeNull();
       expect(restored.entries.filter(entry => entry.skillId)).toHaveLength(1);
       expect(restored.entries[0]!.skillId).not.toBe(original.id);
+      if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toMatchObject({ key: original.key, sourceType: 'local_path', currentVersionId: original.currentVersionId });
       await db.delete(projectAccessMembers).where(and(eq(projectAccessMembers.projectId, row.projectId), eq(projectAccessMembers.subjectId, userId)));
       expect(await skills.getById(companyId, fork.skill.id)).toBeNull();
       if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toBeNull();
