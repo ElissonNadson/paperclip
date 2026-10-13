@@ -396,3 +396,12 @@ The final merged Storybook build succeeds and all 14 project-skills browser
 journeys pass against it. This includes the inherited shell updates; no Linux
 visual baseline comparison is claimed. Final publication and current-head PR
 gates are recorded on the PR.
+
+CI caught a stale replay-test filename after regeneration. The test now opens
+0340_salty_vance_astro.sql; its preservation assertions remain unchanged. The
+wider macOS Node 26 database run hit eight unrelated native PostgreSQL deadlines.
+The qualified Node 24 rerun passed all 51 database files and all 195 tests, with
+no skips or changed deadlines. Its input records e3b107976f plus the one-line
+fixture correction and the corrected fixture hash. This supplements the 151
+merged service/runtime cases and 14 rebuilt browser journeys. Final PR checks
+remain the authoritative merge record.
