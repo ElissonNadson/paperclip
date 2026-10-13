@@ -474,6 +474,7 @@ describe("Connectors landing page", () => {
     await renderBrowse(false);
     expect(container.querySelectorAll('[data-app-slug="notion"]')).toHaveLength(1);
     const row = container.querySelector('[data-app-slug="notion"]')!;
+    await clickButton("5 connections", row);
     expect(row.querySelectorAll('button[aria-label="Manage Work connection"]')).toHaveLength(4);
     expect(row.textContent).toContain("Native");
     for (const provider of ["Composio", "Arcade", "Executor"]) expect(row.textContent).toContain(`Managed by ${provider}`);
@@ -602,6 +603,7 @@ describe("Connectors landing page", () => {
     listComposioAppsMock.mockImplementation((id: string) => Promise.resolve({ apps: [], sync: { status: id === "conn-work" ? "syncing" : "ready" } }));
     await renderBrowse();
     expect(container.textContent).not.toContain("Refresh Composio");
+    await clickButton("2 connections", container.querySelector('[data-app-slug="composio"]')!);
     let menu = await openComposioAccountMenu("Work Composio");
     expect(Array.from(menu.querySelectorAll<HTMLElement>('[role="menuitem"]')).find(item => item.textContent?.trim() === "Refresh Composio")?.getAttribute("aria-disabled")).toBe("true");
     await act(() => { menu.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true })); });
@@ -1117,6 +1119,52 @@ describe("Connectors landing page", () => {
         ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(navigateMock).toHaveBeenCalledWith("/apps/advanced/paste-config");
+  });
+
+  it("folds healthy multi-account lists behind a connection-count toggle", async () => {
+    listApplicationsMock.mockResolvedValue({ applications: [application()] });
+    listConnectionsMock.mockResolvedValue({
+      connections: [
+        connection(),
+        connection({ id: "conn-ops", name: "ops@example.com" }),
+        connection({ id: "conn-eng", name: "eng@example.com" }),
+      ],
+    });
+    await renderBrowse();
+
+    const notion = container.querySelector<HTMLElement>('[data-app-slug="notion"]')!;
+    const toggle = Array.from(notion.querySelectorAll<HTMLButtonElement>("button"))
+      .find(button => button.textContent?.trim() === "3 connections")!;
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    expect(notion.textContent).not.toContain("ops@example.com");
+
+    await clickButton("3 connections", notion);
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
+    for (const name of ["devinfoley@gmail.com", "ops@example.com", "eng@example.com"]) expect(notion.textContent).toContain(name);
+
+    await clickButton("3 connections", notion);
+    expect(notion.textContent).not.toContain("ops@example.com");
+
+    await search("ops@example");
+    expect(container.querySelector('[data-app-slug="notion"]')?.textContent).toContain("ops@example.com");
+  });
+
+  it("keeps a single account inline and opens lists that need attention", async () => {
+    listApplicationsMock.mockResolvedValue({ applications: [application()] });
+    listConnectionsMock.mockResolvedValue({ connections: [connection()] });
+    await renderBrowse();
+    let notion = container.querySelector<HTMLElement>('[data-app-slug="notion"]')!;
+    expect(notion.textContent).toContain("devinfoley@gmail.com");
+    expect(notion.querySelector('[data-slot="collapsible-trigger"]')).toBeNull();
+
+    act(() => root.unmount());
+    listConnectionsMock.mockResolvedValue({
+      connections: [connection(), connection({ id: "conn-draft", name: "draft@example.com", status: "draft" })],
+    });
+    await renderBrowse();
+    notion = container.querySelector<HTMLElement>('[data-app-slug="notion"]')!;
+    expect(notion.textContent).toContain("2 connections· 1 needs attention");
+    expect(notion.textContent).toContain("draft@example.com");
   });
 
   it("sorts connected providers first and shows account, owner, status actions, and edit menus inline", async () => {
