@@ -765,7 +765,11 @@ with `access_source_id` stay restricted when no originating project remains.
 Removing a project source hides tracking using `company_skill_sources.removed_at`
 while retaining its access identity for editable copies and forks. Bindings become
 inactive and refresh leases are invalidated transactionally. Reattachment preserves
-removal; explicit adoption restarts synchronization with the stored identity.
+removal; explicit adoption creates or joins an active source with a separate identity.
+Migration 0341 limits repository/ref uniqueness to active sources. Removed sources
+retain their original project audience; editable forks capture independent retained
+provenance so later attachments cannot expose their local edits. Membership and
+project visibility are still evaluated dynamically.
 
 `company_skill_sources` stores automatic-update and future-import preferences, setup
 user/agent and connection/grant IDs, next-check time, failure count and existing refresh

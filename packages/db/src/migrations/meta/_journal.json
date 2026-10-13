@@ -2374,6 +2374,13 @@
       "when": 1791897061142,
       "tag": "0340_broad_thunderbolt_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 341,
+      "version": "7",
+      "when": 1791904912276,
+      "tag": "0341_slimy_peter_quill",
+      "breakpoints": true
     }
   ]
 }

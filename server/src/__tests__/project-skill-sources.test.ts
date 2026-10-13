@@ -121,6 +121,7 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     const source = await skillSourceService(db).detail(companyId, binding!.sourceId!);
     const skillId = source.entries[0]!.skillId!;
     let privateSnapshotPath = '';
+    const privateDerivatives: string[] = [];
     for (const user of ['alice', 'bob']) {
       await db.insert(authUsers).values({ id: user, name: user, email: `${user}@example.test`, createdAt: new Date(), updatedAt: new Date() });
       await db.insert(companyMemberships).values({ companyId, principalType: 'user', principalId: user, membershipRole: 'member', status: 'active' });
@@ -134,10 +135,14 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       privateSnapshotPath = runtime!.source;
       await expect(companySkillService(db).importFromSource(companyId, runtime!.source)).rejects.toThrow(/Project-derived skill/);
       const fork = await companySkillService(db).forkSkill(companyId, skillId, { slug: 'private-copy' });
-      expect(fork.skill.accessSourceId).toBe(source.id);
+      expect(fork.skill.accessSourceId).not.toBe(source.id);
+      expect(fork.skill.accessSourceId).toBeTruthy();
+      privateDerivatives.push(fork.skill.id);
       await expect(companySkillService(db).updateSkill(companyId, fork.skill.id, { sharingScope: 'public_link' })).rejects.toThrow(/public link/);
       const copy = await companySkillService(db).createLocalSkill(companyId, { name: 'Private derived copy', forkedFromSkillId: skillId });
-      expect(copy.accessSourceId).toBe(source.id);
+      expect(copy.accessSourceId).not.toBe(source.id);
+      expect(copy.accessSourceId).toBeTruthy();
+      privateDerivatives.push(copy.id);
       await expect(companySkillService(db).createLocalSkill(companyId, { name: 'Unsafe publication', forkedFromSkillId: skillId, sharingScope: 'public_link' })).rejects.toThrow(/public link/);
     });
     await withSkillActor(actor('bob'), async () => {
@@ -176,8 +181,26 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     await withSkillActor(actor('bob'), async () => expect(await companySkillService(db).getById(companyId, skillId)).not.toBeNull());
     await db.delete(projectAccessMembers).where(and(eq(projectAccessMembers.projectId, second.projectId), eq(projectAccessMembers.subjectId, 'bob')));
     await withSkillActor(actor('bob'), async () => expect(await companySkillService(db).getById(companyId, skillId)).toBeNull());
+    const opened = await workspace('private', 'open');
+    await enqueueProjectSkillSource(db, opened);
+    await skillSourceSyncService(db, { context: async () => context }).tick();
+    await withSkillActor(actor('bob'), async () => {
+      expect(await companySkillService(db).getById(companyId, skillId)).not.toBeNull();
+      for (const derivativeId of privateDerivatives) {
+        expect(await companySkillService(db).getById(companyId, derivativeId)).toBeNull();
+        expect(await companySkillService(db).readFile(companyId, derivativeId, 'SKILL.md')).toBeNull();
+      }
+    });
+    await withSkillActor(agentActor(reader!.id, 'bob'), async () => {
+      expect(await companySkillService(db).getById(companyId, skillId)).not.toBeNull();
+      for (const derivativeId of privateDerivatives) expect(await companySkillService(db).getById(companyId, derivativeId)).toBeNull();
+    });
     await db.delete(projects).where(eq(projects.id, row.projectId));
     await db.delete(projects).where(eq(projects.id, second.projectId));
+    await withSkillActor(actor('alice'), async () => {
+      for (const id of privateDerivatives) expect(await companySkillService(db).getById(companyId, id)).toBeNull();
+    });
+    await db.delete(projects).where(eq(projects.id, opened.projectId));
     await withSkillActor(actor('alice'), async () => expect(await companySkillService(db).getById(companyId, skillId)).toBeNull());
     expect((await db.select().from(companySkills).where(eq(companySkills.id, skillId)))[0]!.accessSourceId).toBe(source.id);
   });
@@ -198,16 +221,20 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     await db.insert(projectAccessMembers).values({ companyId, projectId: row.projectId, subjectType: 'user', subjectId: userId });
     await withSkillActor(actor(userId), async () => {
       const fork = await skills.forkSkill(companyId, original.id, { slug: `retained-${choice}-fork` });
+      await skills.updateFile(companyId, fork.skill.id, 'SKILL.md', md('Private fork edits') + '\nConfidential original-project notes.\n');
       const result = await service.disconnect(companyId, source.id, context, { revision: source.revision, skills: choice });
       expect(result).toMatchObject({ copiedCount: choice === 'copy' ? 1 : 0, deletedCount: choice === 'delete' ? 1 : 0 });
       await expect(service.detail(companyId, source.id)).rejects.toThrow(/not found/);
       expect((await service.list(companyId)).some(item => item.id === source.id)).toBe(false);
       expect((await projectSkillRepositories(db, companyId, actor(userId))).find(item => item.workspaceId === row.id)).toMatchObject({ sourceId: null, status: 'available' });
       expect(await skills.getById(companyId, fork.skill.id)).not.toBeNull();
+      let retainedVersionId = original.currentVersionId;
       if (choice === 'copy') {
         expect(await skills.getById(companyId, original.id)).toMatchObject({ sourceType: 'local_path', accessSourceId: source.id });
         expect((await skills.readFile(companyId, original.id, '.paperclip-repository/private/SKILL.md'))?.content).toBe(md('retained private workflow'));
         expect((await skills.readFile(companyId, original.id, 'SKILL.md'))?.content).toContain('.paperclip-repository/private/SKILL.md');
+        await skills.updateFile(companyId, original.id, 'SKILL.md', md('Private copy edits') + '\nConfidential original-project notes.\n');
+        retainedVersionId = (await skills.createVersion(companyId, original.id, { label: 'Private edited copy' })).id;
       } else expect(await skills.getById(companyId, original.id)).toBeNull();
       await db.update(companySkillSources).set({ automaticUpdates: false }).where(eq(companySkillSources.companyId, companyId));
       const before = downloads.mock.calls.length;
@@ -217,17 +244,48 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       await enqueueProjectSkillSource(db, row);
       await worker.tick(new Date(Date.now() + 6 * 60_000));
       expect(downloads).toHaveBeenCalledTimes(before);
-      const legacy = await workspace(`removed-${choice}`, 'private');
+      const legacy = await workspace(`removed-${choice}`, 'open');
       await db.insert(projectAccessMembers).values({ companyId, projectId: legacy.projectId, subjectType: 'user', subjectId: userId });
       // This older workspace has no binding/source ID; one explicit adoption must work.
       await adoptProjectSkillRepository(db, companyId, legacy.id, context.authorize);
       await worker.tick(new Date(Date.now() + 6 * 60_000));
-      const restored = await service.detail(companyId, source.id);
+      await expect(service.detail(companyId, source.id)).rejects.toThrow(/not found/);
+      const [adopted] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, legacy.id));
+      expect(adopted!.status, adopted!.lastError ?? 'adopted binding').toBe('ready');
+      expect(adopted!.sourceId).toBeTruthy();
+      expect(adopted!.sourceId).not.toBe(source.id);
+      const restored = await service.detail(companyId, adopted!.sourceId!);
       expect(restored.enabled).toBe(true);
       expect(restored.lastError).toBeNull();
       expect(restored.entries.filter(entry => entry.skillId)).toHaveLength(1);
       expect(restored.entries[0]!.skillId).not.toBe(original.id);
-      if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toMatchObject({ key: original.key, sourceType: 'local_path', currentVersionId: original.currentVersionId });
+      if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toMatchObject({ key: original.key, sourceType: 'local_path', currentVersionId: retainedVersionId });
+      const readerId = randomUUID();
+      await db.insert(authUsers).values({ id: readerId, name: 'Open project reader', email: `${readerId}@example.test`, createdAt: new Date(), updatedAt: new Date() });
+      await db.insert(companyMemberships).values({ companyId, principalType: 'user', principalId: readerId, membershipRole: 'member', status: 'active' });
+      await withSkillActor(actor(readerId), async () => {
+        const upstream = restored.entries[0]!.skillId!;
+        expect(await skills.getById(companyId, upstream)).not.toBeNull();
+        expect(await skills.getById(companyId, fork.skill.id)).toBeNull();
+        expect(await skills.readFile(companyId, fork.skill.id, 'SKILL.md')).toBeNull();
+        if (choice === 'copy') {
+          expect(await skills.getById(companyId, original.id)).toBeNull();
+          expect(await skills.readFile(companyId, original.id, 'SKILL.md')).toBeNull();
+          expect(await skills.getVersion(companyId, original.id, retainedVersionId!)).toBeNull();
+        }
+        expect((await skills.readFile(companyId, upstream, '.paperclip-repository/private/SKILL.md'))?.content).not.toContain('Confidential');
+        // A guessed hidden slug cannot replace or erase someone else's private fork.
+        const publicFork = await skills.forkSkill(companyId, upstream, { slug: `retained-${choice}-fork` });
+        expect(publicFork.skill.id).not.toBe(fork.skill.id);
+        expect(publicFork.skill.slug).not.toBe(fork.skill.slug);
+      });
+      expect((await skills.readFile(companyId, fork.skill.id, 'SKILL.md'))?.content).toContain('Confidential original-project notes');
+      // Explicit adoption of the original workspace also moves tracking, not provenance.
+      await adoptProjectSkillRepository(db, companyId, row.id, context.authorize);
+      await worker.tick(new Date(Date.now() + 6 * 60_000));
+      const [rebound] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, row.id));
+      expect(rebound!.sourceId).toBe(restored.id);
+      expect(await skills.getById(companyId, fork.skill.id)).not.toBeNull();
       await db.delete(projects).where(eq(projects.id, legacy.projectId));
       await db.delete(projectAccessMembers).where(and(eq(projectAccessMembers.projectId, row.projectId), eq(projectAccessMembers.subjectId, userId)));
       expect(await skills.getById(companyId, fork.skill.id)).toBeNull();

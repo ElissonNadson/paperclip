@@ -2250,3 +2250,8 @@ read-only activity do not admit scheduled work. Inbox discovery/Blocked preserve
 participated automation and hide unrelated automation by default. Agent profile
 history, routine history, and task-detail subtasks remain complete. API consumers
 that omit the optional creation filter retain their existing list behavior.
+
+Project-derived editable forks retain the project audience present when created.
+Later repository attachments do not grant access to those edits. Re-adopting a
+removed source uses a separate active tracking identity; retained copies keep
+their original provenance. Project membership and visibility remain dynamic.

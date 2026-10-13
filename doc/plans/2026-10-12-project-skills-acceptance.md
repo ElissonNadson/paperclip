@@ -280,8 +280,8 @@ approved automatic/latest behavior. The response records repository-author trust
 per-refresh credential/access/policy revalidation and the manual-update option.
 The scanner subsequently passed. Greptile then identified two concrete defects:
 legacy adoption without a saved source ID did not restore removed tracking, and
-Codex’s reused home could retain a revoked private skill link. Adoption now resolves
-the matching removed repository/ref in its transaction. Codex launches against a
+Codex’s reused home could retain a revoked private skill link. The initial correction resolved the removed repository/ref; the final privacy
+review superseded reuse with separate active tracking identity, described below. Codex launches against a
 home scoped to its permitted immutable inventory, including an empty inventory,
 with the selected credential source preserved. Three Codex launch/injection/sync
 suites pass 32 cases; final service and real-provider results are recorded on the PR.
@@ -319,3 +319,13 @@ real app on source `c9a5897bb0843ee5ac89ee0bb9210ca864d6ceca` shows the
 withdrawn request as inactive after reload, alongside the completed CLI result.
 The updated CLI capture records this corrected recovery state. Final head checks
 and merge status remain authoritative on the PR.
+
+
+The final retained-content privacy correction separates tracking from provenance.
+After removal, adoption creates or joins an active source; it never adds readers
+to the removed source holding editable copies. Forks capture the originating
+project set independently, so later open-project attachments cannot expose private
+local edits. Membership, project visibility and deletion remain dynamic. Generated
+migration 0341 makes source identity uniqueness apply only to active rows. The
+regression matrix covers public re-adoption, direct private file/version denial,
+private fork preservation, original-workspace adoption, and membership revocation.

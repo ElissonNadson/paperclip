@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { pgTable, uuid, text, timestamp, jsonb, integer, boolean, uniqueIndex, index } from 'drizzle-orm/pg-core';
 import type { SkillPackageInspection, SkillRepositoryPackage } from '@paperclipai/shared';
 import { companies } from './companies.js';
@@ -38,8 +39,8 @@ export const companySkillSources = pgTable('company_skill_sources', {
   leaseExpiresAt: timestamp('lease_expires_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 }, table => ({
-  repositoryRef: uniqueIndex('company_skill_sources_repository_ref_idx').on(table.companyId, table.repositoryUrl, table.trackingRef),
-  repositoryIdentity: uniqueIndex('company_skill_sources_identity_ref_idx').on(table.companyId, table.repositoryId, table.trackingRef),
+  repositoryRef: uniqueIndex('company_skill_sources_repository_ref_idx').on(table.companyId, table.repositoryUrl, table.trackingRef).where(sql`${table.removedAt} is null`),
+  repositoryIdentity: uniqueIndex('company_skill_sources_identity_ref_idx').on(table.companyId, table.repositoryId, table.trackingRef).where(sql`${table.removedAt} is null`),
 }));
 
 /** Durable attachment jobs and retained project access provenance. */

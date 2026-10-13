@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import type { RequestHandler } from 'express';
 import { and, eq, inArray, isNull, or, sql } from 'drizzle-orm';
@@ -71,4 +72,28 @@ export function skillAccessService(db: Db, actor = currentSkillActor()) {
           and ${projects.id}::text = ${activityLog.entityId} and ${projectCondition})))`;
   }
   return { canReadCompany, condition, projectIds, visibleSourceIds, assertSkill, assertSource, activityCondition };
+}
+
+/** Independent editable forks retain the originating project set at creation.
+ * Membership/visibility remain dynamic; later repository attachments grant no access.
+ */
+export async function retainProjectSkillAccess(db: Db, companyId: string, sourceId: string | null | undefined) {
+  if (!sourceId) return null;
+  return db.transaction(async tx => {
+    const [source] = await tx.select().from(companySkillSources).where(and(
+      eq(companySkillSources.companyId, companyId), eq(companySkillSources.id, sourceId)));
+    if (!source || source.removedAt || source.accessScope !== 'projects') return sourceId;
+    const origins = await tx.select({ projectId: projectSkillSources.projectId }).from(projectSkillSources)
+      .where(and(eq(projectSkillSources.companyId, companyId), eq(projectSkillSources.sourceId, sourceId)));
+    const id = randomUUID();
+    await tx.insert(companySkillSources).values({ id, companyId, repositoryId: source.repositoryId,
+      repositoryUrl: source.repositoryUrl, fullName: source.fullName, trackingRef: source.trackingRef,
+      accessScope: 'projects', removedAt: new Date(), enabled: false, automaticUpdates: false });
+    const projectIds = [...new Set(origins.map(origin => origin.projectId))];
+    if (projectIds.length) await tx.insert(projectSkillSources).values(projectIds.map(projectId => ({
+      companyId, projectId, sourceId: id, repositoryUrl: source.repositoryUrl, trackingRef: source.trackingRef,
+      active: false, status: 'ready' as const,
+    })));
+    return id;
+  });
 }

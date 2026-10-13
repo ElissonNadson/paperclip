@@ -1,4 +1,4 @@
-import { skillAccessService } from "./skill-access.js";
+import { retainProjectSkillAccess, skillAccessService } from "./skill-access.js";
 import type { AuthorizationActor } from "./authorization.js";
 import { updateAgentConfigurationInTransaction } from "./agent-configuration-transaction.js";
 import { logger } from "../middleware/logger.js";
@@ -2963,7 +2963,7 @@ async function listLastEditorsBySkillId(
 }
 
 export function companySkillService(db: Db, options: { actor?: AuthorizationActor } = {}) {
-  const visibility = () => skillAccessService(db, options.actor);
+  const visibility = (database: DbOrTransaction = db) => skillAccessService(database as Db, options.actor);
   const folderSvc = folderService(db);
   const agents = agentService(db);
   const projects = projectService(db);
@@ -3420,7 +3420,7 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     const row = await database
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.id, id), await visibility().condition(companyId)))
+      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.id, id), await visibility(database).condition(companyId)))
       .then((rows) => rows[0] ?? null);
     return row ? enrichFolderPath(companyId, toCompanySkill(row)) : null;
   }
@@ -3429,7 +3429,7 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     const row = await database
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.key, key), await visibility().condition(companyId)))
+      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.key, key), await visibility(database).condition(companyId)))
       .then((rows) => rows[0] ?? null);
     return row ? enrichFolderPath(companyId, toCompanySkill(row)) : null;
   }
@@ -4029,16 +4029,16 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     const source = await getById(companyId, skillId);
     if (!source) throw notFound("Skill not found");
     if (source.accessSourceId && input.sharingScope === "public_link") throw forbidden("Project skills cannot be published through a public link.");
-    const existing = await listFull(companyId);
+    const existing = await db.select({ slug: companySkills.slug }).from(companySkills)
+      .where(eq(companySkills.companyId, companyId));
     const usedSlugs = new Set(existing.map((skill) => normalizeSkillSlug(skill.slug) ?? skill.slug));
     const forkSlug = uniqueSkillSlug(normalizeSkillSlug(input.slug ?? `${source.slug}-fork`) ?? `${source.slug}-fork`, usedSlugs);
     const forkName = input.name?.trim() || `${source.name} Fork`;
     const forkKey = `company/${companyId}/${forkSlug}`;
     const plannedReassignments = await planSkillReassignments(companyId, source, forkKey, input.reassignAgentIds);
     const managedRoot = resolveManagedSkillsRoot(companyId);
-    const forkDir = path.resolve(managedRoot, forkSlug);
-    await fs.rm(forkDir, { recursive: true, force: true });
-    await fs.mkdir(forkDir, { recursive: true });
+    await fs.mkdir(managedRoot, { recursive: true });
+    const forkDir = await fs.mkdtemp(path.join(managedRoot, `${forkSlug}-fork-`));
     const sourceVersion = await getCurrentVersion(source);
     const repositoryFiles = sourceVersion?.repositorySnapshotId ? await runtimeVersionInventory(companyId, sourceVersion) : null;
     for (const entry of repositoryFiles ?? source.fileInventory) {
@@ -4055,8 +4055,9 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     }
     const inventory = await collectLocalSkillInventory(forkDir);
     const parsed = parseFrontmatterMarkdown(markdown);
+    const accessSourceId = await retainProjectSkillAccess(db, companyId, source.accessSourceId);
     const metadata = {
-      accessSourceId: source.accessSourceId ?? null,
+      accessSourceId,
       sourceKind: "managed_local",
       forkedFromSkillId: source.id,
       forkedFromCompanyId: source.companyId,
@@ -4081,7 +4082,7 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
     await db
       .update(companySkills)
       .set({
-        accessSourceId: source.accessSourceId ?? null,
+        accessSourceId,
         iconUrl: source.iconUrl,
         color: source.color,
         tagline: source.tagline,
@@ -4618,9 +4619,10 @@ export function companySkillService(db: Db, options: { actor?: AuthorizationActo
           ? await collectLocalSkillInventory(skillDir)
           : [{ path: "SKILL.md", kind: "skill" as const }];
         const parsed = parseFrontmatterMarkdown(markdown);
+        const accessSourceId = await retainProjectSkillAccess(db, companyId, forkSource?.accessSourceId);
         const metadata = {
           sourceKind: "managed_local",
-          ...(forkSource?.accessSourceId ? { accessSourceId: forkSource.accessSourceId } : {}),
+          ...(accessSourceId ? { accessSourceId } : {}),
           ...(forkSource ? {
             forkedFromSkillId: forkSource.id,
             forkedFromCompanyId: forkSource.companyId,

@@ -54,25 +54,19 @@ export async function adoptProjectSkillRepository(db: Db, companyId: string, wor
   await authorize('skills.import', { sourceType: 'git', sourceLocator: repository.repositoryUrl });
   return db.transaction(async tx => {
     const database = tx as unknown as Db;
+    const [previous] = await tx.select({ bindingId: projectSkillSources.id, removedAt: companySkillSources.removedAt })
+      .from(projectSkillSources).innerJoin(companySkillSources, eq(companySkillSources.id, projectSkillSources.sourceId))
+      .where(and(eq(projectSkillSources.companyId, companyId), eq(projectSkillSources.workspaceId, workspace.id),
+        eq(projectSkillSources.repositoryUrl, repository.repositoryUrl), eq(projectSkillSources.trackingRef, repository.trackingRef)))
+      .for('update');
+    if (previous?.removedAt) {
+      // Retain the original project's access provenance, but free this workspace
+      // for a new tracking identity. Never attach new readers to retained copies.
+      await tx.update(projectSkillSources).set({ workspaceId: null, active: false })
+        .where(eq(projectSkillSources.id, previous.bindingId));
+    }
     const binding = await enqueueProjectSkillSource(database, workspace);
     if (!binding) throw notFound('Project repository not found');
-    {
-      const [removed] = await tx.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, companyId),
-        binding.sourceId ? eq(companySkillSources.id, binding.sourceId) : and(
-          eq(companySkillSources.repositoryUrl, repository.repositoryUrl), eq(companySkillSources.trackingRef, repository.trackingRef)),
-        sql`${companySkillSources.removedAt} is not null`)).for('update');
-      if (removed) {
-        // Bind legacy adoption before restoring provenance, even without a saved source ID.
-        await tx.update(projectSkillSources).set({ sourceId: removed.id, status: 'ready', lastError: null })
-          .where(eq(projectSkillSources.id, binding.id));
-        binding.sourceId = removed.id;
-        // Explicit adoption restarts tracking; ordinary attachment never overrides removal.
-        await tx.update(companySkillSources).set({ removedAt: null, enabled: true, automaticUpdates: true,
-          lastScanCommit: null, lastError: null, nextSyncAt: new Date(), failureCount: 0,
-          revision: sql`${companySkillSources.revision} + 1`, ...await projectSkillSetupIdentity(database, companyId),
-        }).where(eq(companySkillSources.id, removed.id));
-      }
-    }
     if (!binding.sourceId) await tx.update(projectSkillSources).set({ status: 'pending', nextSyncAt: new Date(), failureCount: 0, lastError: null,
       ...await projectSkillSetupIdentity(database, companyId),
     }).where(eq(projectSkillSources.id, binding.id));
@@ -178,7 +172,7 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
       const reader = context.read(binding.connectionId);
       const scan = await scanGitHubSkillsWithPackageFallback({ repositoryUrl: binding.repositoryUrl, trackingRef: binding.trackingRef, packageMode: 'repository' }, reader, { signal: shutdown.signal });
       const [existing] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId),
-        eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef)));
+        eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef), isNull(companySkillSources.removedAt)));
       let sourceId: string;
       if (existing) {
         await context.authorize('skills.import', { sourceType: 'git', sourceLocator: existing.repositoryUrl });
@@ -191,7 +185,7 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
           sourceId = result.source.id;
         } catch (error) {
           if (!(error instanceof Error && 'status' in error && error.status === 409)) throw error;
-          const [concurrent] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId), eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef)));
+          const [concurrent] = await db.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, binding.companyId), eq(companySkillSources.repositoryUrl, scan.repositoryUrl), eq(companySkillSources.trackingRef, binding.trackingRef), isNull(companySkillSources.removedAt)));
           if (!concurrent) throw error;
           sourceId = concurrent.id;
         }
