@@ -134,7 +134,9 @@ scope. The dispatcher wakes after the mutation's outer transaction settles,
 on host startup, plugin activation/worker start, and company configuration or
 enablement changes. Empty and deferred queues have no periodic scans. `retry`,
 exceptions, invalid results, and unavailable workers leave the event pending and
-schedule another attempt after 30 seconds. `deferred` retains the event without
+schedule another attempt after 30 seconds. Other acknowledgments or mutations
+do not bypass that event's delay; a host restart may replay it immediately.
+`deferred` retains the event without
 a retry deadline, useful while waiting for operator configuration. A later wake
 revisits deferred events. Acknowledgment immediately exposes subsequent work.
 

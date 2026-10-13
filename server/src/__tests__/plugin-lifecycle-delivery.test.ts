@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { eq } from "drizzle-orm";
 import { companies, createDb, pluginConfig, plugins, resourceLifecycleEvents, type Db } from "@paperclipai/db";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { getEmbeddedPostgresTestSupport, startEmbeddedPostgresTestDatabase } from "./helpers/embedded-postgres.js";
 import { logger } from "../middleware/logger.js";
 import { registerPluginLifecycleDelivery } from "../services/plugin-lifecycle-delivery.js";
@@ -25,6 +25,7 @@ describePostgres("durable plugin lifecycle delivery", () => {
   let pluginId: string;
   beforeAll(async () => { database = await startEmbeddedPostgresTestDatabase("paperclip-plugin-delivery-"); db = createDb(database.connectionString); }, 90_000);
   afterAll(async () => { await database?.cleanup(); });
+  afterEach(() => { vi.restoreAllMocks(); });
   beforeEach(async () => {
     await db.delete(plugins);
     companyId = randomUUID(); pluginId = randomUUID();
@@ -48,7 +49,7 @@ describePostgres("durable plugin lifecycle delivery", () => {
     const running = vi.fn(() => true);
     const lifecycle = new EventEmitter();
     const worker = registerPluginLifecycleDelivery(coordinator as never, db, { call, isRunning: running } as unknown as PluginWorkerManager, lifecycle as unknown as PluginLifecycleManager);
-    return { call, running, wake, lifecycle, worker, run: () => task.run(new AbortController().signal), pending: () => task.hasPending(), settled: () => task.onSettled?.() };
+    return { call, running, wake, lifecycle, worker, run: () => task.run(new AbortController().signal), pending: () => task.hasPending(), nextRunAt: () => task.nextRunAt?.(), settled: () => task.onSettled?.() };
   }
   it("drains creation before transitions, recovers acknowledgments across dispatcher replacement, and ignores agent events", async () => {
     const id = await event(); await event(id, "update"); await event(id, "delete");
@@ -62,16 +63,38 @@ describePostgres("durable plugin lifecycle delivery", () => {
     restarted.worker.dispose();
   });
   it("replays failures and invalid acknowledgments without blocking independent resources", async () => {
+    let now = Date.now(); vi.spyOn(Date, "now").mockImplementation(() => now);
     const failed = await event(); await event(failed, "delete"); await event();
     const d = delivery();
     d.call.mockImplementationOnce(async () => { throw new Error("worker exited after provider effect"); });
     await d.run();
     expect(d.call).toHaveBeenCalledTimes(2); expect(await d.pending()).toBe(true);
     d.call.mockImplementationOnce(async () => ({ eventId: "wrong", status: "acknowledged" }));
-    await d.run(); expect(await d.pending()).toBe(true);
-    await d.run(); await d.run();
+    now += 30_000; await d.run(); expect(await d.pending()).toBe(true);
+    now += 30_000; await d.run(); await d.run();
     expect(d.call.mock.calls.map(c => c[2].action)).toEqual(["create", "create", "create", "create", "delete"]);
     expect(await pluginLifecycleInbox(db, pluginId).list(companyId)).toEqual([]);
+    d.worker.dispose();
+  });
+  it("healthy acknowledgments and new events do not bypass a failed event's retry deadline", async () => {
+    let now = Date.now(); vi.spyOn(Date, "now").mockImplementation(() => now);
+    const failed = await event(), healthy = await event();
+    await event(healthy, "update"); await event(healthy, "delete");
+    const d = delivery();
+    d.call.mockImplementation(async (_p, _m, e) => ({ eventId: e.id, status: e.resourceId === failed ? "retry" : "acknowledged" }));
+    await d.run();
+    const deadline = now + 30_000;
+    expect(d.nextRunAt()).toBe(deadline);
+    now += 1000;
+    await d.run(); await d.run(); await event(); d.settled(); await d.run();
+    expect(d.call.mock.calls.filter(c => c[2].resourceId === healthy).map(c => c[2].action)).toEqual(["create", "update", "delete"]);
+    expect(d.call.mock.calls.filter(c => c[2].resourceId === failed)).toHaveLength(1);
+    expect(d.nextRunAt()).toBe(deadline);
+    now = deadline;
+    expect(d.nextRunAt()).toBeNull(); // Paused dispatch waits for the normal retry, not a zero-delay loop.
+    await d.run();
+    expect(d.call.mock.calls.filter(c => c[2].resourceId === failed)).toHaveLength(2);
+    expect(d.nextRunAt()).toBe(now + 30_000);
     d.worker.dispose();
   });
   it("defers without a retry deadline, retries unfinished work, and wakes on plugin startup", async () => {

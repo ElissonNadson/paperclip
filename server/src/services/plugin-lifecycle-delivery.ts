@@ -19,12 +19,24 @@ export function registerPluginLifecycleDelivery(
   // Startup and every wake remain pending until an admitted run inspects the inbox.
   // The coordinator may reconcile signals while idle drain prevents dispatch.
   let pending = true;
+  const retryAt = new Map<string, number>();
+  const retryMs = 30_000;
   const delivery = coordinator.register(DELIVERY_QUEUES.pluginLifecycle, {
-    retryMs: 30_000,
+    retryMs,
     hasPending: async () => pending,
     onSettled: () => { pending = true; },
+    nextRunAt() {
+      if (!pending) return null;
+      let next: number | null = null;
+      for (const at of retryAt.values()) {
+        // An expired deadline during idle drain must not schedule a busy loop.
+        if (at > Date.now() && (next === null || at < next)) next = at;
+      }
+      return next;
+    },
     async run(signal) {
       pending = false;
+      for (const [key, at] of retryAt) if (at <= Date.now()) retryAt.delete(key);
       const configured = await db.select({ plugin: plugins, companyId: pluginConfig.companyId })
         .from(plugins).innerJoin(pluginConfig, eq(pluginConfig.pluginId, plugins.id))
         .where(eq(plugins.status, "ready"))
@@ -43,6 +55,8 @@ export function registerPluginLifecycleDelivery(
           const events = await inbox.list(companyId, 100, afterId, types);
           for (const event of events) {
             if (signal.aborted) return;
+            const retryKey = `${plugin.id}:${event.id}`;
+            if (retryAt.has(retryKey)) { pending = true; continue; }
             if (!manager.isRunning(plugin.id)) { pending = true; break; }
             let stage = "eligibility";
             try {
@@ -64,8 +78,12 @@ export function registerPluginLifecycleDelivery(
                 await inbox.acknowledge(companyId, event.id);
                 // An acknowledgment exposes the next event for this resource. Drain immediately.
                 wake();
-              } else if (result.status === "retry") pending = true;
+              } else if (result.status === "retry") {
+                retryAt.set(retryKey, Date.now() + retryMs);
+                pending = true;
+              }
             } catch (error) {
+              retryAt.set(retryKey, Date.now() + retryMs);
               // Provider error messages/data may contain secrets; retain only routing
               // identifiers, the failed stage, and the protocol's numeric error code.
               const code = (error as { code?: unknown } | null)?.code;
