@@ -159,6 +159,15 @@ function registerModuleMocks() {
     agentService: () => mockAgentService,
   }));
 
+  // This route-contract harness supplies no database. Private-source decisions
+  // are exercised with the real database in project-skill-sources.test.ts.
+  vi.doMock("../services/skill-access.js", async () => {
+    const actual = await vi.importActual<typeof import("../services/skill-access.js")>("../services/skill-access.js");
+    return { ...actual, skillAccessService: (db: Parameters<typeof actual.skillAccessService>[0]) => ({
+      ...actual.skillAccessService(db), assertSource: async () => {},
+    }) };
+  });
+
   vi.doMock("../services/company-skills.js", async () => {
     const actual = await vi.importActual<typeof import("../services/company-skills.js")>(
       "../services/company-skills.js",

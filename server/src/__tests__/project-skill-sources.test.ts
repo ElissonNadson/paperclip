@@ -206,7 +206,8 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
       expect(await skills.getById(companyId, fork.skill.id)).not.toBeNull();
       if (choice === 'copy') {
         expect(await skills.getById(companyId, original.id)).toMatchObject({ sourceType: 'local_path', accessSourceId: source.id });
-        expect((await skills.readFile(companyId, original.id, 'SKILL.md'))?.content).toBe(md('retained private workflow'));
+        expect((await skills.readFile(companyId, original.id, '.paperclip-repository/private/SKILL.md'))?.content).toBe(md('retained private workflow'));
+        expect((await skills.readFile(companyId, original.id, 'SKILL.md'))?.content).toContain('.paperclip-repository/private/SKILL.md');
       } else expect(await skills.getById(companyId, original.id)).toBeNull();
       await db.update(companySkillSources).set({ automaticUpdates: false }).where(eq(companySkillSources.companyId, companyId));
       const before = downloads.mock.calls.length;

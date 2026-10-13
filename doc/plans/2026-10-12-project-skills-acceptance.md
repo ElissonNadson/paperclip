@@ -266,5 +266,9 @@ No assertions or timeout thresholds were relaxed to obtain these results.
 Integrated master’s keep/delete choice with project provenance. Removed project
 sources retain an internal access identity, invalidate refresh and attachment leases,
 and stop tracking. Kept copies and forks remain dynamically restricted. Ordinary
-reattachment retains removal; explicit adoption restarts tracking. Focused service
-and browser results for this integration are recorded below when qualification finishes.
+reattachment retains removal; explicit adoption restarts tracking. The rebuilt Storybook passes all 13 interactive project-skill browser cases, including
+kept-copy access wording and cancelled removal; the Sources UI/API suites pass 21
+cases. The initial Linux pass exposed two harness mismatches: source authorization
+now precedes request validation, and repository skill instructions use a wrapper.
+Both assertions retain their intended contract with corrected fixture setup/file
+paths; the final service pass and current PR checks are recorded on PR #16066.

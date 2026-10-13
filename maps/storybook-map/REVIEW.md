@@ -263,6 +263,10 @@ with inbound admission and adds corresponding verification recipes. Three chat
 catalog dependency hashes were reviewed; their classifications and fixture/provider
 limits remain unchanged. Project skill pages and journeys are unchanged.
 
+## Catalog and personal toast reconciliation — 2026-10-13
+
+Preserved master’s capability associations, optional overview home field, feature-map additions, and viewer-specific toast eligibility. Source-only review covers changed map text, generated feature index and overview associations; no story classifications were upgraded. The merged socket retains project skill authorization, and Sources cache invalidation remains intact.
+
 ## Project source removal integration — 2026-10-13
 
 Reviewed the production Sources keep/delete dialog, preserved automatic update and connection-repair controls, and the upstream GitHub fixture removal handler and new removal journey. Project copies retain their originating access restrictions; removed tracking uses durable provenance. The five affected catalog fingerprints retain their prior classifications. Browser and service verification are recorded in the acceptance report.
@@ -392,6 +396,90 @@ pages still cover 35 areas and 171 capabilities. Catalog/generator tests (16),
 catalog validation, map checks and token gates pass. This is source reconciliation,
 not a new visual or live production acceptance claim.
 
+## 2026-10-13 capability association reconciliation
+
+Source baseline: `60bc0d5fee9a6e48db08fc016521fee3d9f57d67`.
+Reviewed the complete authored inventory and missing-capability lookup, then
+inspected the candidate story exports, wrappers, fixture behavior and shipped
+subjects. This pass corrects navigation associations; it is not a full parity,
+interaction or visual review of all 223 suites.
+
+Added 55 references across 34 suites. Primary-agent suites now use their own
+capability instead of organization/reporting. Shared foundations retain their
+physical and sidebar home while cross-listing `developer-labs/design` through
+an explicit, reasoned Foundations override. No story was moved, renamed or removed.
+The parser comparison preserves all 223 files and 2,210 authored story IDs.
+
+The map had three omissions revealed by stories and confirmed in shipped source:
+
+- `agents/primary-agent`: personal choice, confirmation and fallback presentation,
+  distinct from organization/reporting. The production provider and self-service
+  API have user/company scope; the story presentation provider simulates changes.
+- `companies/decision-models`: connection/model/sponsorship configuration,
+  bounded testing and history. Settings require board connection management;
+  history and task-link visibility have separate read policies.
+- `companies/fast-responses`: experimental acknowledgement configuration,
+  tests and history. A receipt does not establish completed agent work.
+
+Added their production recipes and same-ID agent-access companions. Existing
+capability IDs remain. Both maps now contain 35 families and 174 capabilities.
+New access evidence is source-only; no live provider or agent-access claim.
+
+Confirmed association evidence and limits:
+
+| Existing suites | Added lookup | Demonstrated scope |
+| --- | --- | --- |
+| Four shared foundation suites | Developer design | Production controls and contributor visual states; no application journey claim. |
+| Agent chat | Handoff | Project-created, existing-project, repository and failure results; tool results/navigation simulated. |
+| Agent management | Environment assignment | Forced Kubernetes target and missing-target warning; no saved assignment or execution. |
+| Team catalog | Installation/configuration | Progress/success results and adapter choices; no real install, account setup or routed catalog. |
+| Issue-thread interactions | Plan review/continuation | Approval, stale-revision and accepted-but-resume-failed states; no successful resume or duplicate-suppression proof. |
+| New-task composer | Workspace binding | Worktree selection and submitted request values; no execution admission. |
+| GitHub skills journey/detail | Policy/versions | Assignment selection and fixture revisions; no runtime enforcement or durable no-op callbacks. |
+| Routine webhook/detail | History/audit | Production Runs/Activity with fixture tasks/events; no scheduler or audit-persistence proof. |
+| Budget finance | Incidents | Warning/resolved/pending/escalated cards; resolution callbacks are no-ops. |
+| Public-MCP setting | Instance configuration | Experimental flag toggles, cloud restrictions and failed-save rollback; no other instance settings. |
+| Arcade/Composio/Executor/Zapier setup | Draft recovery, identity, action policy/testing | Production setup/permissions with in-memory drafts; reload loses the draft. |
+| Chat management/iMessage Photon | Provider, identity, conversation, lifecycle and setup/failure | Shipped hosts with simulated provider/identity/delivery data. |
+| Primary-agent suites and decision/fast-response suites | New map capabilities | Production UI subjects plus simulated preference/provider/result boundaries. |
+
+Eleven previously empty capability lookups now have related examples. With the
+three newly mapped capabilities also linked, the absent-example count changes
+from 70 of 171 to 59 of 174. This measures catalog links, not complete behavior
+coverage. Review classifications were not promoted by this association pass.
+
+Retained gaps and rejected lookalikes:
+
+- Document preview/annotations do not establish version editing/restoration.
+- Seeded drafts do not establish task switching, reload or uncertain submission.
+- Approval resume failure does not establish durable approval delivery.
+- NewToolsAllowed does not establish quarantined-action review.
+- Assistant OAuth revocation does not establish gateway token scope/revocation.
+- Budget resolution controls with no-op handlers do not establish relief/resumption.
+- A closed browser session does not establish workspace closure/reopening.
+- Team fixtures and Skill Studio route presence do not establish working installs
+  or Studio test execution/results.
+
+The gateway-token fixture needs separate review before advertising coverage:
+its token data may omit fields read by the production token panel. The missing
+lookup remains explicit. Rendering/interaction checks below cover selected
+association navigation, not all source-audited suites or production acceptance.
+
+Executed checks: 27 catalog/generator/map tests, catalog and map validation,
+token gates, skill validation, repository typecheck/build and Storybook build
+passed. The built index has 2,246 entries and loses none of the original 2,211.
+In the browser, the developer Design lookup opens the preserved primitive URL;
+company-service sections link the existing settings/history/journey suites.
+The decision SetupToHistory journey passed its 12 interaction steps and showed
+the simulated test receipt in history. Primary-agent ReplacePrimary passed its
+four interaction steps and displayed the replacement confirmation. No console
+errors were observed in those selected checks. No visual-baseline comparison.
+
+The broad local repository test run was interrupted before completion to merge
+new master changes; no full local suite pass is claimed. Fresh CI on the updated
+branch supplies repository-wide verification. The merge retains master’s native
+REST transport updates alongside the three new capability records; new live
+provider and agent-credential verification remains not run.
 ## Slack DM mention exemption — 2026-10-13
 
 Scoped source review: Slack DMs no longer require an at-mention, while channel
