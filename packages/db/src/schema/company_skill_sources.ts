@@ -2,7 +2,8 @@ import { pgTable, uuid, text, timestamp, jsonb, integer, boolean, uniqueIndex, i
 import type { SkillPackageInspection, SkillRepositoryPackage } from '@paperclipai/shared';
 import { companies } from './companies.js';
 import { companySkills } from './company_skills.js';
-import { toolConnections } from './tool_access.js';
+import { projects } from './projects.js';
+import { projectWorkspaces } from './project_workspaces.js';
 
 export const companySkillSources = pgTable('company_skill_sources', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -11,11 +12,21 @@ export const companySkillSources = pgTable('company_skill_sources', {
   repositoryUrl: text('repository_url').notNull(),
   fullName: text('full_name').notNull(),
   trackingRef: text('tracking_ref').notNull(),
-  connectionId: uuid('connection_id').references(() => toolConnections.id, { onDelete: 'set null' }),
+  // Retain the selected identity after deletion so refresh requires repair.
+  connectionId: uuid('connection_id'),
   packageMode: text('package_mode').$type<'skills' | 'repository'>().notNull().default('skills'),
   repositoryPackage: jsonb('repository_package').$type<SkillRepositoryPackage>(),
   excludedFolders: jsonb('excluded_folders').$type<string[]>().notNull().default([]),
   enabled: boolean('enabled').notNull().default(true),
+  automaticUpdates: boolean('automatic_updates').notNull().default(true),
+  importNewSkills: boolean('import_new_skills').notNull().default(false),
+  accessScope: text('access_scope').$type<'company' | 'projects'>().notNull().default('company'),
+  refreshUserId: text('refresh_user_id'),
+  refreshAgentId: uuid('refresh_agent_id'),
+  refreshLocalTrusted: boolean('refresh_local_trusted').notNull().default(false),
+  refreshGrantId: uuid('refresh_grant_id'),
+  nextSyncAt: timestamp('next_sync_at', { withTimezone: true }).notNull().defaultNow(),
+  failureCount: integer('failure_count').notNull().default(0),
   revision: integer('revision').notNull().default(0),
   lastAttemptAt: timestamp('last_attempt_at', { withTimezone: true }),
   lastSuccessAt: timestamp('last_success_at', { withTimezone: true }),
@@ -27,6 +38,34 @@ export const companySkillSources = pgTable('company_skill_sources', {
 }, table => ({
   repositoryRef: uniqueIndex('company_skill_sources_repository_ref_idx').on(table.companyId, table.repositoryUrl, table.trackingRef),
   repositoryIdentity: uniqueIndex('company_skill_sources_identity_ref_idx').on(table.companyId, table.repositoryId, table.trackingRef),
+}));
+
+/** Durable attachment jobs and retained project access provenance. */
+export const projectSkillSources = pgTable('project_skill_sources', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  companyId: uuid('company_id').notNull().references(() => companies.id, { onDelete: 'cascade' }),
+  projectId: uuid('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').references(() => projectWorkspaces.id, { onDelete: 'set null' }),
+  sourceId: uuid('source_id').references(() => companySkillSources.id, { onDelete: 'set null' }),
+  repositoryUrl: text('repository_url').notNull(),
+  trackingRef: text('tracking_ref').notNull(),
+  active: boolean('active').notNull().default(true),
+  status: text('status').$type<'pending' | 'ready' | 'error'>().notNull().default('pending'),
+  refreshUserId: text('refresh_user_id'),
+  refreshAgentId: uuid('refresh_agent_id'),
+  refreshLocalTrusted: boolean('refresh_local_trusted').notNull().default(false),
+  connectionId: uuid('connection_id'),
+  refreshGrantId: uuid('refresh_grant_id'),
+  nextSyncAt: timestamp('next_sync_at', { withTimezone: true }).notNull().defaultNow(),
+  failureCount: integer('failure_count').notNull().default(0),
+  lastError: text('last_error'),
+  leaseToken: uuid('lease_token'),
+  leaseExpiresAt: timestamp('lease_expires_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, table => ({
+  workspaceRepository: uniqueIndex('project_skill_sources_workspace_repo_ref_idx').on(table.workspaceId, table.repositoryUrl, table.trackingRef),
+  sourceProject: index('project_skill_sources_source_project_idx').on(table.companyId, table.sourceId, table.projectId),
+  pending: index('project_skill_sources_sync_idx').on(table.active, table.status, table.nextSyncAt),
 }));
 export const companySkillSourceEntries = pgTable('company_skill_source_entries', {
   id: uuid('id').primaryKey().defaultRandom(),

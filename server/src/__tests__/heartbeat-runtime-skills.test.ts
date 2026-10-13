@@ -292,7 +292,7 @@ describeEmbeddedPostgres("heartbeat runtime skill version pins", () => {
       ?.skills.find((entry) => entry.key === skillKey);
     expect(defaultSkill).toMatchObject({
       key: skillKey,
-      versionId: null,
+      versionId: versionTwo.id,
       currentVersionId: versionTwo.id,
       sourceStatus: "available",
     });

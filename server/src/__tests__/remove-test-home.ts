@@ -27,7 +27,8 @@ export function removeTestHome(home: string): void {
 
 function isPermissionError(error: unknown): boolean {
   const code = (error as NodeJS.ErrnoException | null)?.code;
-  return code === "EACCES" || code === "EPERM";
+  // Node on macOS can report the blocked child as a nonempty parent instead.
+  return code === "EACCES" || code === "EPERM" || code === "ENOTEMPTY";
 }
 
 function makeDirectoriesWritable(directory: string): void {

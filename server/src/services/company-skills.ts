@@ -1,3 +1,5 @@
+import { skillAccessService } from "./skill-access.js";
+import type { AuthorizationActor } from "./authorization.js";
 import { updateAgentConfigurationInTransaction } from "./agent-configuration-transaction.js";
 import { logger } from "../middleware/logger.js";
 import { removeRuntimeSkillCache, resolveRuntimeSkillCache, runtimeSkillCacheSpec } from "./runtime-skill-cache.js";
@@ -29,7 +31,8 @@ import {
   issueThreadInteractions,
   issueWorkProducts,
 } from "@paperclipai/db";
-import { readPaperclipSkillSyncPreference, writePaperclipSkillSyncPreference } from "@paperclipai/adapter-utils/server-utils";
+import { readPaperclipSkillSyncPreference, writePaperclipSkillSyncPreference, resolvePaperclipDesiredSkillNames,
+  resolveLegacyPaperclipDesiredSkillNames } from "@paperclipai/adapter-utils/server-utils";
 import { REPOSITORY_CONTENT_DIR, repositorySkillProjection } from "./skill-repository-package.js";
 import type { PaperclipDesiredSkillEntry, PaperclipSkillEntry } from "@paperclipai/adapter-utils/server-utils";
 import type {
@@ -240,6 +243,7 @@ type ImportedSkillPersistValues = Pick<
   | "name"
   | "description"
   | "markdown"
+  | "accessSourceId"
   | "sourceType"
   | "sourceLocator"
   | "sourceRef"
@@ -377,6 +381,10 @@ export type ProjectSkillScanTarget = {
 type RuntimeSkillEntryOptions = {
   materializeMissing?: boolean;
   versionSelections?: Map<string, string | null>;
+  selectionConfig?: Record<string, unknown>;
+  includeLegacy?: boolean;
+  onlyKeys?: Set<string>;
+  snapshotLatest?: boolean;
 };
 
 type SkillActor = {
@@ -440,6 +448,7 @@ function selectCompanySkillColumns() {
     authorName: companySkills.authorName,
     homepageUrl: companySkills.homepageUrl,
     categories: companySkills.categories,
+    accessSourceId: companySkills.accessSourceId,
     sharingScope: companySkills.sharingScope,
     publicShareToken: companySkills.publicShareToken,
     forkedFromSkillId: companySkills.forkedFromSkillId,
@@ -2953,7 +2962,8 @@ async function listLastEditorsBySkillId(
   return editors;
 }
 
-export function companySkillService(db: Db) {
+export function companySkillService(db: Db, options: { actor?: AuthorizationActor } = {}) {
+  const visibility = () => skillAccessService(db, options.actor);
   const folderSvc = folderService(db);
   const agents = agentService(db);
   const projects = projectService(db);
@@ -3211,6 +3221,8 @@ export function companySkillService(db: Db) {
   }
 
   async function ensureSkillInventoryCurrent(companyId: string) {
+    // Denied reads must not perform the lazy bundled-skill reconciliation.
+    if (!visibility().canReadCompany(companyId)) return;
     const existingRefresh = skillInventoryRefreshPromises.get(companyId);
     if (existingRefresh) {
       await existingRefresh;
@@ -3243,6 +3255,7 @@ export function companySkillService(db: Db) {
   }
 
   async function list(companyId: string, query: CompanySkillListQuery = {}): Promise<CompanySkillListItem[]> {
+    if (!visibility().canReadCompany(companyId)) return [];
     await ensureSkillInventoryCurrent(companyId);
     const [dbRows, folderListing] = await Promise.all([db
       .select({
@@ -3265,6 +3278,7 @@ export function companySkillService(db: Db) {
         authorName: companySkills.authorName,
         homepageUrl: companySkills.homepageUrl,
         categories: companySkills.categories,
+        accessSourceId: companySkills.accessSourceId,
         sharingScope: companySkills.sharingScope,
         publicShareToken: companySkills.publicShareToken,
         forkedFromSkillId: companySkills.forkedFromSkillId,
@@ -3278,7 +3292,7 @@ export function companySkillService(db: Db) {
         updatedAt: companySkills.updatedAt,
       })
       .from(companySkills)
-      .where(eq(companySkills.companyId, companyId))
+      .where(and(eq(companySkills.companyId, companyId), await visibility().condition(companyId)))
       .orderBy(asc(companySkills.name), asc(companySkills.key))
       .then((entries) => entries.map((entry) => toCompanySkillListRow(entry as CompanySkillListDbRow))),
       folderSvc.list(companyId, "skill"),
@@ -3348,11 +3362,12 @@ export function companySkillService(db: Db) {
   }
 
   async function listFull(companyId: string): Promise<CompanySkill[]> {
+    if (!visibility().canReadCompany(companyId)) return [];
     await ensureSkillInventoryCurrent(companyId);
     const rows = await db
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(eq(companySkills.companyId, companyId))
+      .where(and(eq(companySkills.companyId, companyId), await visibility().condition(companyId)))
       .orderBy(asc(companySkills.name), asc(companySkills.key));
     return rows.map((row) => toCompanySkill(row));
   }
@@ -3378,7 +3393,7 @@ export function companySkillService(db: Db) {
         slug: companySkills.slug,
       })
       .from(companySkills)
-      .where(eq(companySkills.companyId, companyId));
+      .where(and(eq(companySkills.companyId, companyId), await visibility().condition(companyId)));
     return rows as CompanySkillReferenceRow[];
   }
 
@@ -3386,7 +3401,7 @@ export function companySkillService(db: Db) {
     const row = await database
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.id, id)))
+      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.id, id), await visibility().condition(companyId)))
       .then((rows) => rows[0] ?? null);
     return row ? enrichFolderPath(companyId, toCompanySkill(row)) : null;
   }
@@ -3395,7 +3410,7 @@ export function companySkillService(db: Db) {
     const row = await database
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.key, key)))
+      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.key, key), await visibility().condition(companyId)))
       .then((rows) => rows[0] ?? null);
     return row ? enrichFolderPath(companyId, toCompanySkill(row)) : null;
   }
@@ -3404,7 +3419,7 @@ export function companySkillService(db: Db) {
     const rows = await db
       .select(selectCompanySkillColumns())
       .from(companySkills)
-      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.slug, slug)));
+      .where(and(eq(companySkills.companyId, companyId), eq(companySkills.slug, slug), await visibility().condition(companyId)));
     return rows.length === 1 ? enrichFolderPath(companyId, toCompanySkill(rows[0]!)) : null;
   }
 
@@ -3421,6 +3436,7 @@ export function companySkillService(db: Db) {
   }
 
   async function getVersion(companyId: string, skillId: string, versionId: string): Promise<CompanySkillVersion | null> {
+    if (!await getById(companyId, skillId)) return null;
     const row = await db
       .select()
       .from(companySkillVersions)
@@ -3993,6 +4009,7 @@ export function companySkillService(db: Db) {
     await ensureSkillInventoryCurrent(companyId);
     const source = await getById(companyId, skillId);
     if (!source) throw notFound("Skill not found");
+    if (source.accessSourceId && input.sharingScope === "public_link") throw forbidden("Project skills cannot be published through a public link.");
     const existing = await listFull(companyId);
     const usedSlugs = new Set(existing.map((skill) => normalizeSkillSlug(skill.slug) ?? skill.slug));
     const forkSlug = uniqueSkillSlug(normalizeSkillSlug(input.slug ?? `${source.slug}-fork`) ?? `${source.slug}-fork`, usedSlugs);
@@ -4020,6 +4037,7 @@ export function companySkillService(db: Db) {
     const inventory = await collectLocalSkillInventory(forkDir);
     const parsed = parseFrontmatterMarkdown(markdown);
     const metadata = {
+      accessSourceId: source.accessSourceId ?? null,
       sourceKind: "managed_local",
       forkedFromSkillId: source.id,
       forkedFromCompanyId: source.companyId,
@@ -4044,6 +4062,7 @@ export function companySkillService(db: Db) {
     await db
       .update(companySkills)
       .set({
+        accessSourceId: source.accessSourceId ?? null,
         iconUrl: source.iconUrl,
         color: source.color,
         tagline: source.tagline,
@@ -4437,6 +4456,7 @@ export function companySkillService(db: Db) {
     const skill = await getById(companyId, skillId);
     if (!skill) throw notFound("Skill not found");
 
+    if (skill.accessSourceId && input.sharingScope === "public_link") throw forbidden("Project skills cannot be published through a public link.");
     const sharingScope = Object.prototype.hasOwnProperty.call(input, "sharingScope")
       ? normalizeMutableSharingScope(input.sharingScope)
       : null;
@@ -4494,6 +4514,9 @@ export function companySkillService(db: Db) {
       : null;
     if (input.forkedFromSkillId && !forkSource) {
       throw notFound("Fork source skill not found");
+    }
+    if (forkSource?.accessSourceId && input.sharingScope === "public_link") {
+      throw forbidden("Project skills cannot be published through a public link.");
     }
     const forkVersion = forkSource ? await getCurrentVersion(forkSource) : null;
     const repositoryFiles = forkVersion?.repositorySnapshotId ? await runtimeVersionInventory(companyId, forkVersion) : null;
@@ -4578,6 +4601,7 @@ export function companySkillService(db: Db) {
         const parsed = parseFrontmatterMarkdown(markdown);
         const metadata = {
           sourceKind: "managed_local",
+          ...(forkSource?.accessSourceId ? { accessSourceId: forkSource.accessSourceId } : {}),
           ...(forkSource ? {
             forkedFromSkillId: forkSource.id,
             forkedFromCompanyId: forkSource.companyId,
@@ -6015,7 +6039,7 @@ export function companySkillService(db: Db) {
     options: RuntimeSkillEntryOptions,
   ): Promise<RuntimeSkillSourceResolution | null> {
     const selectedVersionId = options.versionSelections?.get(skill.key)
-      ?? (skill.metadata?.skillSourceId && skill.metadata?.snapshotHash ? skill.currentVersionId : null);
+      ?? (options.snapshotLatest || (skill.metadata?.skillSourceId && skill.metadata?.snapshotHash) || skill.accessSourceId ? skill.currentVersionId : null);
     if (selectedVersionId) {
       const versionPath = path.resolve(resolveManagedSkillsRoot(companyId), "__versions__", skill.id, selectedVersionId);
       const version = await getVersion(companyId, skill.id, selectedVersionId);
@@ -6099,17 +6123,39 @@ export function companySkillService(db: Db) {
     options: RuntimeSkillEntryOptions = {},
   ): Promise<PaperclipSkillEntry[]> {
     const skills = await listFull(companyId);
+    const selectedKeys = options.onlyKeys ?? (options.selectionConfig ? new Set(
+      (options.includeLegacy ? resolveLegacyPaperclipDesiredSkillNames : resolvePaperclipDesiredSkillNames)(
+        options.selectionConfig, skills.map(skill => ({ key: skill.key, runtimeName: buildSkillRuntimeName(skill.key, skill.slug) }))),
+    ) : null);
 
     const out: PaperclipSkillEntry[] = [];
-    for (const skill of skills) {
-      const sourceResolution = await resolveRuntimeSkillSource(companyId, skill, options);
+    for (let skill of skills) {
+      if (selectedKeys && !selectedKeys.has(skill.key)) continue;
+      let installedResolution: RuntimeSkillSourceResolution | null = null;
+      if (options.snapshotLatest && !skill.currentVersionId && !options.versionSelections?.get(skill.key)) {
+        // Capture installed bytes only. Older remote imports can have no
+        // version yet; execution must not fetch their missing files upstream.
+        const installed = await resolveRuntimeSkillSource(companyId, skill, { ...options, snapshotLatest: false, materializeMissing: false });
+        const inventory = installed?.status === "available"
+          ? await collectVersionFileInventoryFromDirectory(installed.source)
+          : skill.fileInventory.length === 1 && skill.fileInventory[0]?.path === "SKILL.md" && skill.markdown
+            ? [{ path: "SKILL.md", kind: "skill" as const, content: skill.markdown }] : null;
+        if (inventory) {
+          const version = await createVersion(companyId, skill.id, { label: "Execution snapshot" }, { type: "system" },
+            { skipInventoryRefresh: true, skill, fileInventory: inventory });
+          skill = { ...skill, currentVersionId: version.id };
+        } else installedResolution = installed;
+      }
+      const sourceResolution = installedResolution ?? await resolveRuntimeSkillSource(companyId, skill, {
+        ...options, ...(options.snapshotLatest ? { materializeMissing: false } : {}),
+      });
       if (!sourceResolution) continue;
 
       out.push({
         key: skill.key,
         runtimeName: buildSkillRuntimeName(skill.key, skill.slug),
         source: sourceResolution.source,
-        versionId: options.versionSelections?.get(skill.key) ?? (skill.metadata?.skillSourceId && skill.metadata?.snapshotHash ? skill.currentVersionId : null),
+        versionId: options.versionSelections?.get(skill.key) ?? (options.snapshotLatest || (skill.metadata?.skillSourceId && skill.metadata?.snapshotHash) || skill.accessSourceId ? skill.currentVersionId : null),
         currentVersionId: skill.currentVersionId,
         sourceStatus: sourceResolution.status,
         missingDetail: sourceResolution.status === "missing" ? sourceResolution.detail : null,
@@ -6308,6 +6354,7 @@ export function companySkillService(db: Db) {
         name: skill.name,
         description: skill.description,
         markdown: skill.markdown,
+        accessSourceId: typeof skill.metadata?.accessSourceId === "string" ? skill.metadata.accessSourceId : existing?.accessSourceId ?? null,
         sourceType: skill.sourceType,
         sourceLocator: skill.sourceLocator,
         sourceRef: skill.sourceRef,

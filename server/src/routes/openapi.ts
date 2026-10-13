@@ -170,6 +170,8 @@ import {
   skillSourcePreviewSchema,
   skillSourceCreateSchema,
   skillSourceSelectionSchema,
+  skillSourceSettingsSchema,
+  projectSkillSourceAdoptSchema,
   companySkillCreateSchema,
   companySkillFileDeleteSchema,
   companySkillFileUpdateSchema,
@@ -12311,6 +12313,9 @@ registerCurrentRoute({
 
 for (const [method, path, summary] of [
   ["get", "/api/companies/{companyId}/skill-sources", "List GitHub skill sources"],
+  ["get", "/api/companies/{companyId}/skill-sources/project-repositories", "List accessible project repositories and skill import status"],
+  ["post", "/api/companies/{companyId}/skill-sources/adopt-project", "Import all skills from an accessible project repository"],
+  ["patch", "/api/companies/{companyId}/skill-sources/{sourceId}/settings", "Set automatic skill updates and authorized refresh connection"],
   ["get", "/api/companies/{companyId}/skill-sources/repositories", "Browse authorized GitHub repositories for skills"],
   ["get", "/api/companies/{companyId}/skill-sources/{sourceId}", "Get a skill source and entries"],
   ["post", "/api/companies/{companyId}/skill-sources/discover", "Discover and validate repository skills"],
@@ -12321,12 +12326,14 @@ for (const [method, path, summary] of [
   ["delete", "/api/companies/{companyId}/skill-sources/{sourceId}", "Disconnect a skill source and retain installed skills"],
 ] as const) registerCurrentRoute({
   method, path, tags: ["skills"], summary,
-  ...(method === "patch" ? { body: skillSourceSelectionSchema }
+  ...(method === "patch" && path.endsWith("/settings") ? { body: skillSourceSettingsSchema }
+    : method === "post" && path.endsWith("/adopt-project") ? { body: projectSkillSourceAdoptSchema }
+    : method === "patch" ? { body: skillSourceSelectionSchema }
     : method === "post" && path.endsWith("/discover") ? { body: skillSourceDiscoverySchema }
     : method === "post" && path.endsWith("/preview") ? { body: skillSourcePreviewSchema }
     : method === "post" && path.endsWith("/skill-sources") ? { body: skillSourceCreateSchema } : {}),
   responses: {
-    [method === "post" && path.endsWith("/skill-sources") ? 201 : 200]: path.endsWith("/discover") ? {
+    [path.endsWith("/adopt-project") ? 202 : method === "post" && path.endsWith("/skill-sources") ? 201 : 200]: path.endsWith("/discover") ? {
       description: "JSON discovery by default. Accept: application/x-ndjson streams progress (phase, measured Git download percentages, and package/file counts), candidate metadata, then complete with discovery. An error event terminates a failed scan; partial candidates cannot be imported. Disconnecting cancels further provider reads.",
       content: { "application/json": { schema: z.unknown() }, "application/x-ndjson": { schema: z.string() } },
     } : r.ok(),

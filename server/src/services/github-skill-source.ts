@@ -14,6 +14,7 @@ export interface GitHubRead {
   withScan?: <T>(operation: () => Promise<T>) => Promise<T>;
   openSnapshot: (input: { repositoryUrl: string; ref: string; commitSha?: string }, options?: GitSkillSnapshotOptions) => Promise<GitSkillSnapshot>;
   readonly connectionId?: string | null;
+  readonly grantId?: string | null;
 }
 export type DiscoveredSkill = SkillSourceCandidate & { files: CompanySkillVersionFileInventoryEntry[] };
 export type ScannedSkillSource = SkillSourceDiscovery & { skills: DiscoveredSkill[]; defaultBranch: string; repositoryFiles?: CompanySkillVersionFileInventoryEntry[] };
@@ -40,6 +41,18 @@ type SkillScanInput = { packageMode?: 'skills' | 'repository'; repositoryUrl: st
 export function scanGitHubSkills(input: SkillScanInput, providerRead: GitHubRead, options: SkillScanOptions = {}): Promise<ScannedSkillSource> {
   const scan = () => scanRepository(input, providerRead, options);
   return providerRead.withScan ? providerRead.withScan(scan) : scan();
+}
+
+/** Oversized repositories may still contain valid, bounded skill packages. */
+export async function scanGitHubSkillsWithPackageFallback(input: SkillScanInput, providerRead: GitHubRead, options: SkillScanOptions = {}): Promise<ScannedSkillSource> {
+  try { return await scanGitHubSkills(input, providerRead, options); }
+  catch (error) {
+    if (input.packageMode !== 'repository' || !(error instanceof Error) || !/^Repository package exceeds/.test(error.message)) throw error;
+    options.signal?.throwIfAborted();
+    const scan = await scanGitHubSkills({ ...input, packageMode: 'skills' }, providerRead, options);
+    scan.warnings.push('Only skill packages were imported because the repository exceeds the supported package size.');
+    return scan;
+  }
 }
 
 async function scanRepository(input: SkillScanInput, providerRead: GitHubRead, options: SkillScanOptions): Promise<ScannedSkillSource> {

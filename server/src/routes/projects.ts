@@ -1,3 +1,4 @@
+import { skillAccessRequestContext } from "../services/skill-access.js";
 import { createHash } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { activityLog } from "@paperclipai/db";
@@ -58,6 +59,7 @@ const SHARED_WORKSPACE_STOP_AND_RESTART_ACTIONS = new Set(["stop", "restart"]);
 
 export function projectRoutes(db: Db) {
   const router = Router();
+  router.use(skillAccessRequestContext);
   const svc = projectService(db);
 
   async function repositoryViewer(req: Request) {
