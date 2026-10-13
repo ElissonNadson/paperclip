@@ -4156,7 +4156,7 @@ async function deleteGitBranchAtVerifiedTip(input: {
 export async function cleanupExecutionWorkspaceArtifacts(input: {
   workspace: {
     id: string;
-    companyId?: string;
+    companyId: string;
     cwd: string | null;
     providerType: string;
     providerRef: string | null;

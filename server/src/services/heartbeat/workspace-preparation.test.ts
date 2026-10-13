@@ -119,7 +119,7 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     expect(input.controllerLease.assertOwned).toHaveBeenCalledTimes(2);
   });
 
-  it("clones a fresh default remote source without copying a nested private workspace and reuses that source", async () => {
+  it.each([false, true])("isolates a restricted worktree and handles a failed workspace save (%s)", async failSave => {
     const { input, source, issue } = await fixture(true);
     const remoteUrl = "https://example.test/public/repository.git";
     await db.update(projectWorkspaces).set({ repoUrl: remoteUrl }).where(eq(projectWorkspaces.id, issue.projectWorkspaceId!));
@@ -145,8 +145,18 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
       await execFile("git", ["-C", cwd, "remote", "set-url", "origin", remoteUrl]);
       return { cwd, warning: null };
     });
-    const result = await prepareHeartbeatWorkspace(db, input);
     const isolatedSource = isolatedRemoteSourcePath(issue.companyId, issue.id);
+    if (failSave) {
+      vi.spyOn(input.services.executionWorkspacesSvc, "create").mockRejectedValueOnce(new Error("Workspace persistence failed"));
+      await expect(prepareHeartbeatWorkspace(db, input)).rejects.toThrow("Workspace persistence failed");
+      const worktrees = (await execFile("git", ["-C", isolatedSource, "worktree", "list", "--porcelain"])).stdout;
+      expect(worktrees.match(/^worktree /gm)).toHaveLength(1);
+      await expect(execFile("git", ["-C", isolatedSource, "rev-parse", "--verify", "refs/heads/test-WSP-1"])).rejects.toBeDefined();
+      expect((await readIssue(issue.id)).executionWorkspaceId).toBeNull();
+      expect(await readFile(join(privateCwd, "confidential.txt"), "utf8")).toBe("Private source must not be copied");
+      return;
+    }
+    const result = await prepareHeartbeatWorkspace(db, input);
     expect(result.executionWorkspace.baseCwd).toBe(isolatedSource);
     expect(await readFile(join(result.executionWorkspace.cwd, "README.md"), "utf8")).toBe("source content\n");
     await expect(access(join(result.executionWorkspace.cwd, "private-work"))).rejects.toMatchObject({ code: "ENOENT" });

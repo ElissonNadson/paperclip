@@ -853,6 +853,7 @@ export async function prepareHeartbeatWorkspace(db: Db, input: HeartbeatWorkspac
       try {
         await cleanupExecutionWorkspaceArtifacts({
           workspace: {
+            companyId: agent.companyId,
             id:
               reusableExistingExecutionWorkspace?.id ??
               workspaceReuseRequest.requestedExecutionWorkspaceId ??
