@@ -7,7 +7,7 @@ import type { CompanySkill, SkillSource, SkillSourceCreateRequest, SkillSourceDi
 import { normalizeAgentUrlKey } from '@paperclipai/shared';
 import { conflict, notFound, unprocessable } from '../errors.js';
 import { companySkillService, parseSkillImportSourceInput } from './company-skills.js';
-import { scanGitHubSkillsWithPackageFallback as scanGitHubSkills, previewGitHubSkillFile, type GitHubRead, type ScannedSkillSource, type SkillScanOptions } from './github-skill-source.js';
+import { scanGitHubSkillsWithPackageFallback as scanGitHubSkills, rejectIncompleteSkillPackages, previewGitHubSkillFile, type GitHubRead, type ScannedSkillSource, type SkillScanOptions } from './github-skill-source.js';
 import { skillAccessService } from './skill-access.js';
 import { skillSnapshotHash } from './skill-snapshot.js';
 
@@ -252,6 +252,8 @@ export function skillSourceService(db: Db) {
         }
       }
       const scan = staged ?? await scanGitHubSkills({ repositoryUrl: source.repositoryUrl, trackingRef: source.trackingRef, packageMode: selection?.packageMode ?? source.packageMode }, reader, { signal: options.signal });
+      // A project source may already be in package-only mode after initial fallback.
+      if (source.accessScope === 'projects' && scan.packageMode === 'skills') rejectIncompleteSkillPackages(scan);
       if (source.repositoryId && source.repositoryId !== scan.repositoryId) throw conflict('The repository at this URL has changed identity. Add it as a new source.');
       const current = await detail(companyId, id);
       if (source.packageMode === 'repository' && scan.packageMode === 'skills'

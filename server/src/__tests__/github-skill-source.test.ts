@@ -6,7 +6,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { describe, expect, it, vi } from 'vitest';
-import { scanGitHubSkills, scanGitHubSkillsWithPackageFallback, previewGitHubSkillFile, parseSkillRepository } from '../services/github-skill-source.js';
+import { scanGitHubSkills, scanGitHubSkillsWithPackageFallback, rejectIncompleteSkillPackages, previewGitHubSkillFile, parseSkillRepository } from '../services/github-skill-source.js';
 import { skillSourceDiscoverySchema, skillSourcePreviewSchema, type SkillSourceScanUpdate } from '@paperclipai/shared';
 import { skillFileBytes } from '../services/skill-snapshot.js';
 
@@ -31,6 +31,11 @@ describe('GitHub skill repository discovery', () => {
     expect(scan.skills.find(skill => skill.name === 'helper')?.error).toBeNull();
     expect(scan.skills.find(skill => skill.name === 'main')?.error).toContain('dependencies could not be preserved');
     expect(scan.candidates.find(skill => skill.name === 'main')?.error).toContain('dependencies could not be preserved');
+    const later = await scanGitHubSkills({ repositoryUrl: 'https://github.com/acme/skills', packageMode: 'skills' }, fixture);
+    expect(later.skills.find(skill => skill.name === 'main')?.error).toBeNull();
+    rejectIncompleteSkillPackages(later);
+    expect(later.candidates.find(skill => skill.name === 'main')?.error).toContain('dependencies could not be preserved');
+    expect(later.skills.find(skill => skill.name === 'helper')?.error).toBeNull();
   });
 
   it('resolves moving branches before cache lookup and reuses the same pinned commit until the branch changes', async () => {
