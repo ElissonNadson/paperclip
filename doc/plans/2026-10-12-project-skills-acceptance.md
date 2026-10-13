@@ -381,3 +381,18 @@ regressions fail on the previous route setup and pass after correction. All 101
 affected route/source/database cases pass, including scheduled repair and legacy
 audit recovery. Recursive typecheck and production build also pass. Current-head
 security and CI results are recorded on the PR.
+
+Final master reconciliation includes `da9af6741585aeb439b5d38af398eab841131d6e`.
+Master added migration 0339, so the unmerged feature migrations were regenerated
+through `pnpm db:generate` as 0340 (project tracking), 0341 (retained source removal)
+and 0342 (active-source identity indexes). Their replay-safe SQL preserves installed
+content and provenance. Migration numbering/safety and five-snapshot retention
+pass. All 151 affected source, authorization, catalog-version and Codex cases
+pass across eight suites on the merged checkout, along with recursive typecheck,
+production build, maps, catalog and token gates. Inherited budget/secret review
+sources retain their prior classifications; no extra provider proof is inferred.
+
+The final merged Storybook build succeeds and all 14 project-skills browser
+journeys pass against it. This includes the inherited shell updates; no Linux
+visual baseline comparison is claimed. Final publication and current-head PR
+gates are recorded on the PR.

@@ -1,1 +1,0 @@
-ALTER TABLE "company_skill_sources" ADD COLUMN "removed_at" timestamp with time zone;

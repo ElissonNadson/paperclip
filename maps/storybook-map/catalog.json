@@ -10,7 +10,7 @@
       "ui/storybook/generated/feature-index.json",
       "ui/storybook/support/feature-map/FeatureOverview.tsx"
     ],
-    "fingerprint": "cdbb187a9d81e09889a12723644a24d8e850983f3465b5286015a9d7ea89bbc2"
+    "fingerprint": "478ef942b11b91bd5258781e30b664f9cff6369e2ae4216d7a61be4b0801ce01"
   },
   "entries": [
     {
@@ -1331,7 +1331,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. FullMatrix renders BudgetIncidentCard in warning, resolved, pending-approval and escalated hard-stop states. Resolution handlers are no-ops; budget relief and resumption remain unverified.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. FullMatrix renders BudgetIncidentCard in warning, resolved, pending-approval and escalated hard-stop states. Resolution handlers are no-ops; budget relief and resumption remain unverified. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/budgets-costs.md",
@@ -1347,7 +1347,7 @@
         "ui/src/components/ProviderQuotaCard.tsx",
         "ui/storybook/stories/budgets-costs/budget-finance.stories.tsx"
       ],
-      "fingerprint": "b71fa2f405c1d671b092bd2d86b220429819950b100c5aed3b7afb2b4efae1d3",
+      "fingerprint": "1af4d0af7d3dc0008dce21ac303af6aa90fb46593389fc7e47602a490e3ca8c7",
       "stableId": "product-budget-finance",
       "sidebarTitle": "Oversight and operation/Costs and budgets/Product/Budget & Finance"
     },
@@ -1806,7 +1806,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/budgets-costs.md",
@@ -1814,7 +1814,7 @@
         "ui/src/pages/Costs.tsx",
         "ui/storybook/stories/budgets-costs/costs/subscriptions.stories.tsx"
       ],
-      "fingerprint": "5663cc1d142ce63bf2c5e2edc23c19ef6b6f45fdee12cc79ad9e20446a5be5a8",
+      "fingerprint": "7eeef3d9becbe18d7f7e644f4fc8628c386071f151a038842fac12e97602c81d",
       "stableId": "costs-subscriptions",
       "sidebarTitle": "Oversight and operation/Costs and budgets/Costs/Subscriptions"
     },
@@ -1828,7 +1828,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1836,7 +1836,7 @@
         "ui/src/components/task-chat/TaskChatMarker.tsx",
         "ui/storybook/stories/secrets/credential-access/01-notice.stories.tsx"
       ],
-      "fingerprint": "14757d026311d143e9301d6294d2f46f40dad25af8ea3f8d5cf1893b260f82db",
+      "fingerprint": "505e42e0a40afea13cf02b65bad4488650e2c56a5a4a720b4b9a2c193f4d2e70",
       "stableId": "task-credential-access-01-notice",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/01 Notice"
     },
@@ -1850,7 +1850,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1862,7 +1862,7 @@
         "ui/storybook/stories/secrets/credential-access/02-task-page.stories.tsx",
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx"
       ],
-      "fingerprint": "1289c5e6659cd318f00b63d4f16790bbac988d8d18f6726e10262223c11e66fe",
+      "fingerprint": "ba6c1d3f3e076672a84ae0ef6372f3a14e7d93ffa9f23b0ad3cb296e1e752a44",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -1998,7 +1998,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Related decision-service examples show connection/model configuration, bounded test receipts or invocation history using shipped subjects and simulated data. No paid provider or authorization proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Related decision-service examples show connection/model configuration, bounded test receipts or invocation history using shipped subjects and simulated data. No paid provider or authorization proof. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/budgets-costs.md",
@@ -2009,7 +2009,7 @@
         "ui/storybook/stories/companies/decision-models/03-journey.stories.tsx",
         "ui/storybook/support/decision-models/fixtures.ts"
       ],
-      "fingerprint": "fe773821e67983b5a6255d417fd9952e3bc227c4ccdb8410b06e1a9200c94d63",
+      "fingerprint": "18b3ec30595cccd821d30fbf6eef0ca7b072666c9fd98b48f866b4420144a244",
       "stableId": "decision-models-03-journey",
       "sidebarTitle": "Getting started and access/Companies and portability/Decision models/03 Journey"
     },
@@ -2189,14 +2189,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/secrets.md",
         "ui/src/components/environment-variables-editor/index.tsx",
         "ui/storybook/stories/secrets/environment-variables-editor.stories.tsx"
       ],
-      "fingerprint": "f41ed501dc34f19a8ef6071f1e7e563e8ac60769e6a2930dcfd8cde15d6551d0",
+      "fingerprint": "e358e40a80d2d2dc92050836098375e0f9d88a3b59491d24c1a4c4b784e70c00",
       "stableId": "product-environment-variables-editor",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/Environment Variables Editor"
     },
@@ -3369,7 +3369,7 @@
       "status": "unreviewed",
       "implementation": "guide",
       "boundary": "static",
-      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
+      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/src/components/ui/badge.tsx",
@@ -3379,7 +3379,7 @@
         "ui/storybook/generated/feature-index.json"
       ],
       "exception": "Shared foundations or contributor guide; no single business capability owns this suite.",
-      "fingerprint": "284371c46ef5f5d50d24d80f4cd67a976c4a59d20c4bfd2074c1340695b83594",
+      "fingerprint": "71c2ea943674edd2e8692f33040e301fbd0a25391db4ea01b42ee165ad34eaba",
       "stableId": "overview-storybook-guide",
       "sidebarTitle": "Overview/Storybook Guide"
     },
@@ -4566,7 +4566,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
@@ -4576,7 +4576,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
-      "fingerprint": "b943825322412996f4e5cb22677d5e331b0b7a742762be92c6f46d364ec0b34e",
+      "fingerprint": "687a62628237816d0442e7cede0426290ab89f758d06e3662be814b83414faf3",
       "stableId": "product-routines-·-secrets-tab",
       "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
     },
@@ -4766,7 +4766,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/secrets.md",
@@ -4776,7 +4776,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/secrets/secrets.stories.tsx"
       ],
-      "fingerprint": "246539c619974c29848ae6ba3685aa741dbc572eeb6f8cffb2e9328501fbf31b",
+      "fingerprint": "b52b6355351b1d49d2fb5921f357fa957288ad646015c5bd99d02b5aec04fee2",
       "stableId": "product-secrets",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/Secrets"
     },
@@ -5544,7 +5544,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only reconciliation with master da9af674: budget subjects now distinguish soft warnings from hard pauses; secret recipes document server-only agent instance credentials. Fixtures, stable IDs and prior classifications remain. No new browser or provider proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/secrets.md",
@@ -5554,7 +5554,7 @@
         "ui/src/pages/secrets/UserSecretDefinitionsTab.tsx",
         "ui/storybook/stories/secrets/user-secrets.stories.tsx"
       ],
-      "fingerprint": "5c875865c81923b2c568559d0c2f7bde22d1a8162501736ba3eeeb027acae772",
+      "fingerprint": "7946ebdc6c576de9cdd30205131073f5029aec8e094397bab66c300c1f3a79ea",
       "stableId": "product-user-secrets",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/User secrets"
     },

@@ -597,3 +597,15 @@ classification and stable ID. Refreshed 32 dependent source fingerprints only
 after this source comparison. No unrelated suite gained browser or provider
 proof. All 14 project-skills interactive browser cases pass on the rebuilt
 artifact; the catalog contains 227 files and 2,252 stories.
+
+## Final migration reconciliation — 2026-10-13
+
+Compared inherited master da9af674 changes. Budget subjects now distinguish soft
+warning notices from hard pauses, while secret recipes document server-only
+agent-owned instance credentials. Refreshed ten dependent source fingerprints
+after source review and regenerated the feature index. Retained all stable IDs
+and prior classifications. No unrelated suite gained browser or provider proof.
+
+The rebuilt merged artifact passes all 14 project-skills browser cases. This
+adds executed proof for those journeys only, without changing unrelated suite
+classifications or claiming provider behavior from fixture interactions.
