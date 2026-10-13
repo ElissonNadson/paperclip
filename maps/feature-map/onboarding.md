@@ -70,6 +70,12 @@ themselves allocate no target. A valid measured unsupported target follows the
 server's Legacy default. Named Cloud snapshots remain a separate unqualified
 boot-identity and fresh-signup gap.
 
+Selected native setup must use the same isolation as task execution. A resolved
+sandbox transport uses the provider's outer isolation; local and SSH transports
+retain Codex isolation. An injected environment flag cannot establish that
+transport identity. Verify these boundaries with the existing native setup
+controls and a real managed task/follow-up; source checks alone are insufficient.
+
 The explicit manual Product E2E cell
 `confirmation-replies.runner-codex.daytona.task-card-accept` covers this fresh
 managed wizard path without fixture agent creation or a fixture preprobe. Its

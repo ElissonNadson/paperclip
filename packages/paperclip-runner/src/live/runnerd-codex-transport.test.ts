@@ -2830,12 +2830,14 @@ const fakeCodex = resolve(
   "../../runner/target/debug/fake-codex-app-server",
 );
 
-it.each(["stuck", "late-release", "late-release-error", "stuck-release", "cooperative-release", "launch-failure"] as const)(
+it.each(["stuck", "late-release", "late-release-error", "stuck-release", "cooperative-release", "launch-failure", "launch-failure-sandbox", "launch-failure-unsandboxed"] as const)(
   "bounds setup registration teardown and retains unconfirmed state (%s)",
   async mode => {
     const root = await mkdtemp(join(tmpdir(), "runnerd-setup-registration-"));
     const runtimeDirectory = join(root, "native-state");
     await mkdir(runtimeDirectory, { mode: 0o700 });
+    const launchFailure = mode.startsWith("launch-failure");
+    let template: Record<string, unknown> | null = null;
     let registrationStarted!: () => void;
     const started = new Promise<void>(resolve => { registrationStarted = resolve; });
     let returnRegistration!: (registration: { connection: { mode: "listen"; listenAddress: string; listenPort: number; listenPath: string }; release: () => Promise<void> }) => void;
@@ -2853,17 +2855,22 @@ it.each(["stuck", "late-release", "late-release-error", "stuck-release", "cooper
     };
     let registrationSignal: AbortSignal | undefined;
     const cleanup = vi.fn(async () => { await rm(runtimeDirectory, { recursive: true, force: true }); });
-    const launch = vi.fn(() => { throw new Error("owned launcher failed before execution"); });
+    const launch = vi.fn((spec: durableControlPlane.RunnerProcessLaunchSpec) => {
+      expect(spec.environment.PAPERCLIP_RUNNER_EXTERNAL_SANDBOX).toBeUndefined();
+      throw new Error("owned launcher failed before execution");
+    });
     let settled = false;
     vi.useFakeTimers();
     const result = probeNativeRunnerEnvironment({
       runtimeDirectory, provider: "codex", model: "gpt-test", timeoutMs: 1_000,
-      environment: { PATH: "", OPENAI_API_KEY: "inert-test-key" },
+      environment: { PATH: "", OPENAI_API_KEY: "inert-test-key", PAPERCLIP_RUNNER_EXTERNAL_SANDBOX: "true" },
       transportOptions: {
+        ...(mode === "launch-failure-sandbox" ? { externallySandboxed: true } : mode === "launch-failure-unsandboxed" ? { externallySandboxed: false } : {}),
         runnerBinary: resolve(import.meta.dirname, "../../package.json"),
         codexCommand: resolve(import.meta.dirname, "../../package.json"),
         sourceCodexHome: "", runnerProcessLauncher: launch,
         controlPlaneRegistration: async (_authority, _identity, signal) => {
+          template = structuredClone(_authority.store.state.runAttachTemplate!);
           registrationSignal = signal;
           if (mode === "cooperative-release") signal?.addEventListener("abort", () => returnRegistration(registered), { once: true });
           registrationStarted();
@@ -2874,16 +2881,17 @@ it.each(["stuck", "late-release", "late-release-error", "stuck-release", "cooper
     }).then(value => { settled = true; return value; }, (error: unknown) => { settled = true; return error; });
     try {
       await started;
-      if (mode === "launch-failure") returnRegistration(registered);
+      if (launchFailure) returnRegistration(registered);
       await vi.advanceTimersByTimeAsync(1_000);
       if (mode === "late-release" || mode === "late-release-error" || mode === "stuck-release") returnRegistration(registered);
       await vi.advanceTimersByTimeAsync(10_000);
-      if (mode === "late-release" || mode === "cooperative-release" || mode === "launch-failure") await result;
+      if (mode === "late-release" || mode === "cooperative-release" || launchFailure) await result;
       expect(settled).toBe(true);
       expect(registrationSignal?.aborted).toBe(true);
       const failure = await result;
+      expect(template).toMatchObject({ provider: { externallySandboxed: mode === "launch-failure-sandbox", readOnly: true, approvalPolicy: "never", collaborationMode: "plan" } });
       expect(failure).toBeInstanceOf(Error);
-      expect((failure as Error).message).toContain(mode === "launch-failure" ? "owned launcher failed before execution" : "Native provider hello probe timed out.");
+      expect((failure as Error).message).toContain(launchFailure ? "owned launcher failed before execution" : "Native provider hello probe timed out.");
       if (mode === "stuck" || mode === "stuck-release" || mode === "late-release-error") {
         expect(failure).toBeInstanceOf(AggregateError);
         expect((failure as AggregateError).cause).toMatchObject({ message: "Native provider hello probe timed out." });
@@ -2900,7 +2908,7 @@ it.each(["stuck", "late-release", "late-release-error", "stuck-release", "cooper
         expect(cleanup).toHaveBeenCalledOnce();
         await expect(stat(runtimeDirectory)).rejects.toThrow();
       }
-      expect(launch).toHaveBeenCalledTimes(mode === "launch-failure" ? 1 : 0);
+      expect(launch).toHaveBeenCalledTimes(launchFailure ? 1 : 0);
       expect(vi.getTimerCount()).toBe(0);
     } finally {
       returnRegistration(registered);

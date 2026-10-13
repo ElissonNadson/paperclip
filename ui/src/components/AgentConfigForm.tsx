@@ -1579,25 +1579,24 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
           <div className={cn(cards ? "border border-border rounded-lg p-4 space-y-3" : "px-4 pb-3 space-y-3")}>
             <Field label="Environment override">
               <div className="space-y-2">
-                <select
-                  className={inputClass}
+                <SelectPopover
+                  aria-label="Environment override"
                   value={currentDefaultEnvironmentId}
-                  onChange={(event) => {
-                    const nextValue = event.target.value;
+                  onValueChange={(nextValue) => {
                     if (isCreate) {
                       set!({ defaultEnvironmentId: nextValue });
                       return;
                     }
                     mark("identity", "defaultEnvironmentId", nextValue || null);
                   }}
-                >
-                  <option value="">Default: {inheritedEnvironmentLabel}</option>
-                  {environmentOptions.map((environment) => (
-                    <option key={environment.id} value={environment.id}>
-                      {environmentDisplayLabel(environment)}
-                    </option>
-                  ))}
-                </select>
+                  options={[
+                    { value: "", label: `Default: ${inheritedEnvironmentLabel}` },
+                    ...environmentOptions.map((environment) => ({
+                      value: environment.id,
+                      label: environmentDisplayLabel(environment),
+                    })),
+                  ]}
+                />
               </div>
             </Field>
           </div>

@@ -97,6 +97,12 @@ identity or unconfirmed cleanup remains visible. No probe is added to creation
 or discovery, no agent/company grant is broadened, and provider authentication
 errors never cause an automatic runner switch.
 
+Native setup derives outer sandbox isolation from the server-resolved execution
+target, as task execution does. This is an internal transport choice, not a
+request/configuration permission. Local and SSH setup keep Codex isolation;
+caller-supplied environment flags do not authorize an external sandbox. Existing
+company, account, probe and registration-cleanup gates still apply.
+
 Scoped source review: 2026-10-13, exact baseline
 `1a0ca66242121e39d88455aa2b52a07acc4a07d9` plus the privately composed onboarding
 correction. [Wizard controls](../../ui/src/components/OnboardingWizard.test.tsx)

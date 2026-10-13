@@ -73,6 +73,7 @@ async function probeRemoteNativeCodex(options: {
   return probeNativeRunnerEnvironment({ runtimeDirectory: runtimeDirectory, provider: "codex", model: options.model, reasoningEffort: options.reasoningEffort,
     workingDirectory: remoteWorkspace, environment: options.environment, timeoutMs: options.timeoutMs,
     transportOptions: {
+      externallySandboxed: target.transport === "sandbox",
       runnerBinary: controllerRunnerBinary, codexCommand: remoteCodexBinary, sourceCodexHome: options.sourceCodexHome,
       runnerFilesystemRoot: remoteFilesystemRoot, runnerStateDirectory: remoteStateDirectory,
       prpIdentity: { runnerInstanceId, runId: id, environmentLeaseId: `setup-${id}`, normalizedSessionId: `setup-${id}`, turnId: `turn-${id}`, itemId: `item-${id}` },
@@ -178,7 +179,7 @@ export async function testNativeRunnerAuthentication(context: AdapterEnvironment
       receipt = await probeNativeRunnerEnvironment({ runtimeDirectory, provider, model, environment, timeoutMs,
         ...(provider === "codex" && typeof effort === "string" && effort ? { reasoningEffort: effort } : {}),
         onCleanupConfirmed: async () => { await rm(runtimeDirectory!, { recursive: true, force: true }); },
-        transportOptions: { runnerBinary: resolvePaperclipRunnerBinary(), sourceCodexHome: sourceCodexHome ?? "" },
+        transportOptions: { runnerBinary: resolvePaperclipRunnerBinary(), sourceCodexHome: sourceCodexHome ?? "", externallySandboxed: false },
         ...(credentialRefreshAuthPath ? { onCodexCredentialRefresh: async (filename: string) => {
           if (filename !== join(runtimeDirectory!, "codex-home", "auth.json")) throw new Error("The native Codex credential refresh handoff is invalid.");
           await copyBackCodexAuth({ hostAuthPath: credentialRefreshAuthPath!, log: () => {}, readSandboxAuth: async () => Buffer.from(await readLocalAiCredentialFile(filename)) });

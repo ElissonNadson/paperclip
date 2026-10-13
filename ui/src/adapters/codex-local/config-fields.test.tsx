@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { act, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
+import type { CreateConfigValues } from "@paperclipai/adapter-utils";
 
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -52,6 +53,71 @@ async function renderRunner(config: Record<string, unknown>, expand?: string, in
     </TooltipProvider>,
     expand, inspect,
   );
+}
+
+async function selectField(container: HTMLElement, label: string, value: string) {
+  const picker = container.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`)!;
+  await act(async () => {
+    picker.focus();
+    await new Promise(resolve => window.setTimeout(resolve, 0));
+  });
+  await act(async () => picker.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true })));
+  const option = document.body.querySelector<HTMLButtonElement>(`[role="listbox"][aria-label="${label}"] [data-value="${value}"]`)!;
+  expect(option).not.toBeNull();
+  await act(async () => {
+    option.click();
+    await new Promise(resolve => window.setTimeout(resolve, 0));
+  });
+}
+
+async function editFields(
+  mode: "create" | "edit",
+  adapterType: "codex_local" | "paperclip_runner",
+  inspect: (container: HTMLElement, saved: () => Record<string, unknown>) => Promise<void>,
+) {
+  const container = document.createElement("div");
+  document.body.appendChild(container);
+  const root = createRoot(container);
+  let currentConfig: Record<string, unknown> = {
+    ...(adapterType === "paperclip_runner" ? { provider: "codex", lifecycleMode: "warm", idleTimeoutMs: 45_000 } : { engine: "acp", mode: "persistent", nonInteractivePermissions: "deny" }),
+    env: { CODEX_HOME: { type: "secret_ref", secretId: "codex-account" } },
+  };
+  let currentValues: CreateConfigValues = {
+    ...defaultCreateValues,
+    adapterType,
+    runner: adapterType === "paperclip_runner" ? "paperclip" : "legacy",
+    adapterSchemaValues: { provider: "codex" },
+    envBindings: { CODEX_HOME: { type: "secret_ref", secretId: "codex-account" } },
+    paperclipRunnerLifecycleMode: "warm",
+    paperclipRunnerIdleTimeoutMs: 45_000,
+    codexEngine: "acp",
+    codexAcpMode: "persistent",
+    codexAcpNonInteractivePermissions: "deny",
+  };
+  function Fixture() {
+    const [config, setConfig] = useState(currentConfig);
+    const [values, setValues] = useState(currentValues);
+    currentConfig = config;
+    currentValues = values;
+    return <CodexLocalConfigFields mode={mode} isCreate={mode === "create"} adapterType={adapterType}
+      values={mode === "create" ? values : null} set={patch => setValues(previous => ({ ...previous, ...patch }))}
+      config={config} eff={(_group, _field, original) => original}
+      mark={(_group, field, value) => setConfig(previous => ({ ...previous, [field]: value }))}
+      models={[]} hideInstructionsFile hideRunnerHarness />;
+  }
+  try {
+    await act(async () => root.render(<QueryClientProvider client={new QueryClient()}><TooltipProvider><Fixture /></TooltipProvider></QueryClientProvider>));
+    await inspect(container, () => mode === "create"
+      ? adapterType === "paperclip_runner" ? buildPaperclipRunnerConfig(currentValues) : buildCodexRunnerConfig(currentValues)
+      : currentConfig);
+    if (mode === "create") {
+      expect(currentValues.adapterType).toBe(adapterType);
+      expect(currentValues.runner).toBe(adapterType === "paperclip_runner" ? "paperclip" : "legacy");
+    }
+  } finally {
+    await act(async () => root.unmount());
+    container.remove();
+  }
 }
 
 describe("Paperclip Runner Codex configuration", () => {
@@ -121,6 +187,32 @@ describe("Paperclip Runner Codex configuration", () => {
     expect(changes).toEqual([["adapterConfig", "engine", "cli"]]);
     await act(async () => root.unmount());
     container.remove();
+  });
+  it.each(["create", "edit"] as const)("changes native lifecycle while retaining timeout and account in %s mode", async mode => {
+    await editFields(mode, "paperclip_runner", async (container, saved) => {
+      expect(container.querySelector('[aria-label="Runner lifecycle"]')?.textContent).toContain("Warm session");
+      expect(container.textContent).toContain("Warm idle timeout (ms)");
+      const account = saved().env;
+      await selectField(container, "Runner lifecycle", "per_turn");
+      expect(container.textContent).not.toContain("Warm idle timeout (ms)");
+      expect(saved()).toMatchObject({ provider: "codex", lifecycleMode: "per_turn", env: account });
+      await selectField(container, "Runner lifecycle", "warm");
+      expect(container.textContent).toContain("Warm idle timeout (ms)");
+      expect(saved()).toMatchObject({ provider: "codex", lifecycleMode: "warm", idleTimeoutMs: 45_000, env: account });
+    });
+  });
+  it.each(["create", "edit"] as const)("changes Legacy ACP session and permissions without replacing the account in %s mode", async mode => {
+    await editFields(mode, "codex_local", async (container, saved) => {
+      expect(container.querySelector('[aria-label="ACP session mode"]')?.textContent).toContain("Persistent");
+      expect(container.querySelector('[aria-label="ACP non-interactive permissions"]')?.textContent).toContain("Deny");
+      const account = saved().env;
+      await selectField(container, "ACP session mode", "oneshot");
+      await selectField(container, "ACP non-interactive permissions", "fail");
+      expect(saved()).toMatchObject({ engine: "acp", mode: "oneshot", nonInteractivePermissions: "fail", env: account });
+      await selectField(container, "ACP session mode", "persistent");
+      await selectField(container, "ACP non-interactive permissions", "deny");
+      expect(saved()).toMatchObject({ engine: "acp", mode: "persistent", nonInteractivePermissions: "deny", env: account });
+    });
   });
   it("preserves an unknown native provider instead of presenting it as Codex", async () => {
     const html = await renderRunner({ provider: "future-provider" });

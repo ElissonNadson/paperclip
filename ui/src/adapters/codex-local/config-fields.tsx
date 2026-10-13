@@ -544,19 +544,20 @@ export function CodexLocalConfigFields({
           label="Runner lifecycle"
           hint="Turn by turn suspends after each run. Warm keeps the same provider process available between governed runs."
         >
-          <select
-            className={inputClass}
+          <SelectPopover
+            aria-label="Runner lifecycle"
             value={runnerLifecycleMode}
-            onChange={(event) => {
-              const value = event.target.value === "warm" ? "warm" : "per_turn";
+            onValueChange={(next) => {
+              const value = next === "warm" ? "warm" : "per_turn";
               isCreate
                 ? set!({ paperclipRunnerLifecycleMode: value })
                 : mark("adapterConfig", "lifecycleMode", value);
             }}
-          >
-            <option value="per_turn">Turn by turn</option>
-            <option value="warm">Warm session</option>
-          </select>
+            options={[
+              { value: "per_turn", label: "Turn by turn" },
+              { value: "warm", label: "Warm session" },
+            ]}
+          />
         </Field>
       )}
       {runnerManaged && runnerProvider !== "openai_dot" && runnerLifecycleMode === "warm" && (
@@ -630,8 +631,8 @@ export function CodexLocalConfigFields({
             label="ACP session mode"
             hint="Persistent keeps ACP session state between runs. One-shot starts fresh each run."
           >
-            <select
-              className={inputClass}
+            <SelectPopover
+              aria-label="ACP session mode"
               value={
                 isCreate
                   ? (values!.codexAcpMode ?? "persistent")
@@ -641,24 +642,25 @@ export function CodexLocalConfigFields({
                       String(config.mode ?? "persistent"),
                     )
               }
-              onChange={(e) => {
+              onValueChange={(next) => {
                 const value =
-                  e.target.value === "oneshot" ? "oneshot" : "persistent";
+                  next === "oneshot" ? "oneshot" : "persistent";
                 isCreate
                   ? set!({ codexAcpMode: value })
                   : mark("adapterConfig", "mode", value);
               }}
-            >
-              <option value="persistent">Persistent</option>
-              <option value="oneshot">One-shot</option>
-            </select>
+              options={[
+                { value: "persistent", label: "Persistent" },
+                { value: "oneshot", label: "One-shot" },
+              ]}
+            />
           </Field>
           <Field
             label="ACP non-interactive permissions"
             hint="Fallback if the ACP agent asks for input outside an interactive session."
           >
-            <select
-              className={inputClass}
+            <SelectPopover
+              aria-label="ACP non-interactive permissions"
               value={
                 isCreate
                   ? (values!.codexAcpNonInteractivePermissions ?? "deny")
@@ -668,16 +670,17 @@ export function CodexLocalConfigFields({
                       String(config.nonInteractivePermissions ?? "deny"),
                     )
               }
-              onChange={(e) => {
-                const value = e.target.value === "fail" ? "fail" : "deny";
+              onValueChange={(next) => {
+                const value = next === "fail" ? "fail" : "deny";
                 isCreate
                   ? set!({ codexAcpNonInteractivePermissions: value })
                   : mark("adapterConfig", "nonInteractivePermissions", value);
               }}
-            >
-              <option value="deny">Deny</option>
-              <option value="fail">Fail</option>
-            </select>
+              options={[
+                { value: "deny", label: "Deny" },
+                { value: "fail", label: "Fail" },
+              ]}
+            />
           </Field>
           {!managedSandboxOnly && (
             <Field

@@ -7210,7 +7210,7 @@ export async function probeNativeRunnerEnvironment(options: {
     sourceCodexHome: sourceCodexHome ?? "",
     stateDirectory: options.runtimeDirectory,
     environment,
-    externallySandboxed: false,
+    externallySandboxed: options.transportOptions?.externallySandboxed === true,
     closeGraceMs: 10_000,
     lifecyclePolicy: { mode: "per_turn", idleTimeoutMs: null },
   });

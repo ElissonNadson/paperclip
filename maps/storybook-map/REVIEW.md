@@ -637,3 +637,20 @@ The incoming recovery entry metadata is retained. No classifications or visual
 baselines were promoted. These results prove source inventory, references and
 structural contracts; no new rendering, `play`, provider, permission, cleanup or
 production-continuity acceptance is claimed for the merged source.
+
+## Codex configuration dropdown source review — 2026-10-13
+
+Inspected the frozen AgentConfigForm environment override and Codex runtime
+lifecycle/ACP dropdown replacements. They now use the same SelectPopover as the
+harness picker, retaining their options, normalization and create/edit callbacks.
+Refreshed seven existing suite fingerprints after tracing their rendered subjects;
+added the Codex config-fields dependency to the agent-management and saved-settings
+suites that actually mount those fields. The other five suites import picker fields
+or substitute local runtime content, so their notes explicitly exclude the changed
+controls. Historical and mixed classifications, all prior review histories and
+Legacy/native states remain intact.
+
+Canonical catalog generation and the existing structural tests establish source
+inventory and references only. The prior Storybook build at `448db859e3` predates
+these dropdown edits; it does not prove their rendering or interactions. No new
+render/play, visual-baseline, provider or production-persistence proof is claimed.

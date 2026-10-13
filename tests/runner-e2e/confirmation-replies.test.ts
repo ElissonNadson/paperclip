@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { gradeConfirmationReply, assertAmbiguousReplyUnresolved, ambiguousConfirmationFixtures } from "./confirmation-replies.js";
 import { firstTaskScenario } from "./first-task-cases.js";
 import type { FirstTaskEvidence } from "./first-task-scoring.js";
-import { provisionFirstTaskFixtures } from "./first-task-fixtures.js";
+import { MANAGED_FIRST_TASK_CELL, provisionFirstTaskFixtures } from "./first-task-fixtures.js";
 import { runnerMatrix } from "./catalog.js";
 import { parseRunnerSelectors, selectRunnerExecutions } from "./selectors.js";
 
@@ -111,7 +111,7 @@ describe("confirmation-reply independent oracle", () => {
       payload: { questions: [{ prompt, options: [{ label: "Welcome note" }, { label: "Poster" }] }] },
     }] })).toThrow();
   });
-  it.each(runnerMatrix.filter(e => e.suite.id === "confirmation-replies" && e.task.flow === "first_task"))("provisions the real onboarding fixture contract for $id", async execution => {
+  it.each(runnerMatrix.filter(e => e.suite.id === "confirmation-replies" && e.task.flow === "first_task" && e.environment.id === "local"))("provisions the real local onboarding fixture contract for $id", async execution => {
     const get = vi.fn().mockResolvedValue([{ id: "local", driver: "local" }]);
     const patch = vi.fn().mockResolvedValue({ id: "company" });
     const postSensitive = vi.fn().mockResolvedValue({ id: "secret" });
@@ -137,12 +137,14 @@ describe("confirmation-reply independent oracle", () => {
       originalIds: ["a", "b"], tasks: [], reply: "", agentId: "agent", answerId: "reply" })).toThrow();
   });
 
-  it("selects exactly twelve explicit-only cases using production native profiles", () => {
+  it("selects twelve local and one managed explicit-only cases using production native profiles", () => {
     const cells = runnerMatrix.filter(e => e.suite.id === "confirmation-replies");
-    expect(cells).toHaveLength(12);
+    expect(cells).toHaveLength(13);
+    expect(cells.filter(c => c.environment.id === "local")).toHaveLength(12);
+    expect(cells.filter(c => c.environment.id === "daytona").map(c => c.id)).toEqual([MANAGED_FIRST_TASK_CELL]);
     expect(new Set(cells.map(c => c.profile.id))).toEqual(new Set(["runner-codex", "runner-acpx-claude"]));
     expect(new Set(cells.map(c => c.task.id)).size).toBe(6);
-    expect(selectRunnerExecutions(parseRunnerSelectors(["--suite", "confirmation-replies"]))).toHaveLength(12);
+    expect(selectRunnerExecutions(parseRunnerSelectors(["--suite", "confirmation-replies"]))).toHaveLength(13);
     expect(selectRunnerExecutions(parseRunnerSelectors(["--all"])).some(c => c.suite.id === "confirmation-replies")).toBe(false);
   });
 });

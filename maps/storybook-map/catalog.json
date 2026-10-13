@@ -473,7 +473,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ForcedKubernetesExecution and ForcedKubernetesMissingEnvironment mount AgentConfigForm with a forced execution target or missing-target warning. Read-only assignment presentation; no saved target or remote execution proof. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ForcedKubernetesExecution and ForcedKubernetesMissingEnvironment mount AgentConfigForm with a forced execution target or missing-target warning. Read-only assignment presentation; no saved target or remote execution proof. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Source review of the Environment override and Codex lifecycle/ACP selectors confirms reuse of the harness SelectPopover with the existing option and save semantics; render/play and live execution of these updated controls remain unverified.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -489,9 +489,10 @@
         "maps/feature-map/execution-environments.md",
         "ui/src/adapters/adapter-display-registry.ts",
         "ui/src/components/CodexRunnerSelect.tsx",
-        "ui/src/components/ui/select.tsx"
+        "ui/src/components/ui/select.tsx",
+        "ui/src/adapters/codex-local/config-fields.tsx"
       ],
-      "fingerprint": "e4132d95c94d9fc741bdff39f6ca1ebddebdadd39719826b9b1358ab701e0b1e",
+      "fingerprint": "4c6bfad3978afe78514282e6dcc58fcadaf5cfb89adccc5661c964c523b700e3",
       "stableId": "product-agent-management",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Product/Agent Management"
     },
@@ -560,7 +561,7 @@
       "status": "mixed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Production configuration panels in a locally composed settings shell; full AgentDetail route parity remains unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Existing Legacy/native Codex editing, light/mobile and Advanced states retained unchanged.",
+      "notes": "Production configuration panels in a locally composed settings shell; full AgentDetail route parity remains unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Existing Legacy/native Codex editing, light/mobile and Advanced states retained unchanged. Source review of the Environment override and Codex lifecycle/ACP selectors confirms reuse of the harness SelectPopover with the existing option and save semantics; render/play and live execution of these updated controls remain unverified.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -583,9 +584,10 @@
         "ui/storybook/stories/agents/agent-settings-redesign.stories.tsx",
         "ui/src/adapters/adapter-display-registry.ts",
         "ui/src/components/CodexRunnerSelect.tsx",
-        "ui/src/components/ui/select.tsx"
+        "ui/src/components/ui/select.tsx",
+        "ui/src/adapters/codex-local/config-fields.tsx"
       ],
-      "fingerprint": "2fc42facb1475c3b8180c625656055823525b4f62b48edc5df6f4650b4b360e8",
+      "fingerprint": "fe0647d007c3221a2700ad6dd8d62d9db989377c79e87be35e03cf6e53253a00",
       "stableId": "agents-configuration-refresh",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Configuration refresh"
     },
@@ -3184,7 +3186,7 @@
       "status": "historical",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Retained local wizard predates production ui/src/components/new-agent flow; shared fields do not make the wizard current. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Retained local wizard predates production ui/src/components/new-agent flow; shared fields do not make the wizard current. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. AgentConfigForm shared-module dropdown changes inspected; this suite demonstrates imported picker fields or substitutes local runtime content, not the updated environment and Codex lifecycle/ACP controls. No new render/play or live proof.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -3210,7 +3212,7 @@
         "ui/src/components/ui/select.tsx"
       ],
       "replacement": "ui/storybook/stories/agents/agent-persona-pages.stories.tsx",
-      "fingerprint": "34f949b23e845d7ea08c274315cfd8e5c221fe3616124edd78e1385051b69008",
+      "fingerprint": "369a9343261cad73ee699c82c42e9cd5c5f2b8f6654e25cce04e1af626943499",
       "stableId": "onboarding-new-agent",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Onboarding/New agent"
     },
@@ -3299,7 +3301,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Four managed Codex cases use scoped immutable-image discovery and a stateful saved-probe fixture: native default, measured Legacy, permission refusal, and unconfirmed cleanup.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Four managed Codex cases use scoped immutable-image discovery and a stateful saved-probe fixture: native default, measured Legacy, permission refusal, and unconfirmed cleanup. Native isolation recipe added; these fixture setup responses do not establish server-resolved transport isolation, real sandbox cleanup, or local/SSH enforcement.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3313,7 +3315,7 @@
         "ui/src/components/ui/select.tsx",
         "ui/storybook/fixtures/paperclipData.ts"
       ],
-      "fingerprint": "5abbd0a737b931fadc44cd57d618336defede2cf8f92f0dbfed2edaaef88272e",
+      "fingerprint": "9b4ecac7c692291fe4be571ced273b9c56f390050e1efba5f3601137bec3f517",
       "stableId": "onboarding-agent-arc",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Agent arc"
     },
@@ -3326,7 +3328,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The added native isolation recipe is outside this character preview’s demonstrated scope.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3334,7 +3336,7 @@
         "ui/src/components/ui/button.tsx",
         "ui/storybook/stories/onboarding/onboarding-character.stories.tsx"
       ],
-      "fingerprint": "f6907cd663ffa4d68b5a096c9cd2b331bb8efacdf54736c4035e81bc5eb822bd",
+      "fingerprint": "0b67eb03cbd6567a64afddead9c02970fd2d7fb002fd11fe6128b4916bd4c7ac",
       "stableId": "onboarding-character",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Character"
     },
@@ -3348,7 +3350,7 @@
       "status": "historical",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Older tile/mode preview; onboarding-agent-arc mounts the production wizard. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Older tile/mode preview; onboarding-agent-arc mounts the production wizard. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The expanded native isolation recipe is not exercised by this retained historical tile preview.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3356,7 +3358,7 @@
         "ui/storybook/stories/onboarding/onboarding-connect-model.stories.tsx"
       ],
       "replacement": "ui/storybook/stories/onboarding/onboarding-agent-arc.stories.tsx",
-      "fingerprint": "f835bc68ceaba5ee2338f7564c01d9d54d41df78c186d6962d15215f7c8bf7de",
+      "fingerprint": "7ee1f3c943f9ec71ec4e4ceda46d3ba20ccca5ee2c8c7c7b5ba889f93edd9507",
       "stableId": "onboarding-connect-a-model",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Connect a model"
     },
@@ -4136,7 +4138,7 @@
       "status": "mixed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. AgentConfigForm shared-module dropdown changes inspected; this suite demonstrates imported picker fields or substitutes local runtime content, not the updated environment and Codex lifecycle/ACP controls. No new render/play or live proof.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
@@ -4176,7 +4178,7 @@
         "ui/src/components/CodexRunnerSelect.tsx",
         "ui/src/components/ui/select.tsx"
       ],
-      "fingerprint": "07200aabed585ad5def71a98917158311b247024636a2b3356afdeb1cb0e6347",
+      "fingerprint": "412a440c2ac7a72cde3384c387a64aeec24a4ca22307f2fd13bbca827c5890e0",
       "stableId": "ai-connections-provider-routing-01-onboarding",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/01 Onboarding"
     },
@@ -4220,7 +4222,7 @@
       "status": "mixed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. AgentConfigForm shared-module dropdown changes inspected; this suite demonstrates imported picker fields or substitutes local runtime content, not the updated environment and Codex lifecycle/ACP controls. No new render/play or live proof.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
@@ -4260,7 +4262,7 @@
         "ui/src/components/CodexRunnerSelect.tsx",
         "ui/src/components/ui/select.tsx"
       ],
-      "fingerprint": "ca81928905321887730941e99c1992dbe622dc37d4bdced6a042cde68281508c",
+      "fingerprint": "64bf50840c715749b66280c72901a8eecac5500831f00df96ff568579d64c856",
       "stableId": "ai-connections-provider-routing-03-agent",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/03 Agent"
     },
@@ -4331,7 +4333,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Design-review route uses simulated account/provider state; audit the rendered subject before treating it as the live connection flow. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. AgentConfigForm shared-module dropdown changes inspected; this suite demonstrates imported picker fields or substitutes local runtime content, not the updated environment and Codex lifecycle/ACP controls. No new render/play or live proof.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/runs-adapters.md",
@@ -4351,7 +4353,7 @@
         "ui/src/components/CodexRunnerSelect.tsx",
         "ui/src/components/ui/select.tsx"
       ],
-      "fingerprint": "d24f11571c1b8bec0080b062b7fc3fcc66171bed6ba68a77dbaef5982f6ab407",
+      "fingerprint": "0adf7fa67da78ff0b655c8054b637aa6ae7ffd376299da905b2d426c5b2500cc",
       "stableId": "ai-connections-provider-routing-06-production-components",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/AI Connections/Provider routing/06 Production components"
     },
@@ -5769,7 +5771,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production NewAgent and AgentBasicsDialog with isolated API fixtures. Automatic and explicit Legacy choices, qualified/unqualified discovery, old native links, setup failure and returned hire identity are asserted in source. Fixture runtime selection follows the requested runner and simulated target qualification; render/play, production persistence and provider execution are not verified by this source pass.",
+      "notes": "Production NewAgent and AgentBasicsDialog with isolated API fixtures. Automatic and explicit Legacy choices, qualified/unqualified discovery, old native links, setup failure and returned hire identity are asserted in source. Fixture runtime selection follows the requested runner and simulated target qualification; render/play, production persistence and provider execution are not verified by this source pass. AgentConfigForm shared-module dropdown changes inspected; this suite demonstrates imported picker fields or substitutes local runtime content, not the updated environment and Codex lifecycle/ACP controls. No new render/play or live proof.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -5785,7 +5787,7 @@
         "ui/storybook/fixtures/onboardingEnvironment.ts",
         "ui/storybook/stories/agents/codex-runner/creation.stories.tsx"
       ],
-      "fingerprint": "c9adeb976f4b6d488680cc2829026ac3edf706f4af3774d72ebabdb0d0d4e243",
+      "fingerprint": "5055ac064b22cda06d70b9f41049f0c8fb22cb94f35398cb0690bc13980b22d9",
       "stableId": "agents-codex-runner-creation",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Codex runner/Creation"
     }

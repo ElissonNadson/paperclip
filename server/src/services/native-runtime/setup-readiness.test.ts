@@ -13,7 +13,7 @@ vi.mock("../../vendor/paperclip-runner/index.js", async original => ({ ...await 
 vi.mock("./native-session-executor.js", async original => ({ ...await original<typeof import("./native-session-executor.js")>(), createRemoteNativeArtifactPreparation: nativeArtifacts, createRemoteRunnerProcessLauncher: remoteLauncher }));
 import { testNativeRunnerAuthentication } from "./setup-readiness.js";
 const context = {
-  companyId: "company", adapterType: "paperclip_runner", config: {},
+  companyId: "company", adapterType: "paperclip_runner", config: { externallySandboxed: false, env: { PAPERCLIP_RUNNER_EXTERNAL_SANDBOX: "false" } },
   executionTarget: { kind: "remote" as const, transport: "sandbox" as const, providerKey: "test", remoteCwd: "/workspace", runner: { execute: vi.fn() } },
 };
 describe("Codex selected native account verification", () => {
@@ -43,11 +43,12 @@ describe("Codex selected native account verification", () => {
     vi.stubEnv(key, "ambient-account");
     vi.stubEnv("ANTHROPIC_API_KEY", "ambient-anthropic");
     nativeProbe.mockImplementation(async input => { await input.onCleanupConfirmed(); return receipt(provider, model); });
-    const result = await testNativeRunnerAuthentication({ companyId: "company", adapterType: "paperclip_runner", config: { env: { [key]: "bound-account" }, modelReasoningEffort: "low" } }, provider, model);
+    const result = await testNativeRunnerAuthentication({ companyId: "company", adapterType: "paperclip_runner", config: { externallySandboxed: true, env: { [key]: "bound-account", PAPERCLIP_RUNNER_EXTERNAL_SANDBOX: "true" }, modelReasoningEffort: "low" } }, provider, model);
     expect(result.status).toBe("pass");
     const input = nativeProbe.mock.calls[0][0];
     expect(input).toMatchObject({ provider, model, timeoutMs: 45_000, environment: { [key]: "bound-account" } });
     expect(input.transportOptions.runnerBinary).toBe("/fixture/bin/paperclip-runnerd");
+    expect(input.transportOptions.externallySandboxed).toBe(false);
     expect(selectedRunner).toHaveBeenCalledOnce();
     expect(input.environment.ANTHROPIC_API_KEY).toBeUndefined();
     if (provider === "codex") expect(input.reasoningEffort).toBe("low");
@@ -110,10 +111,10 @@ describe("Codex selected native account verification", () => {
       await input.onCleanupConfirmed();
       return receipt("codex", "gpt-6.1-sol");
     });
-    expect((await testNativeRunnerAuthentication({ ...sshContext, config: { env: { OPENAI_API_KEY: "company-account" }, modelReasoningEffort: "low" } }, "codex", "gpt-6.1-sol")).status).toBe("pass");
+    expect((await testNativeRunnerAuthentication({ ...sshContext, config: { externallySandboxed: true, env: { OPENAI_API_KEY: "company-account", PAPERCLIP_RUNNER_EXTERNAL_SANDBOX: "true" }, modelReasoningEffort: "low" } }, "codex", "gpt-6.1-sol")).status).toBe("pass");
     const input = nativeProbe.mock.calls[0][0];
     expect(input).toMatchObject({ reasoningEffort: "low", environment: { OPENAI_API_KEY: "company-account" }, workingDirectory: expect.stringMatching(/^\/qa-workspace\/.paperclip-runtime\/paperclip-native-setup-.*\/filesystem\/workspace$/) });
-    expect(input.transportOptions).toMatchObject({ runnerBinary: selectedBinary, codexCommand: expect.stringMatching(/\/bin\/codex$/), runnerFilesystemRoot: expect.stringMatching(/\/filesystem$/) });
+    expect(input.transportOptions).toMatchObject({ runnerBinary: selectedBinary, codexCommand: expect.stringMatching(/\/bin\/codex$/), runnerFilesystemRoot: expect.stringMatching(/\/filesystem$/), externallySandboxed: false });
     expect(nativeArtifacts).toHaveBeenCalledWith(expect.objectContaining({ controllerRunnerBinary: selectedBinary, model: "gpt-6.1-sol", targetPlatformArtifactVerified: true }));
     expect(selectedRemoteRunner).toHaveBeenCalledExactlyOnceWith({ runner: { execute: sshExecute }, remoteCwd: "/qa-workspace", configuredPath: null });
     expect(selectedRunner).not.toHaveBeenCalled();
@@ -257,6 +258,7 @@ describe("Codex selected native account verification", () => {
     expect(selectedRunner).not.toHaveBeenCalled();
     expect(nativeArtifacts).toHaveBeenCalledWith(expect.objectContaining({ target, runner: target.runner, controllerRunnerBinary: selectedBinary, targetPlatformArtifactVerified: true }));
     expect(nativeProbe.mock.calls[0][0].transportOptions.runnerBinary).toBe(selectedBinary);
+    expect(nativeProbe.mock.calls[0][0].transportOptions.externallySandboxed).toBe(true);
     expect(nativeArtifacts.mock.results[0].value.prepare).toHaveBeenCalledWith("dial_wss");
     expect(execute).not.toHaveBeenCalled();
   });
@@ -288,6 +290,7 @@ describe("Codex selected native account verification", () => {
     const target = { ...context.executionTarget, providerKey: "daytona", runner: { execute: sshExecute }, leaseId: "lease", effectiveCapabilities: { reusableLeases: false, nativeSyncIn: false, nativeSyncOut: false, persistentProcessSessions: false, independentControlCommands: true, incrementalSessionOutput: false, concurrentSyncOperations: false, duplexCommandStream: false, runnerWebSocketIngress: true }, getRunnerIngressEndpoint };
     expect((await testNativeRunnerAuthentication({ ...context, executionTarget: target }, "codex", "gpt-6.1-sol")).status).toBe("pass");
     expect(order).toEqual(["artifacts", "ingress", "connect"]);
+    expect(nativeProbe.mock.calls[0][0].transportOptions.externallySandboxed).toBe(true);
     expect(connectionClose).toHaveBeenCalledOnce(); expect(registerPrp).not.toHaveBeenCalled();
   });
 });
