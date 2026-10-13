@@ -48,7 +48,7 @@ describePostgres("durable plugin lifecycle delivery", () => {
     const running = vi.fn(() => true);
     const lifecycle = new EventEmitter();
     const worker = registerPluginLifecycleDelivery(coordinator as never, db, { call, isRunning: running } as unknown as PluginWorkerManager, lifecycle as unknown as PluginLifecycleManager);
-    return { call, running, wake, lifecycle, worker, run: () => task.run(new AbortController().signal), pending: () => task.hasPending() };
+    return { call, running, wake, lifecycle, worker, run: () => task.run(new AbortController().signal), pending: () => task.hasPending(), settled: () => task.onSettled?.() };
   }
   it("drains creation before transitions, recovers acknowledgments across dispatcher replacement, and ignores agent events", async () => {
     const id = await event(); await event(id, "update"); await event(id, "delete");
@@ -119,6 +119,23 @@ describePostgres("durable plugin lifecycle delivery", () => {
     async function eventInTransaction(tx: Db) {
       await tx.transaction(inner => recordResourceCreationEvent(inner as unknown as Db, companyId, "project", randomUUID()));
     }
+  });
+  it("retains startup and settled work while idle drain prevents dispatch", async () => {
+    const d = delivery();
+    // The coordinator can call hasPending without run when admission is paused.
+    expect(await d.pending()).toBe(true);
+    await d.run(); expect(await d.pending()).toBe(false);
+    await event(); d.settled();
+    expect(await d.pending()).toBe(true);
+    expect(d.call).not.toHaveBeenCalled();
+    await d.run();
+    expect(d.call).toHaveBeenCalledTimes(1);
+    expect(await d.pending()).toBe(true); // An acknowledgment must drain its successor.
+    await d.run(); expect(await d.pending()).toBe(false);
+    d.lifecycle.emit("plugin.enabled"); expect(await d.pending()).toBe(true);
+    await d.run(); expect(await d.pending()).toBe(false);
+    d.worker.wake(); expect(await d.pending()).toBe(true);
+    d.worker.dispose();
   });
   it("saves config and settings without borrowing another pool connection", async () => {
     const single = createDb(database.connectionString, { maxConnections: 1 });

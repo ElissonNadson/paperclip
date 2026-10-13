@@ -16,10 +16,13 @@ export function registerPluginLifecycleDelivery(
   manager: Pick<PluginWorkerManager, "call" | "isRunning">,
   lifecycle: Pick<PluginLifecycleManager, "on" | "off">,
 ) {
-  let pending = false;
+  // Startup and every wake remain pending until an admitted run inspects the inbox.
+  // The coordinator may reconcile signals while idle drain prevents dispatch.
+  let pending = true;
   const delivery = coordinator.register(DELIVERY_QUEUES.pluginLifecycle, {
     retryMs: 30_000,
     hasPending: async () => pending,
+    onSettled: () => { pending = true; },
     async run(signal) {
       pending = false;
       const configured = await db.select({ plugin: plugins, companyId: pluginConfig.companyId })
@@ -60,7 +63,7 @@ export function registerPluginLifecycleDelivery(
                 stage = "acknowledgment";
                 await inbox.acknowledge(companyId, event.id);
                 // An acknowledgment exposes the next event for this resource. Drain immediately.
-                delivery.wake();
+                wake();
               } else if (result.status === "retry") pending = true;
             } catch (error) {
               // Provider error messages/data may contain secrets; retain only routing
@@ -78,15 +81,17 @@ export function registerPluginLifecycleDelivery(
       }
     },
   });
-  lifecycle.on("plugin.loaded", delivery.wake);
-  lifecycle.on("plugin.enabled", delivery.wake);
-  lifecycle.on("plugin.worker_started", delivery.wake);
+  function wake() { pending = true; delivery.wake(); }
+  lifecycle.on("plugin.loaded", wake);
+  lifecycle.on("plugin.enabled", wake);
+  lifecycle.on("plugin.worker_started", wake);
   return {
     ...delivery,
+    wake,
     dispose() {
-      lifecycle.off("plugin.loaded", delivery.wake);
-      lifecycle.off("plugin.enabled", delivery.wake);
-      lifecycle.off("plugin.worker_started", delivery.wake);
+      lifecycle.off("plugin.loaded", wake);
+      lifecycle.off("plugin.enabled", wake);
+      lifecycle.off("plugin.worker_started", wake);
     },
   };
 }
