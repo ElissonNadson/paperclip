@@ -251,13 +251,19 @@ export function skillSourceService(db: Db) {
           return { source: await detail(companyId, id), imported: [], updated: [], unchanged: (await detail(companyId, id)).entries.filter(entry => entry.selection === 'selected').length, warnings: [] };
         }
       }
-      const scan = staged ?? await scanGitHubSkills({ repositoryUrl: source.repositoryUrl, trackingRef: source.trackingRef, packageMode: selection?.packageMode ?? source.packageMode }, reader, { signal: options.signal });
+      const packageMode = selection?.packageMode ?? (source.accessScope === 'projects' ? 'repository' : source.packageMode);
+      const scan = staged ?? await scanGitHubSkills({ repositoryUrl: source.repositoryUrl, trackingRef: source.trackingRef, packageMode }, reader, { signal: options.signal });
       // A project source may already be in package-only mode after initial fallback.
       if (source.accessScope === 'projects' && scan.packageMode === 'skills') rejectIncompleteSkillPackages(scan);
       if (source.repositoryId && source.repositoryId !== scan.repositoryId) throw conflict('The repository at this URL has changed identity. Add it as a new source.');
       const current = await detail(companyId, id);
+      const omittedInstalledFiles = current.entries.some(entry => entry.skillId && current.repositoryPackage?.files.some(file => {
+        const root = path.posix.dirname(entry.path);
+        return root !== '.' && !file.path.startsWith(`${root}/`);
+      }));
       if (source.packageMode === 'repository' && scan.packageMode === 'skills'
-        && selection?.packageMode !== 'skills' && current.entries.some(entry => entry.skillId)) {
+        && selection?.packageMode !== 'skills' && current.entries.some(entry => entry.skillId)
+        && (omittedInstalledFiles || scan.skills.some(skill => skill.inspection?.references.length))) {
         throw unprocessable('The repository exceeds the supported package size. Installed repository skills and their dependencies were kept. Reduce the repository package size before refreshing.');
       }
       const selectedPaths = selection?.selectedPaths ?? current.entries.filter(entry => entry.selection === 'selected').map(entry => entry.path);

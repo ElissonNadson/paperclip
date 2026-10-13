@@ -354,6 +354,13 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     expect(result.warnings.join(' ')).toContain('repository exceeds');
     expect(result.source.entries[0]!.skillId).toBe(skillId);
     expect(result.updated).toHaveLength(1);
+    files = { 'small/SKILL.md': md('small with shared guide') + '\nRead [guide](../shared/guide.md).', 'shared/guide.md': 'Now fits in the repository package.' };
+    commit = '6'.repeat(40);
+    const complete = await service.refresh(companyId, original.id, context);
+    expect(complete.source.packageMode).toBe('repository');
+    expect(complete.source.entries.find(entry => entry.path === 'small/SKILL.md')!.skillId).toBe(skillId);
+    expect((await companySkillService(db).readFile(companyId, skillId, '.paperclip-repository/shared/guide.md'))?.content)
+      .toBe('Now fits in the repository package.');
   });
 
   it('enqueues repository changes atomically, leaves ordinary legacy edits alone and retains old references', async () => {
