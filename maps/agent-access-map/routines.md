@@ -133,3 +133,9 @@ remaining operations before qualifying the whole capability.
 
 Gaps: Pause/archive routine mutation lacks a production native binding. Plugin-managed
 routine rules remain separate.
+
+Execution resolves referenced project skills against agent/responsible-user access,
+then saves immutable version selections in the heartbeat execution context. New runs
+resolve latest installed content; resumed runs retain selections and recheck access.
+An unavailable explicit reference produces an actionable configuration error.
+Live agent execution across an upstream update remains required acceptance evidence.

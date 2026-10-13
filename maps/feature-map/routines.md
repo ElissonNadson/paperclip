@@ -51,3 +51,11 @@ Manual: Set a near-term disposable schedule or authorized test webhook, verify o
 - Saving a schedule does not prove the scheduler invoked it.
 - Timezone, overlap/concurrency rules, and plugin ownership affect behavior.
 - A routine run’s task must still respect pause, access, and budget gates.
+
+### Latest skill references
+
+Routine instructions retain stable skill mentions. After a project source syncs an
+upstream change, the next execution uses the latest installed version without waiting
+on GitHub. Record the resolved version before/after and verify a resumed execution
+keeps its original version. Private skill references require current project access
+for both the agent and its responsible person.

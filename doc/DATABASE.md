@@ -755,3 +755,21 @@ Use the same root client for in-process writers. New queue insertion paths must
 register before writing, or they can remain unseen until the next startup or
 another notification. Tests should verify both the producer and its outer
 transaction boundary.
+
+### Project repository skill synchronization
+
+`project_skill_sources` stores durable workspace import jobs and originating project
+access provenance. Active bindings track their repository/ref; inactive bindings retain
+access to installed versions. Project deletion removes bindings, but retained skills
+with `access_source_id` stay restricted when no originating project remains.
+
+`company_skill_sources` stores automatic-update and future-import preferences, setup
+user/agent and connection/grant IDs, next-check time, failure count and existing refresh
+leases. Existing sources default to automatic updates with their selection preserved.
+Credential values remain in the connection secret system. No project membership lists
+are copied into skills. Background publication uses normal immutable versions and
+transactional activity attribution. Setup agent and connection identifiers remain after
+those identities are deleted. Refresh then requires explicit repair; deletion cannot
+silently substitute board authority or another connection. Execution snapshots keep
+only the delivered skill keys and their immutable version IDs. New executions resolve
+the latest installed versions without an upstream fetch.

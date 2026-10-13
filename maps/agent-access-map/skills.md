@@ -139,3 +139,15 @@ remaining operations before qualifying the whole capability.
 
 Gaps: Native call_api rejects test-run creation/control while the route can authorize
 agents. No default native orchestration binding.
+
+Project-source API additions: GET `/api/companies/{companyId}/skill-sources/project-repositories`,
+POST `/api/companies/{companyId}/skill-sources/adopt-project` with `workspaceId`, and
+PATCH `/api/companies/{companyId}/skill-sources/{sourceId}/settings` with expected revision
+and update/connection preferences. Native API discovery uses the OpenAPI registration.
+
+Project-derived read/use permission follows current project authorization, with access
+through either originating project. File/version reads, source metadata, mutations,
+editable copies, tests and runtime delivery retain that boundary. Unattended refresh
+uses the revalidated setup identity and connection, not the requesting agent's token.
+These additions need actual permitted/denied agent-run acceptance; service tests alone
+are not live credential proof.

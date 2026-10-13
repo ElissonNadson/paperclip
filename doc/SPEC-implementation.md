@@ -2012,9 +2012,11 @@ unavailable. Preserve current ownership and newer-work fences. See
   reduced-motion-aware animations and shows indeterminate progress while saving
   complete packages, without inventing completion percentages.
 
-- Sources and entries are company-scoped. Reuse GitHub connection grants and credential
-  refresh; every provider read authorizes the current caller. Saved connection IDs do
-  not confer access to another user's token. Agent reads use managed run identities.
+- Sources and entries are company-scoped. Discovery and connection changes authorize
+  the current caller. Automatic and manual source refresh use the stored setup person's
+  connection and grant, revalidating their access and refreshing credentials on each
+  check. Saved connection IDs do not independently grant library visibility. Agent
+  setup derives the responsible person from the authenticated run identity.
 - The import picker searches the deduplicated union of repositories from all connections
   the caller can access, automatically choosing an authorized connection. Adding accounts
   uses the standard GitHub setup in Apps and retains the import draft. Repository URLs
@@ -2075,7 +2077,7 @@ unavailable. Preserve current ownership and newer-work fences. See
   and history. New key collisions cannot overwrite unrelated skills. Only changed package
   bytes or executable modes create versions. Library reads, tests, and subsequent unpinned
   runs use local installed snapshots; pinned/active runs retain their versions.
-- Additions require reviewed selection, with new candidates checked by default and
+- Manually selected sources retain reviewed selection, with new candidates checked by default and
   explicit folder exclusions retained. Upstream deletion keeps installed content with
   removed status; moves are removal plus discovery. Deselect/disconnect retains content
   and assignments. Originals are read-only, with the existing independent fork workflow.
@@ -2083,8 +2085,33 @@ unavailable. Preserve current ownership and newer-work fences. See
   resolve missing repository IDs and full snapshots on successful refresh. Exclude bundled,
   catalog, local/project, skills.sh, and unsupported hosts. Existing GitHub import and update
   endpoints delegate to sources while retaining response shapes.
-- GitHub.com, manual refresh only. No upstream editing, polling, webhook sync, commits,
-  or pull-request creation in this milestone.
+- GitHub.com project repository attachments enqueue durable skill-source import jobs in
+  the project mutation transaction. Skill import completes asynchronously and cannot
+  fail project creation. Configured refs use the existing project workspace precedence;
+  absent refs track the default branch. Sources without skills remain tracked.
+- Enabled sources check upstream every five minutes; unchanged commits avoid downloads.
+  Manual Refresh uses the same serialized publication pipeline. Automatic updates may
+  be paused independently of selection. Project sources select future additions unless
+  excluded; existing manually imported sources retain their selections. Legacy projects
+  adopt through an explicit company-scoped, project-authorized endpoint, never a GET.
+- Unattended refresh stores setup identity and connection/grant identifiers, never token
+  values. Current membership, connection authorization and skill policy are revalidated.
+  Unrecoverable legacy setup identities require explicit connection repair. Retries are
+  bounded and backed off; leases survive restarts and shutdown cancels owned downloads.
+- Project-derived skill visibility is the union of current originating project audiences.
+  Core uses project authorization, including agent/responsible-user intersection, for
+  discovery, reads, mutations, files, versions, tests and runtime delivery. Unauthorized
+  IDs return not found. Company imports retain their existing visibility. Forks preserve
+  project provenance. Unsupported public publication or portable export is rejected.
+- Detachment retains installed content and project access provenance while stopping that
+  project's tracking. Ref replacement never rewrites existing references. An orphaned
+  project source remains restricted after its last originating project is deleted.
+- Executions resolve unpinned references from local immutable versions, persist the
+  resolved inventory, and reuse it on resume after rechecking access. Explicit unavailable
+  references fail actionably rather than silently omitting instructions. Background
+  GitHub checks never delay execution. Existing version pins remain supported.
+- Upstream editing, push webhooks, commit/PR creation and advanced reference pin UI
+  remain outside this release.
 
 ## Public assistant connection (opt-in)
 
