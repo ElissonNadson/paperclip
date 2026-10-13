@@ -10,7 +10,7 @@
       "ui/storybook/generated/feature-index.json",
       "ui/storybook/support/feature-map/FeatureOverview.tsx"
     ],
-    "fingerprint": "e4538710a93c6d705b65633b0c241a7eaba961d7bf3f827ec2c53bcf74711f49"
+    "fingerprint": "9eb1ee102be596dfe61c472e3dce70839061401b1a62036a558c0239f57ba2a1"
   },
   "entries": [
     {
@@ -22,7 +22,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -47,7 +47,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -78,7 +78,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -104,7 +104,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -136,7 +136,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -167,7 +167,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -601,7 +601,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -672,7 +672,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -860,7 +860,7 @@
       "status": "proposed",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route.",
+      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -882,7 +882,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -903,7 +903,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1295,7 +1295,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1344,7 +1344,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. FullMatrix renders BudgetIncidentCard in warning, resolved, pending-approval and escalated hard-stop states. Resolution handlers are no-ops; budget relief and resumption remain unverified.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. FullMatrix renders BudgetIncidentCard in warning, resolved, pending-approval and escalated hard-stop states. Resolution handlers are no-ops; budget relief and resumption remain unverified. The upstream budget UI distinguishes soft warnings from hard stops; hard incidents retain raise-and-resume and keep-paused controls.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/budgets-costs.md",
@@ -1360,7 +1360,7 @@
         "ui/src/components/ProviderQuotaCard.tsx",
         "ui/storybook/stories/budgets-costs/budget-finance.stories.tsx"
       ],
-      "fingerprint": "b71fa2f405c1d671b092bd2d86b220429819950b100c5aed3b7afb2b4efae1d3",
+      "fingerprint": "1af4d0af7d3dc0008dce21ac303af6aa90fb46593389fc7e47602a490e3ca8c7",
       "stableId": "product-budget-finance",
       "sidebarTitle": "Oversight and operation/Costs and budgets/Product/Budget & Finance"
     },
@@ -1683,7 +1683,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -1711,7 +1711,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1764,7 +1764,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1822,15 +1822,15 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The upstream budget UI distinguishes soft warnings from hard stops; hard incidents retain raise-and-resume and keep-paused controls.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/budgets-costs.md",
         "ui/src/components/ToastViewport.tsx",
         "ui/src/pages/Costs.tsx",
         "ui/storybook/stories/budgets-costs/costs/subscriptions.stories.tsx"
       ],
-      "fingerprint": "5663cc1d142ce63bf2c5e2edc23c19ef6b6f45fdee12cc79ad9e20446a5be5a8",
+      "fingerprint": "7eeef3d9becbe18d7f7e644f4fc8628c386071f151a038842fac12e97602c81d",
       "stableId": "costs-subscriptions",
       "sidebarTitle": "Oversight and operation/Costs and budgets/Costs/Subscriptions"
     },
@@ -1844,7 +1844,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1852,7 +1852,7 @@
         "ui/src/components/task-chat/TaskChatMarker.tsx",
         "ui/storybook/stories/secrets/credential-access/01-notice.stories.tsx"
       ],
-      "fingerprint": "14757d026311d143e9301d6294d2f46f40dad25af8ea3f8d5cf1893b260f82db",
+      "fingerprint": "505e42e0a40afea13cf02b65bad4488650e2c56a5a4a720b4b9a2c193f4d2e70",
       "stableId": "task-credential-access-01-notice",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/01 Notice"
     },
@@ -1866,7 +1866,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
@@ -1879,7 +1879,7 @@
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "0c7ad2d8456115e0907edeab6925234516918387b9a6a7cb809464612a6cb01c",
+      "fingerprint": "9314a73161f51137c1dee179818b953c8e58f96c03666c9bd3845f20d2dfdc07",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -2017,7 +2017,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Related decision-service examples show connection/model configuration, bounded test receipts or invocation history using shipped subjects and simulated data. No paid provider or authorization proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Related decision-service examples show connection/model configuration, bounded test receipts or invocation history using shipped subjects and simulated data. No paid provider or authorization proof. The upstream budget UI distinguishes soft warnings from hard stops; hard incidents retain raise-and-resume and keep-paused controls.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/budgets-costs.md",
@@ -2028,7 +2028,7 @@
         "ui/storybook/stories/companies/decision-models/03-journey.stories.tsx",
         "ui/storybook/support/decision-models/fixtures.ts"
       ],
-      "fingerprint": "fe773821e67983b5a6255d417fd9952e3bc227c4ccdb8410b06e1a9200c94d63",
+      "fingerprint": "18b3ec30595cccd821d30fbf6eef0ca7b072666c9fd98b48f866b4420144a244",
       "stableId": "decision-models-03-journey",
       "sidebarTitle": "Getting started and access/Companies and portability/Decision models/03 Journey"
     },
@@ -2063,7 +2063,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe distinguishes process liveness from authenticated database readiness; these examples do not exercise that operator API boundary.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/instance-operations.md",
@@ -2186,7 +2186,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2208,14 +2208,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/secrets.md",
         "ui/src/components/environment-variables-editor/index.tsx",
         "ui/storybook/stories/secrets/environment-variables-editor.stories.tsx"
       ],
-      "fingerprint": "f41ed501dc34f19a8ef6071f1e7e563e8ac60769e6a2930dcfd8cde15d6551d0",
+      "fingerprint": "e358e40a80d2d2dc92050836098375e0f9d88a3b59491d24c1a4c4b784e70c00",
       "stableId": "product-environment-variables-editor",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/Environment Variables Editor"
     },
@@ -2420,7 +2420,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2653,7 +2653,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2807,7 +2807,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2837,7 +2837,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -3029,7 +3029,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -3050,7 +3050,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -3275,7 +3275,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -3301,7 +3301,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Four managed Codex cases use scoped immutable-image discovery and a stateful saved-probe fixture: native default, measured Legacy, permission refusal, and unconfirmed cleanup. Native isolation recipe added; these fixture setup responses do not establish server-resolved transport isolation, real sandbox cleanup, or local/SSH enforcement.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. Four managed Codex cases use scoped immutable-image discovery and a stateful saved-probe fixture: native default, measured Legacy, permission refusal, and unconfirmed cleanup. Native isolation recipe added; these fixture setup responses do not establish server-resolved transport isolation, real sandbox cleanup, or local/SSH enforcement. The operator QA timeout/concurrency recipe was inspected; this preview does not verify the first-task fixture’s pre-admission runtime bounds.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3315,7 +3315,7 @@
         "ui/src/components/ui/select.tsx",
         "ui/storybook/fixtures/paperclipData.ts"
       ],
-      "fingerprint": "9b4ecac7c692291fe4be571ced273b9c56f390050e1efba5f3601137bec3f517",
+      "fingerprint": "0fc350b2b574ef98fd015fefe303547be4121d66e090daf4ca56350c2027a243",
       "stableId": "onboarding-agent-arc",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Agent arc"
     },
@@ -3328,7 +3328,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The added native isolation recipe is outside this character preview’s demonstrated scope.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The added native isolation recipe is outside this character preview’s demonstrated scope. The operator QA timeout/concurrency recipe was inspected; this preview does not verify the first-task fixture’s pre-admission runtime bounds.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3336,7 +3336,7 @@
         "ui/src/components/ui/button.tsx",
         "ui/storybook/stories/onboarding/onboarding-character.stories.tsx"
       ],
-      "fingerprint": "0b67eb03cbd6567a64afddead9c02970fd2d7fb002fd11fe6128b4916bd4c7ac",
+      "fingerprint": "85e2c1a2d3fff33710ba73a4d416c54e31ced53e158d0d5efd51c5778dd91b23",
       "stableId": "onboarding-character",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Character"
     },
@@ -3350,7 +3350,7 @@
       "status": "historical",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Older tile/mode preview; onboarding-agent-arc mounts the production wizard. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The expanded native isolation recipe is not exercised by this retained historical tile preview.",
+      "notes": "Older tile/mode preview; onboarding-agent-arc mounts the production wizard. Codex selection/branding and upstream recipe source changes inspected; prior parity limitations remain, with no new rendered or live proof. The expanded native isolation recipe is not exercised by this retained historical tile preview. The operator QA timeout/concurrency recipe was inspected; this preview does not verify the first-task fixture’s pre-admission runtime bounds.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/onboarding.md",
@@ -3358,7 +3358,7 @@
         "ui/storybook/stories/onboarding/onboarding-connect-model.stories.tsx"
       ],
       "replacement": "ui/storybook/stories/onboarding/onboarding-agent-arc.stories.tsx",
-      "fingerprint": "7ee1f3c943f9ec71ec4e4ceda46d3ba20ccca5ee2c8c7c7b5ba889f93edd9507",
+      "fingerprint": "93801b6f02adb113aeb3ba549d46a7e285c70968e0fd26dd3b6464eb1244ce30",
       "stableId": "onboarding-connect-a-model",
       "sidebarTitle": "Getting started and access/Onboarding and first work/Onboarding/Connect a model"
     },
@@ -3396,7 +3396,7 @@
       "status": "unreviewed",
       "implementation": "guide",
       "boundary": "static",
-      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage.",
+      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage. The generated upstream feature index was reconciled; example scope and classifications are retained.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/src/components/ui/badge.tsx",
@@ -3406,7 +3406,7 @@
         "ui/storybook/generated/feature-index.json"
       ],
       "exception": "Shared foundations or contributor guide; no single business capability owns this suite.",
-      "fingerprint": "4475da1392e7bde9678e44d14ab95b851043f2879f1fee36c3a402b504f6914a",
+      "fingerprint": "84d33d55cded070e094b69b99db8b3de5ec7e6748adb374322208f3f6f5fce35",
       "stableId": "overview-storybook-guide",
       "sidebarTitle": "Overview/Storybook Guide"
     },
@@ -3466,7 +3466,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -4455,7 +4455,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ToggleOnAndOff, ManagedByCloud and SaveFailedRollsBack mount production experimental settings with simulated saves. Only the assistant-connection flag is represented, not every instance setting.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ToggleOnAndOff, ManagedByCloud and SaveFailedRollsBack mount production experimental settings with simulated saves. Only the assistant-connection flag is represented, not every instance setting. The recipe distinguishes process liveness from authenticated database readiness; these examples do not exercise that operator API boundary.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/gateways-profiles.md",
@@ -4608,8 +4608,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/routines.md",
         "maps/feature-map/secrets.md",
@@ -4618,7 +4618,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
-      "fingerprint": "03c05c0cca01d220885ea96f13495bcc185121eecbbeb00918511b4d7de26016",
+      "fingerprint": "ac3e04699ed84d7a11567f17b185c2bbe5c30d049586e03def563f774457e276",
       "stableId": "product-routines-·-secrets-tab",
       "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
     },
@@ -4808,8 +4808,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/secrets.md",
         "ui/src/components/SecretBindingPicker.tsx",
@@ -4818,7 +4818,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/secrets/secrets.stories.tsx"
       ],
-      "fingerprint": "246539c619974c29848ae6ba3685aa741dbc572eeb6f8cffb2e9328501fbf31b",
+      "fingerprint": "b52b6355351b1d49d2fb5921f357fa957288ad646015c5bd99d02b5aec04fee2",
       "stableId": "product-secrets",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/Secrets"
     },
@@ -4937,7 +4937,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -5006,7 +5006,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. The recipe adds bounded Telegram subscription maintenance regressions; this story does not establish real provider startup recovery.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -5525,8 +5525,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Agent-owned instance secrets remain in trusted server runtime and are excluded from ordinary agent delivery; these UI examples do not verify that lifecycle contract.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/secrets.md",
         "ui/src/components/environment-variables-editor/index.tsx",
@@ -5535,7 +5535,7 @@
         "ui/src/pages/secrets/UserSecretDefinitionsTab.tsx",
         "ui/storybook/stories/secrets/user-secrets.stories.tsx"
       ],
-      "fingerprint": "5c875865c81923b2c568559d0c2f7bde22d1a8162501736ba3eeeb027acae772",
+      "fingerprint": "7946ebdc6c576de9cdd30205131073f5029aec8e094397bab66c300c1f3a79ea",
       "stableId": "product-user-secrets",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Product/User secrets"
     },

@@ -654,3 +654,62 @@ Canonical catalog generation and the existing structural tests establish source
 inventory and references only. The prior Storybook build at `448db859e3` predates
 these dropdown edits; it does not prove their rendering or interactions. No new
 render/play, visual-baseline, provider or production-persistence proof is claimed.
+## Verification routes for unassociated capabilities — 2026-10-13
+
+Source classification against merged master `5e8e992df2`: [VERIFICATION.md](VERIFICATION.md)
+accounts for all 60 capabilities without non-guide example associations. It
+records 49 UI example gaps with separate production contracts, eight CLI/operator
+operations and three browser verification boundaries. Existing tests are starting
+points; no new live journey, rendering, interaction or visual evidence is claimed.
+The targeted association revisit found no further justified links. This does not
+complete parity review of the 184 example suites still classified `unreviewed`.
+
+Master includes #16153's personal task-toast capability. Its upstream README and
+recipe were inspected; reconstructing the five inbox-suite and shared fingerprints
+with the pre-toast recipe bytes matches the stored baseline. No other declared
+source changed for those suites. Regeneration adds the capability/description to
+the feature index, which also changes the guide fingerprint. Refreshing those
+review fingerprints preserves statuses, associations and all 2,212 authored IDs.
+
+Catalog/map checks, 27 catalog/generator/map tests and maintenance-skill validation
+passed. The 60-row inventory and all local links were checked against current
+source. Repository-wide typecheck/tests/build and Storybook build are not run for
+this documentation and generated-data pass; runtime behavior is unchanged.
+
+Review correction: backup retention already has shipped controls in
+`InstanceGeneralSettings`, embedded in `CompanySettings`. The backup row therefore
+keeps missing retention UI examples alongside separate CLI backup/restore proof;
+it is not a wholesale Storybook exemption. No existing story mounts those controls.
+
+## Verification-parent merge reconciliation — 2026-10-13
+
+Reconciled master `da9af67415` while preserving its catalog records and both
+review histories. Inspected the intervening recipe changes for Telegram
+maintenance, liveness/readiness and trusted instance-secret lifecycle, and the
+soft-warning versus hard-stop budget UI. Refreshed only dependent review
+fingerprints with notes naming those boundaries; classifications remain unchanged.
+The generated feature index reflects the current recipes. No new rendering,
+provider journey or whole-suite parity review is claimed. Catalog/map validation
+and all 27 catalog/generator/map tests pass with the pinned Storybook parser.
+
+## Codex and current-master catalog reconciliation — 2026-10-13
+
+Reconciled Codex `0065d06474ddc3245d8fee83bf3fbc108c9a0165` with master
+`252d9b5077f4eee98ec48225641ef1a02d824158`. Retained all 226 authored entries,
+stable story IDs, simulation boundaries and dated review histories from both
+branches. Codex creation/settings notes remain alongside master’s Telegram
+maintenance, database-readiness and trusted instance-secret limits. The existing
+verification-route inventory and its source-qualified scope are preserved.
+
+Combined-source fingerprints and generated indexes are reconciled after inspecting
+their changed inputs. This pass establishes inventory and reference structure only;
+it adds no rendering, interaction, provider, account, cleanup or production
+acceptance evidence. Historical receipts retain their original tested sources.
+
+The only new declared source inputs are master’s secrets recipe and the canonical
+generated feature index. Three onboarding hashes were already stale at `0065`: its
+recipe added the operator QA timeout/concurrency guard after the prior hash review.
+Those four recipe lines were inspected and the entries retain their fixture and
+historical limits; the stories do not establish that guard. Refreshed the five
+affected entry hashes and shared setup. The verification-route inventory still
+exactly matches all 60 unassociated capabilities, with no stale or missing rows.
