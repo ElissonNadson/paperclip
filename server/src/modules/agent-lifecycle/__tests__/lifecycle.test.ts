@@ -81,7 +81,7 @@ const support = await getEmbeddedPostgresTestSupport();
       { companyId, actorType: "agent", actorId: randomUUID(), action: "agent.hire_created", entityType: "agent", entityId: byAgent.id },
       { companyId: otherCompanyId, actorType: "user", actorId: "foreign-user", action: "agent.created", entityType: "agent", entityId: foreign.id },
     ]);
-    const migration = readFileSync(new URL("../../../../../packages/db/src/migrations/0336_salty_skaar.sql", import.meta.url), "utf8");
+    const migration = readFileSync(new URL("../../../../../packages/db/src/migrations/0339_lucky_yellow_claw.sql", import.meta.url), "utf8");
     await db.execute(sql.raw(migration.slice(migration.indexOf('UPDATE "agents"'))));
     expect((await current(byUser.id)).createdByUserId).toBe("first-user");
     expect((await current(byAgent.id)).createdByUserId).toBeNull();

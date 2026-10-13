@@ -1744,13 +1744,13 @@ export function AgentOverview({
     queryKey: [...queryKeys.agents.identity(agent.id), lastRun?.id, lastRun?.status],
     queryFn: () => agentsApi.getIdentity(agent.id, agent.companyId),
   });
-  const { data: userDirectory } = useQuery({
+  const userDirectory = useQuery({
     queryKey: queryKeys.access.companyUserDirectory(agent.companyId),
     queryFn: () => accessApi.listUserDirectory(agent.companyId),
     enabled: Boolean(humanAgentCreatorUserId(agent.createdByUserId)),
     retry: false,
   });
-  const creatorLabel = resolveAgentCreatorLabel(agent.createdByUserId, userDirectory?.users);
+  const creatorLabel = resolveAgentCreatorLabel(agent.createdByUserId, userDirectory.data?.users);
   return (
     <div className="space-y-6">
       <LatestRunCard runs={runs} agentId={agentRouteId} issuesById={issuesById} />
@@ -1772,7 +1772,9 @@ export function AgentOverview({
               ) : <span className="text-sm">Board</span>}
             </SummaryRow>
             <SummaryRow label="Direct reports"><span className="text-sm tabular-nums">{directReportCount}</span></SummaryRow>
-            {creatorLabel ? (
+            {userDirectory.isError ? (
+              <SummaryRow label="Created by"><span className="text-sm text-destructive">Could not load creator</span></SummaryRow>
+            ) : creatorLabel ? (
               <SummaryRow label="Created by"><span className="text-sm">{creatorLabel}</span></SummaryRow>
             ) : null}
             <SummaryRow label="Public key">

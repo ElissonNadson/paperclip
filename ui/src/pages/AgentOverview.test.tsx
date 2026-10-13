@@ -78,7 +78,7 @@ describe("AgentOverview", () => {
     expect(markup).not.toContain("Created by");
   });
 
-  function renderWithDirectory(createdByUserId: string, principalIds: string[]) {
+  function renderOverview(createdByUserId: string, client: QueryClient) {
     const agent = {
       id: "agent-2",
       companyId: "company-1",
@@ -96,14 +96,6 @@ describe("AgentOverview", () => {
       chainOfCommand: [],
       access: { canAssignTasks: true, taskAssignSource: "explicit_grant", membership: null, grants: [] },
     } as unknown as AgentDetail;
-    const client = new QueryClient();
-    client.setQueryData(queryKeys.access.companyUserDirectory("company-1"), {
-      users: principalIds.map((principalId) => ({
-        principalId,
-        status: "active",
-        user: { id: principalId, name: principalId === "user-alice" ? "Alice Admin" : "Bob Builder", email: null, image: null },
-      })),
-    });
     return renderToStaticMarkup(
       <QueryClientProvider client={client}>
         <AgentOverview
@@ -118,6 +110,18 @@ describe("AgentOverview", () => {
     );
   }
 
+  function renderWithDirectory(createdByUserId: string, principalIds: string[]) {
+    const client = new QueryClient();
+    client.setQueryData(queryKeys.access.companyUserDirectory("company-1"), {
+      users: principalIds.map((principalId) => ({
+        principalId,
+        status: "active",
+        user: { id: principalId, name: principalId === "user-alice" ? "Alice Admin" : "Bob Builder", email: null, image: null },
+      })),
+    });
+    return renderOverview(createdByUserId, client);
+  }
+
   it("shows who created the agent when the company has more than one human user", () => {
     const markup = renderWithDirectory("user-alice", ["user-alice", "user-bob"]);
     expect(markup).toContain("Created by");
@@ -127,5 +131,17 @@ describe("AgentOverview", () => {
   it("hides the creator when only one human user shares the company with the Board", () => {
     const markup = renderWithDirectory("user-alice", ["user-alice", "local-board"]);
     expect(markup).not.toContain("Created by");
+  });
+
+  it("shows an error when the company user directory cannot be loaded", () => {
+    const client = new QueryClient({ defaultOptions: { queries: { retryOnMount: false } } });
+    client.getQueryCache().build(client, { queryKey: queryKeys.access.companyUserDirectory("company-1") }).setState({
+      status: "error",
+      error: new Error("Directory unavailable"),
+      fetchStatus: "idle",
+    });
+    const markup = renderOverview("user-alice", client);
+    expect(markup).toContain("Created by");
+    expect(markup).toContain("Could not load creator");
   });
 });

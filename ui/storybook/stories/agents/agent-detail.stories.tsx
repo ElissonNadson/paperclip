@@ -129,8 +129,6 @@ const budgetOverviewFixture: BudgetOverview = {
   pendingApprovalCount: 0,
 };
 
-// Two human members plus the synthetic local Board: enough for the overview to
-// show who created the agent (the Board never counts toward that threshold).
 const sharedCompanyUserDirectoryFixture = {
   users: [
     { principalId: "local-board", status: "active", user: { id: "local-board", email: null, name: "Board", image: null } },
@@ -216,7 +214,6 @@ export const Dashboard: Story = {
   render: () => <AgentDetailScenario />,
 };
 
-/** More than one human shares the company, so the Identity card names the creator. */
 export const SharedCompanyShowsCreator: Story = {
   render: () => <AgentDetailScenario sharedCompany />,
 };
