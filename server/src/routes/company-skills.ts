@@ -1,3 +1,4 @@
+import { projectSkillSetupIdentity } from "../services/project-skill-source-bindings.js";
 import { adoptProjectSkillRepository, projectSkillRepositories, skillSourceSyncService } from "../services/skill-source-sync.js";
 import { skillAccessRequestContext, skillAccessService } from "../services/skill-access.js";
 import { skillSourceService, type SkillSourceContext } from "../services/skill-sources.js";
@@ -316,10 +317,10 @@ export function companySkillRoutes(db: Db) {
     assertCompanyAccess(req, companyId);
     const actor = getActorInfo(req);
     const publications: ActivityPublication[] = [];
+    const setup = await projectSkillSetupIdentity(db, companyId, req.actor);
     const result = await operation({
       actor: skillActor(req),
-      setup: { userId: req.actor.type === "board" ? req.actor.userId ?? null : req.actor.onBehalfOfUserId ?? null,
-        agentId: req.actor.type === "agent" ? req.actor.agentId ?? null : null, localTrusted: req.actor.source === "local_implicit" || req.actor.onBehalfOfUserId === "local-board" },
+      setup: { userId: setup.refreshUserId, agentId: setup.refreshAgentId, localTrusted: setup.refreshLocalTrusted },
       read: connectionId => skillSourceGitHubReader(db, companyId, req.actor, connectionId),
       authorize: (action, resource) => assertCanMutateCompanySkills(req, companyId, action, resource),
       audit: async (tx, sourceId, action, details) => {

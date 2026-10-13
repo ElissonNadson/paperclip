@@ -5,8 +5,7 @@ import { currentSkillActor } from './skill-access.js';
 import { captureRunIdentity } from './run-identity.js';
 import { forbidden } from '../errors.js';
 
-export async function projectSkillSetupIdentity(db: Db, companyId: string) {
-  const actor = currentSkillActor();
+export async function projectSkillSetupIdentity(db: Db, companyId: string, actor = currentSkillActor()) {
   let userId = actor?.type === 'board' ? actor.userId ?? null : null;
   if (actor?.type === 'agent' && actor.source === 'agent_jwt') {
     if (!actor.runId || !actor.agentId || actor.companyId !== companyId) throw forbidden('Project skill setup requires an authenticated agent run.');

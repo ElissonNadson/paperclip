@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { skillSourceRetryAt } from './skill-source-retry.js';
-import { and, asc, eq, inArray, isNull, lte, or, sql } from 'drizzle-orm';
-import { activityLog, agents, authUsers, companies, companyMemberships, companySkillSources, companySkillSourceEntries,
+import { and, asc, eq, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm';
+import { activityLog, agents, authUsers, heartbeatRuns, companies, companyMemberships, companySkillSources, companySkillSourceEntries,
   projectSkillSources, projectWorkspaces, projects, type Db } from '@paperclipai/db';
 import type { ProjectSkillRepository } from '@paperclipai/shared';
 import { authorizationService, type AuthorizationActor } from './authorization.js';
@@ -137,17 +137,24 @@ export function skillSourceSyncService(db: Db, options: { context?: (setup: Setu
   const shutdown = new AbortController();
 
   async function recoverSetup(source: typeof companySkillSources.$inferSelect) {
-    if (source.refreshUserId || source.refreshLocalTrusted) return source;
+    if (source.refreshUserId || source.refreshLocalTrusted || source.refreshAgentId) return source;
     const installed = await db.select({ id: companySkillSourceEntries.skillId }).from(companySkillSourceEntries)
       .where(and(eq(companySkillSourceEntries.companyId, source.companyId), eq(companySkillSourceEntries.sourceId, source.id)));
     const skillIds = installed.map(entry => entry.id).filter((id): id is string => Boolean(id));
     const [event] = await db.select().from(activityLog).where(and(eq(activityLog.companyId, source.companyId),
-      inArray(activityLog.actorType, ['user', 'agent']),
+      or(eq(activityLog.actorType, 'user'), and(eq(activityLog.actorType, 'agent'), isNotNull(activityLog.runId))),
       inArray(activityLog.action, ['company.skill_source_refreshed', 'company.skill_imported', 'company.skills_imported']),
       or(eq(activityLog.entityId, source.id), ...(skillIds.length ? [inArray(activityLog.entityId, skillIds)] : []))))
       .orderBy(asc(activityLog.createdAt)).limit(1);
     if (!event || !event.actorId || event.actorId === 'board') return source;
-    const userId = event.actorType === 'agent' ? event.responsibleUserId : event.actorId;
+    let userId = event.actorId;
+    if (event.actorType === 'agent') {
+      const [run] = await db.select({ userId: heartbeatRuns.responsibleUserId }).from(heartbeatRuns).where(and(
+        eq(heartbeatRuns.companyId, source.companyId), eq(heartbeatRuns.id, event.runId!),
+        eq(heartbeatRuns.agentId, event.agentId ?? event.actorId)));
+      if (!run?.userId) return source;
+      userId = run.userId;
+    }
     if (!userId) return source;
     const localTrusted = userId === 'local-board' && loadConfig().deploymentMode === 'local_trusted';
     const [updated] = await db.update(companySkillSources).set({ refreshUserId: userId,

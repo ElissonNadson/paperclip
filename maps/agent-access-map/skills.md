@@ -154,3 +154,11 @@ editable copies, tests and runtime delivery retain that boundary. Unattended ref
 uses the revalidated setup identity and connection, not the requesting agent's token.
 These additions need actual permitted/denied agent-run acceptance; service tests alone
 are not live credential proof.
+
+Direct GitHub source imports share the project setup-identity boundary. API-key
+agents may import permitted public content, but their responsible-user field
+does not authorize unattended credential use. They need human connection repair
+for automatic refresh. Authenticated agent runs derive the setup person from
+the persisted active run. Legacy agent activity without a matching run cannot
+recover a refresh person. Route and database tests cover these distinctions;
+this addition makes no new live-provider acceptance claim.

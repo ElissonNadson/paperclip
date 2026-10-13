@@ -4,11 +4,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { and, eq } from 'drizzle-orm';
-import { agents, authUsers, companies, companyMemberships, companySkillSources, companySkills, createDb, projects,
+import { activityLog, agents, authUsers, companies, companyMemberships, companySkillSources, companySkills, createDb, projects,
   projectWorkspaces, projectSkillSources, projectAccessMembers } from '@paperclipai/db';
 import { startEmbeddedPostgresTestDatabase, getEmbeddedPostgresTestSupport } from './helpers/embedded-postgres.js';
 import { githubFixture } from './helpers/github-skills.js';
-import { enqueueProjectSkillSource, detachProjectSkillSource } from '../services/project-skill-source-bindings.js';
+import { enqueueProjectSkillSource, detachProjectSkillSource, projectSkillSetupIdentity } from '../services/project-skill-source-bindings.js';
 import { adoptProjectSkillRepository, projectSkillRepositories, skillSourceSyncService } from '../services/skill-source-sync.js';
 import { skillSourceService, type SkillSourceContext } from '../services/skill-sources.js';
 import { companySkillService } from '../services/company-skills.js';
@@ -565,6 +565,34 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     const [binding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, attached!.id));
     expect(binding).toMatchObject({ status: 'pending', refreshUserId: null, refreshAgentId: agent!.id, refreshLocalTrusted: false, sourceId: null });
     await detachProjectSkillSource(db, companyId, attached!.id);
+  });
+
+  it('requires connection repair before scheduled refresh of API-key public imports', async () => {
+    await db.update(companySkillSources).set({ automaticUpdates: false });
+    files = {};
+    const [agent] = await db.insert(agents).values({ companyId, name: 'API-key source importer', adapterType: 'codex_local', status: 'idle' }).returning();
+    const setup = await projectSkillSetupIdentity(db, companyId, { type: 'agent', source: 'agent_key', companyId,
+      agentId: agent!.id, onBehalfOfUserId: 'local-board' });
+    const imported = await skillSourceService(db).create(companyId, { repositoryUrl: 'https://github.com/acme/skills',
+      trackingRef: 'key-generic-public', commitSha: commit, selectedPaths: [] }, { ...context,
+      actor: { type: 'agent', agentId: agent!.id }, setup: { userId: setup.refreshUserId, agentId: setup.refreshAgentId, localTrusted: setup.refreshLocalTrusted } });
+    const [stored] = await db.select().from(companySkillSources).where(eq(companySkillSources.id, imported.source.id));
+    expect(stored).toMatchObject({ refreshUserId: null, refreshAgentId: agent!.id, refreshLocalTrusted: false, connectionId: null });
+    await db.insert(activityLog).values({ companyId, actorType: 'agent', actorId: agent!.id, agentId: agent!.id,
+      responsibleUserId: 'local-board', action: 'company.skill_source_refreshed', entityType: 'company_skill_source', entityId: imported.source.id });
+    await skillSourceSyncService(db).tick(new Date(Date.now() + 6 * 60_000));
+    const [checked] = await db.select().from(companySkillSources).where(eq(companySkillSources.id, imported.source.id));
+    expect(checked!.lastError).toMatch(/Choose a GitHub connection/);
+    expect(checked!.refreshUserId).toBeNull();
+    expect(checked!.lastSuccessAt).toEqual(stored!.lastSuccessAt);
+    // Migrated sources may lack refreshAgentId; API-key audit responsibility
+    // still cannot stand in for an authenticated run's credential authority.
+    await db.update(companySkillSources).set({ refreshAgentId: null }).where(eq(companySkillSources.id, imported.source.id));
+    await skillSourceSyncService(db).tick(new Date(Date.now() + 12 * 60_000));
+    const [legacy] = await db.select().from(companySkillSources).where(eq(companySkillSources.id, imported.source.id));
+    expect(legacy!.refreshUserId).toBeNull();
+    expect(legacy!.lastError).toMatch(/Choose a GitHub connection/);
+
   });
 
   it('follows a changed default branch while an explicit branch remains fixed', async () => {

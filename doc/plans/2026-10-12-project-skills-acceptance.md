@@ -370,3 +370,14 @@ default-company switch regression fails before correction and passes afterward.
 All 33 Codex launch/injection/sync cases and recursive typecheck pass. The
 source-removal correction passed fresh review; final CI/review results remain
 recorded on the PR. No extra live-provider result is claimed for this correction.
+
+The final security scan identified API-key imports persisting a responsible user
+as unattended refresh authority. Direct imports now share project attachments'
+setup resolver: API keys retain attribution without a setup person; authenticated
+runs derive the person from the persisted active run. Legacy recovery cannot
+restore deliberately absent API-key authority and accepts agent attribution only
+with a matching recorded run. With valid membership fixtures, both API-key
+regressions fail on the previous route setup and pass after correction. All 101
+affected route/source/database cases pass, including scheduled repair and legacy
+audit recovery. Recursive typecheck and production build also pass. Current-head
+security and CI results are recorded on the PR.
