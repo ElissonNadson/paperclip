@@ -230,6 +230,10 @@ jobs:
 
           full_ci='true'
           reason='ordinary pull request'
+          # True when the PR's own diff is everything it adds to the stack's
+          # base branch: no stack, or the lowest unmerged PR in one. Above
+          # that, the diff omits lower PRs' code that this run must still test.
+          diff_covers_stack='true'
 
           # Release notes PRs touch only releases/v*.md or releases/beta/v*.md,
           # which no build, test, or e2e lane reads. The diff is pinned to the
@@ -263,12 +267,16 @@ jobs:
             stack_position="$(jq -r '.position // empty' <<< "$STACK_JSON")"
             stack_size="$(jq -r '.size // empty' <<< "$STACK_JSON")"
             stack_base_ref="$(jq -r '.base.ref // empty' <<< "$STACK_JSON")"
+            if [[ -z "$stack_base_ref" || "$stack_base_ref" != "$PR_BASE_REF" ]]; then
+              diff_covers_stack='false'
+            fi
 
             if [[ ! "$stack_position" =~ ^[1-9][0-9]*$ ]] ||
                [[ ! "$stack_size" =~ ^[1-9][0-9]*$ ]] ||
                (( stack_position > stack_size )) ||
                [[ -z "$stack_base_ref" ]]; then
               reason='malformed stack metadata; defaulting to full CI'
+              diff_covers_stack='false'
             elif (( stack_position == stack_size )); then
               reason='top pull request in stack'
             elif [[ "$stack_base_ref" == "$PR_BASE_REF" ]]; then
@@ -279,7 +287,8 @@ jobs:
             fi
           fi
 
-          if [[ "$full_ci" == 'true' ]] && release_notes_only; then
+          if [[ "$full_ci" == 'true' && "$diff_covers_stack" == 'true' ]] &&
+             release_notes_only; then
             full_ci='false'
             reason='release notes only'
           fi

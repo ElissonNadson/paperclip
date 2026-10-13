@@ -181,10 +181,34 @@ test("path scope keeps full CI for the top PR in a stack that touches code", () 
   }).full_ci, "true");
 });
 
-test("path scope skips full CI for the top PR in a stack that only touches release notes", () => {
+test("path scope keeps full CI for release notes on top of code-changing stacked PRs", () => {
   assert.equal(executeStep("Select PR CI scope", {
     STACK_JSON: JSON.stringify({ position: 11, size: 11, base: { ref: "master" } }),
     PR_BASE_REF: "stack-10",
+    TEST_COMPARE_FILES: files("releases/v2026.1015.0.md"),
+  }).full_ci, "true");
+});
+
+test("path scope keeps full CI for release notes with malformed stack metadata", () => {
+  assert.equal(executeStep("Select PR CI scope", {
+    STACK_JSON: JSON.stringify({ position: 0, size: 2, base: { ref: "master" } }),
+    PR_BASE_REF: "master",
+    TEST_COMPARE_FILES: files("releases/v2026.1015.0.md"),
+  }).full_ci, "true");
+});
+
+test("path scope skips full CI for the lowest PR in a stack that only touches release notes", () => {
+  assert.equal(executeStep("Select PR CI scope", {
+    STACK_JSON: JSON.stringify({ position: 1, size: 3, base: { ref: "master" } }),
+    PR_BASE_REF: "master",
+    TEST_COMPARE_FILES: files("releases/v2026.1015.0.md"),
+  }).full_ci, "false");
+});
+
+test("path scope skips full CI for a single-PR stack that only touches release notes", () => {
+  assert.equal(executeStep("Select PR CI scope", {
+    STACK_JSON: JSON.stringify({ position: 1, size: 1, base: { ref: "master" } }),
+    PR_BASE_REF: "master",
     TEST_COMPARE_FILES: files("releases/v2026.1015.0.md"),
   }).full_ci, "false");
 });
