@@ -158,3 +158,24 @@ reasons below. The owned static preview was left running for the requested test-
 Use `maintain-storybook` to correct drift and `review-storybook` to record separate
 source, render, interaction, visual-comparison, and production evidence. Both skills
 consume the feature map; neither changes its upstream contract.
+
+## Project repository skills — 2026-10-12
+
+Source review covers the new production controls and app-shell journeys for
+`skills/discovery`, `skills/versions`, `projects/repositories`, `routines/run-now`
+and `routines/history`. API and provider responses in these stories are fixtures.
+Story IDs were preserved when moving the suites into the Skills feature home;
+shared simulation code now lives in `ui/storybook/support/projectRepositorySkills.ts`.
+
+Six Playwright interactions passed against the built artifact before the move:
+legacy adoption with navigation, automatic new-skill discovery, failed refresh and
+retry, keyboard-accessible update preference, mobile actions, and connection
+repair. These results do not claim all 25 new story exports were interacted with.
+Rebuild and rerun these affected cases after the move. No Linux screenshot baseline
+was compared or updated.
+
+Existing entries whose declared feature recipes, shared skill fixture or source
+page changed received a source dependency review. Their existing classifications
+are preserved; their notes do not add executed rendering coverage. Live GitHub,
+runner, authorization and persistence acceptance is separate and is recorded in
+`doc/plans/2026-10-12-project-repository-skills.md`.

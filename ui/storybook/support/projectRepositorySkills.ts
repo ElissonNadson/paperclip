@@ -7,9 +7,9 @@ import { projectsApi } from '@/api/projects';
 import { routinesApi } from '@/api/routines';
 import { issuesApi } from '@/api/issues';
 import { queryKeys } from '@/lib/queryKeys';
-import { baseRoutine } from '../../fixtures/routineWebhooks';
-import { storybookProjects, storybookIssues } from '../../fixtures/paperclipData';
-import { COMPANY_ID, SOURCE_ID, COMMIT, installFixtures, candidates, sourceFixture } from '../../fixtures/githubSkillSources';
+import { baseRoutine } from '../fixtures/routineWebhooks';
+import { storybookProjects, storybookIssues } from '../fixtures/paperclipData';
+import { COMPANY_ID, SOURCE_ID, COMMIT, installFixtures, candidates, sourceFixture } from '../fixtures/githubSkillSources';
 
 export type Scenario = 'new-project' | 'legacy' | 'ready' | 'refreshing' | 'error' | 'empty' | 'private' | 'shared' | 'shared-private' | 'long' | 'many' | 'paused' | 'removed' | 'validation' | 'repair' | 'automatic' | 'latest';
 export const projectRepository: ProjectSkillRepository = {

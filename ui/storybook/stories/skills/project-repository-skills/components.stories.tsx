@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ProjectSkillRepositoryRow } from '@/components/skill-studio/ProjectSkillRepositoryRow';
 import { SkillSourceSyncControls } from '@/components/skill-studio/SkillSourceSyncControls';
-import { projectRepository } from './fixtures';
+import { projectRepository } from '../../../support/projectRepositorySkills';
 
 function Components({ state = 'available' }: { state?: 'available' | 'pending' | 'error' | 'private' | 'paused' | 'refreshing' }) {
   const [imported, setImported] = useState(false), [automatic, setAutomatic] = useState(state !== 'paused');
@@ -12,7 +12,7 @@ function Components({ state = 'available' }: { state?: 'available' | 'pending' |
     <SkillSourceSyncControls automaticUpdates={automatic} refreshing={state === 'refreshing'} onAutomaticUpdates={setAutomatic} onRefresh={() => setImported(true)} />
   </div>;
 }
-const meta = { title: 'Skills/Project repository skills/01 Components', component: Components, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Components>;
+const meta = { id: 'skills-project-repository-skills-01-components', title: 'Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/01 Components', component: Components, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Components>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Available: Story = {};

@@ -591,7 +591,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -599,7 +599,7 @@
         "ui/src/pages/agent-skills/AgentSkillRow.tsx",
         "ui/storybook/stories/skills/agent-skill-row.stories.tsx"
       ],
-      "fingerprint": "4eeb2029b5b1002afe393ab41da89a949c28d955130caa9feee4068b4b63fd2f",
+      "fingerprint": "a9bc3f4ac119f856d7edbdb7ecafd18af5c55490fd3fc431e9a793143b27e689",
       "stableId": "agent-skills-agentskillrow",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Agent Skills/AgentSkillRow"
     },
@@ -612,14 +612,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/agent-skills/AgentSkillsTab.tsx",
         "ui/storybook/stories/skills/agent-skills-edge.stories.tsx"
       ],
-      "fingerprint": "e2beaa5b5d5fb0b9ee34935d05548d0448c250129b3c2377eb7973f284fdc452",
+      "fingerprint": "528f568d77b6e0a95a94a9c175a0e0420d84fe97be88d8fa04f663baaab916dd",
       "stableId": "qa-agent-skills-edge-states",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/QA / Agent skills edge states"
     },
@@ -700,14 +700,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/skill-studio/AgentsUsingSkillDialog.tsx",
         "ui/storybook/stories/skills/agents-using-skill.stories.tsx"
       ],
-      "fingerprint": "28d0e3a9ffe07d1c48b2e7e73cd67df55047c47cec1163779d1a9c46beb981ef",
+      "fingerprint": "e202ddbbffa27452f6ed3d34e4b903edfdb658344f5d37cb392fd5269de1495b",
       "stableId": "skill-studio-agentsusingskill",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skill Studio/AgentsUsingSkill"
     },
@@ -795,7 +795,7 @@
         "activity/activity",
         "gateways-profiles/activity"
       ],
-      "purpose": "Apps/App detail · Activity (lifecycle)",
+      "purpose": "Apps/App detail \u00b7 Activity (lifecycle)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -809,8 +809,8 @@
         "ui/storybook/stories/activity/app-activity-lifecycle.stories.tsx"
       ],
       "fingerprint": "1642f6a6692ccd3ac058d1841f388607b3379c683711bbe558aad3cc79ffc077",
-      "stableId": "apps-app-detail-·-activity-lifecycle",
-      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail · Activity (lifecycle)"
+      "stableId": "apps-app-detail-\u00b7-activity-lifecycle",
+      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail \u00b7 Activity (lifecycle)"
     },
     {
       "file": "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx",
@@ -2031,7 +2031,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/agents.md",
@@ -2049,7 +2049,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/dialogs-modals.stories.tsx"
       ],
-      "fingerprint": "d1b6c016e119b19affd5d0af49c55b244d280cb4808d683fd583ac15d2fd1b73",
+      "fingerprint": "2d3e86a949e43617f96406199c98fb05b794bb692b92ccf8f58cd3c38cc14ca3",
       "stableId": "product-dialogs-modals",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Product/Dialogs & Modals"
     },
@@ -2362,7 +2362,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2382,7 +2382,7 @@
         "ui/storybook/fixtures/routineWebhooks.tsx",
         "ui/storybook/stories/connection-setup/fireflies-pr.stories.tsx"
       ],
-      "fingerprint": "d7898061478285bbc6fa9ee5152bdb840ca3d329590a3b35573e0632282278e5",
+      "fingerprint": "9b0cba486a7ffe25a016065882c39b90a51b4807aa7d299e2994285bc4bcc097",
       "stableId": "pr-reviews-fireflies-and-app-webhooks",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/PR reviews/Fireflies and app webhooks"
     },
@@ -2395,7 +2395,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -2404,7 +2404,7 @@
         "ui/src/components/skill-studio/SkillProvenance.tsx",
         "ui/storybook/stories/skills/fork-skill-flow.stories.tsx"
       ],
-      "fingerprint": "7cd95e52a451f78371dc2c5793679c14b28f1fb486dcb2ed5f8b1f4e041267a8",
+      "fingerprint": "f65a844b980f5e8d8866082af0656c670d3540ca4177e057188bbf02c99ddad0",
       "stableId": "skill-studio-editacopy",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skill Studio/EditACopy"
     },
@@ -2476,20 +2476,20 @@
       "capabilities": [
         "skills/authoring"
       ],
-      "purpose": "Product/Skill Studio · FrontmatterPanel",
+      "purpose": "Product/Skill Studio \u00b7 FrontmatterPanel",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/FrontmatterPanel.tsx",
         "ui/storybook/stories/skills/frontmatter-panel.stories.tsx"
       ],
-      "fingerprint": "e7b2ffabdadc43d7fa2f564465792539d25f15da54fb4f7fec31cc4a2f0aec76",
-      "stableId": "product-skill-studio-·-frontmatterpanel",
-      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio · FrontmatterPanel"
+      "fingerprint": "649f55c31301d9e8009a46c2e9f9c5498dc25aefe5b0bd6309336ac54cba41c7",
+      "stableId": "product-skill-studio-\u00b7-frontmatterpanel",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio \u00b7 FrontmatterPanel"
     },
     {
       "file": "ui/storybook/stories/gateways-profiles/gateways-tab.stories.tsx",
@@ -2607,7 +2607,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -2619,7 +2619,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx"
       ],
-      "fingerprint": "dcb8e4ce80ddc71f25542b9d84cdf1ce20e552da2848404e62d61f0687e3fc3f",
+      "fingerprint": "99ebebe1ad645fcb409d71ae248196c8ac1342e12188bd6e44e2f5ed056fdaa0",
       "stableId": "skills-github-sync-journey",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub sync journey"
     },
@@ -2633,7 +2633,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -2642,7 +2642,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-synced-skills.stories.tsx"
       ],
-      "fingerprint": "f87c8ee2574a097ef4e4828589618ad196f170fb652db022bc7488b3fb7971e2",
+      "fingerprint": "62b348c8195d4c3987362c0790dd2d3a8e335da35dadb1a6c61051352f7261ae",
       "stableId": "skills-github-synced-skills",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub synced skills"
     },
@@ -3137,7 +3137,7 @@
       "status": "proposed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "RepositoryEditor is shipped, but NewProjectPrototype composes its own creation flow. Preserve proposal until route parity is checked.",
+      "notes": "RepositoryEditor is shipped, but NewProjectPrototype composes its own creation flow. Preserve proposal until route parity is checked. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3149,7 +3149,7 @@
         "ui/storybook/prototypes/project-repos/fixtures.ts",
         "ui/storybook/stories/projects/new-project-repos.stories.tsx"
       ],
-      "fingerprint": "bf8bd88964cbf20a95449a10485d2aaf074cfe3f88456144332b193c2920be4b",
+      "fingerprint": "83ec1476fc09451905f2e1c4d84dc19bd6453bc41339265cc3d426b047275e3f",
       "stableId": "proposals-project-repos-new-project",
       "sidebarTitle": "Projects and execution/Projects and repositories/Proposals/Project repos/New project"
     },
@@ -3279,7 +3279,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3292,7 +3292,7 @@
         "ui/storybook/prototypes/originating-tasks/OriginatingTasks.tsx",
         "ui/storybook/stories/task-coordination/originating-tasks.stories.tsx"
       ],
-      "fingerprint": "e16a7c6351086b45005478d57101377fe51d5c2e8f8ae59ee0f3a32b1811d09d",
+      "fingerprint": "65b4e4cc0a44fb3580abee0d014d801c665294bf7da903982ff80f2780f46b04",
       "stableId": "ux-labs-tasks-created-from-a-task",
       "sidebarTitle": "Tasks and conversations/Delegation, dependencies, and signoff/UX Labs/Tasks Created From a Task"
     },
@@ -3819,7 +3819,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/access.md",
@@ -3834,7 +3834,7 @@
         "ui/storybook/stories/access/private-tasks/05-projects.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "c3ae29a4a0e550629a17eaf817dc3d385e9ed811d3bcd6bf06859e0822378681",
+      "fingerprint": "5c7568762b5a3fb92ea1cc8769702c883de8976d2aca33e48a91336dd2c5b65b",
       "stableId": "private-tasks-05-projects",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/05 Projects"
     },
@@ -3849,7 +3849,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/access.md",
@@ -3867,7 +3867,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "bbdceb12f6ba702663f243dd3986c5295677c7e9e007ffbed7cbe3efb385ab52",
+      "fingerprint": "d4f18dfdd22c222b9460dc456fc9649317b4f041554ca878d8f0bc2977484387",
       "stableId": "private-tasks-06-full-product-pages",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/06 Full product pages"
     },
@@ -3928,7 +3928,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3937,7 +3937,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/projects/project-execution-workspace-strategy.stories.tsx"
       ],
-      "fingerprint": "d3c1ddd40e4acf1b30ee80655773c475e71885b75fe61b94c5a7ab1010fcb7ed",
+      "fingerprint": "07f970b88055845c537e5af5b0b1da11eed6fad03ddea092c7135eccf2ed7a9c",
       "stableId": "workspaces-project-runtime-provision-command",
       "sidebarTitle": "Projects and execution/Projects and repositories/Workspaces/Project runtime provision command"
     },
@@ -3950,7 +3950,7 @@
       "status": "proposed",
       "implementation": "mixed",
       "boundary": "fixtures",
-      "notes": "Production properties plus local configuration page composition; repository interaction is simulated.",
+      "notes": "Production properties plus local configuration page composition; repository interaction is simulated. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3966,7 +3966,7 @@
         "ui/storybook/prototypes/project-repos/fixtures.ts",
         "ui/storybook/stories/projects/project-repos-configuration.stories.tsx"
       ],
-      "fingerprint": "8d96ac58686362abbaf468ba7cc400d43612fe0c8c21239cfa3fab2079ff5270",
+      "fingerprint": "abb086c2fed5644010ed4b44cb7b684d296ba9b6eeb3538c950db63cbde9ed7e",
       "stableId": "proposals-project-repos-configuration",
       "sidebarTitle": "Projects and execution/Projects and repositories/Proposals/Project repos/Configuration"
     },
@@ -3981,7 +3981,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/goals.md",
@@ -3997,7 +3997,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/projects/projects-goals-workspaces.stories.tsx"
       ],
-      "fingerprint": "4aa89b2f36fd6db30b20528b2e95063a8846279d28623f927de35acd75ce64f5",
+      "fingerprint": "00933bc43245024c2a2330bdc5f89a46df321e12646499d9a3c29dc3276e8a3a",
       "stableId": "product-projects-goals-workspaces",
       "sidebarTitle": "Projects and execution/Projects and repositories/Product/Projects Goals Workspaces"
     },
@@ -4386,7 +4386,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4399,7 +4399,7 @@
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx",
         "ui/storybook/stories/skills/repository-skill-packages/repository-skill-packages.stories.tsx"
       ],
-      "fingerprint": "a90fb6c9377034d3645b851711ddc84eb3b9945dce0cdea4496cb9a4050fb8ad",
+      "fingerprint": "204c8707cf2701759959fb8843762d8ee6bfa5ba5a4fae23d889eb6ab0eb08d1",
       "stableId": "skills-repository-packages",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Repository packages"
     },
@@ -4459,11 +4459,11 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines · Detail (variation C)",
+      "purpose": "Product/Routines \u00b7 Detail (variation C)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
@@ -4476,9 +4476,9 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/routines/routine-detail-c.stories.tsx"
       ],
-      "fingerprint": "c07544c830cd35d90c553d9388e2a9479e42f69460a6c506e1c541cea78607d4",
-      "stableId": "product-routines-·-detail-variation-c",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Detail (variation C)"
+      "fingerprint": "fb01cf281057127e6158871cc880a10448a370d83df64b15771a926630f7385a",
+      "stableId": "product-routines-\u00b7-detail-variation-c",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Detail (variation C)"
     },
     {
       "file": "ui/storybook/stories/routines/routine-secrets.stories.tsx",
@@ -4486,11 +4486,11 @@
         "routines/definition",
         "secrets/runtime-delivery"
       ],
-      "purpose": "Product/Routines · Secrets tab",
+      "purpose": "Product/Routines \u00b7 Secrets tab",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
@@ -4500,9 +4500,9 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
-      "fingerprint": "03c05c0cca01d220885ea96f13495bcc185121eecbbeb00918511b4d7de26016",
-      "stableId": "product-routines-·-secrets-tab",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
+      "fingerprint": "b943825322412996f4e5cb22677d5e331b0b7a742762be92c6f46d364ec0b34e",
+      "stableId": "product-routines-\u00b7-secrets-tab",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Secrets tab"
     },
     {
       "file": "ui/storybook/stories/routines/routine-webhooks-ux.stories.tsx",
@@ -4513,7 +4513,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
@@ -4530,7 +4530,7 @@
         "ui/storybook/fixtures/routineWebhooks.tsx",
         "ui/storybook/stories/routines/routine-webhooks-ux.stories.tsx"
       ],
-      "fingerprint": "96129f07a13497700039df8275b2f8d3d74468793e042c01e61bda2bdc1ad8fe",
+      "fingerprint": "f62d17adb63dfde23e96c3f353fa94c4bac401979dfc821d244cdfed8a7d9b71",
       "stableId": "product-routines-webhooks-ux-preview",
       "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines/Webhooks UX preview"
     },
@@ -4543,7 +4543,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
@@ -4554,7 +4554,7 @@
         "ui/storybook/fixtures/routineWebhooks.tsx",
         "ui/storybook/stories/routines/routine-webhooks.stories.tsx"
       ],
-      "fingerprint": "588536cb71d6c79eff20ea1dc14d60c96932631f267a45adc36e2078d816aa39",
+      "fingerprint": "87b2001db608f27da7f71290713bea8442cf8147aed3325346d0f6a25a407858",
       "stableId": "product-routines-webhooks",
       "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines/Webhooks"
     },
@@ -4564,20 +4564,20 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines · List (grouped cards)",
+      "purpose": "Product/Routines \u00b7 List (grouped cards)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/routines.md",
         "ui/src/components/RoutineList.tsx",
         "ui/storybook/stories/routines/routines-list-groups.stories.tsx"
       ],
-      "fingerprint": "02a433aeee5be2ecc3284f0a27c45c4222e3abf05cbd478e55bfb7462a301d19",
-      "stableId": "product-routines-·-list-grouped-cards",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · List (grouped cards)"
+      "fingerprint": "957265bdf3d24fe7c5939c452efa40818be97c6e000b5f3896ffb6b87512048f",
+      "stableId": "product-routines-\u00b7-list-grouped-cards",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 List (grouped cards)"
     },
     {
       "file": "ui/storybook/stories/tasks/runner-activity.stories.tsx",
@@ -4731,7 +4731,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
@@ -4740,7 +4740,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/skill-import-progress.stories.tsx"
       ],
-      "fingerprint": "55477a243eb0cd940e20e47b0c2e388af26268930be5ee516043a8812f3ab0e5",
+      "fingerprint": "08dbd22fbf67aaa36d5f027a61289a9009803da9f225294036cb6b2dd937a528",
       "stableId": "skills-import-progress",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Import progress"
     },
@@ -4753,14 +4753,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/skill-studio/SkillPolicySurfaces.tsx",
         "ui/storybook/stories/skills/skill-policy-surfaces.stories.tsx"
       ],
-      "fingerprint": "1f39ed395b4e147167ad855f867d7cb61d4829f4077e74ffe7c53029d67b67de",
+      "fingerprint": "5060764c0bcd8867b9111e4791c8e1dc85fab72fdde00befda332f6f816f7894",
       "stableId": "product-skills-policy-surfaces",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skills/Policy surfaces"
     },
@@ -4773,14 +4773,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/CompanySkills.tsx",
         "ui/storybook/stories/skills/skills-store-detail.stories.tsx"
       ],
-      "fingerprint": "18c72ba27b8f06c186e21552c62d03a477ceb0b4f0d66253ed556830d7cc9a75",
+      "fingerprint": "a3a8dcc5ca4f7e57e820fd3131a731591a73a8c169e2638821c128832bdd298a",
       "stableId": "skills-store-skill-detail",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills Store/Skill detail"
     },
@@ -4793,14 +4793,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md. This dependency review does not add executed story coverage.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/CompanySkills.tsx",
         "ui/storybook/stories/skills/skills-store-discovery.stories.tsx"
       ],
-      "fingerprint": "8f492ae3f71ac39d7a752929df767b9d37a0e782e2d3ee515cfa1b5c22d0c1a9",
+      "fingerprint": "b8d679ca84c62e1fadaf50644ea5b75053adf4189ef8c9ed92b495cbdbe74b6c",
       "stableId": "skills-store-discovery-grid",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills Store/Discovery grid"
     },
@@ -5584,6 +5584,67 @@
       "fingerprint": "cbe4b5d61324f8eec1dfff9583dc84eab5c83947ff947f5c381d00217b29b5e2",
       "stableId": "workspaces-service-control-bar",
       "sidebarTitle": "Projects and execution/Workspaces, services, and files/Workspaces/Service control bar"
+    },
+    {
+      "file": "ui/storybook/stories/skills/project-repository-skills/components.stories.tsx",
+      "capabilities": [
+        "skills/discovery",
+        "skills/versions"
+      ],
+      "purpose": "Project repository skills 01 Components",
+      "status": "current",
+      "implementation": "production",
+      "boundary": "fixtures",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior.",
+      "reviewedAt": "2026-10-12",
+      "sources": [
+        "ui/storybook/stories/skills/project-repository-skills/components.stories.tsx",
+        "ui/storybook/support/projectRepositorySkills.ts",
+        "maps/feature-map/skills.md",
+        "ui/src/components/skill-studio/ProjectSkillRepositoryRow.tsx",
+        "ui/src/components/skill-studio/SkillSourceSyncControls.tsx"
+      ],
+      "stableId": "skills-project-repository-skills-01-components",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/01 Components",
+      "fingerprint": "5051c4f157d017b5c1c2eaed74a9d92c5e3df2f1df03f95d8433c27e30cc89c7"
+    },
+    {
+      "file": "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
+      "capabilities": [
+        "skills/discovery",
+        "skills/versions",
+        "projects/repositories",
+        "routines/run-now",
+        "routines/history"
+      ],
+      "purpose": "Project repository skills 02 Journeys",
+      "status": "current",
+      "implementation": "production",
+      "boundary": "fixtures",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior.",
+      "reviewedAt": "2026-10-12",
+      "sources": [
+        "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
+        "ui/storybook/support/projectRepositorySkills.ts",
+        "maps/feature-map/skills.md",
+        "ui/src/components/skill-studio/ProjectSkillRepositoryRow.tsx",
+        "ui/src/components/skill-studio/SkillSourceSyncControls.tsx",
+        "ui/src/components/Layout.tsx",
+        "ui/src/pages/SkillSources.tsx",
+        "ui/src/pages/CompanySkills.tsx",
+        "ui/src/pages/Projects.tsx",
+        "ui/src/pages/ProjectDetail.tsx",
+        "ui/src/pages/RoutineDetail.tsx",
+        "ui/src/pages/Routines.tsx",
+        "ui/src/pages/IssueDetail.tsx",
+        "ui/src/components/skill-studio/SkillSourceConnectionRepair.tsx",
+        "ui/storybook/fixtures/githubSkillSources.ts",
+        "ui/storybook/fixtures/routineWebhooks.tsx",
+        "ui/storybook/fixtures/paperclipData.ts"
+      ],
+      "stableId": "skills-project-repository-skills-02-journeys",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys",
+      "fingerprint": "2bcaa79bd70b6802fd5ae443b404eee3a21d7f449cda67df0cd7493251f44471"
     }
   ]
 }

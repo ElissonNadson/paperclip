@@ -1,6 +1,6 @@
 # Project repository skills
 
-Open **Skills → Project repository skills** in Storybook.
+Open **Agents and reusable capabilities → Skills and Skill Studio → Project repository skills** in Storybook.
 
 - **01 Components**: legacy adoption, progress, connection errors, private access,
   automatic-update preference and manual refresh controls.

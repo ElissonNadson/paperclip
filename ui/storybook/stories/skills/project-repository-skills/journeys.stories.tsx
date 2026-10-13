@@ -11,7 +11,7 @@ import { Routines } from '@/pages/Routines';
 import { IssueDetail } from '@/pages/IssueDetail';
 import { PluginLauncherProvider } from '@/plugins/launchers';
 import { Route, Routes, useNavigate } from '@/lib/router';
-import { installProjectSkillFixtures, ROUTINE_ID, type Scenario } from './fixtures';
+import { installProjectSkillFixtures, ROUTINE_ID, type Scenario } from '../../../support/projectRepositorySkills';
 
 function Journey({ scenario = 'ready' }: { scenario?: Scenario }) {
   const client = useQueryClient(), navigate = useNavigate();
@@ -34,7 +34,7 @@ function Journey({ scenario = 'ready' }: { scenario?: Scenario }) {
     <Route path="issues/:issueId" element={<IssueDetail />} />
   </Route></Routes></PluginLauncherProvider>;
 }
-const meta = { title: 'Skills/Project repository skills/02 Journeys', component: Journey, tags: ['!autodocs'],
+const meta = { id: 'skills-project-repository-skills-02-journeys', title: 'Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys', component: Journey, tags: ['!autodocs'],
   parameters: { layout: 'fullscreen', docs: { description: { component: 'Production pages and app shell. Imports, GitHub responses, background refresh and routine executions are in-memory fixtures. Start with Create project or Legacy adoption; all actions remain interactive. Live integration is verified separately.' } } },
 } satisfies Meta<typeof Journey>;
 export default meta;
