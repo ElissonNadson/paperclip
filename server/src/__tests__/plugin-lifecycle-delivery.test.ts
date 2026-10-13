@@ -1,0 +1,132 @@
+import { randomUUID } from "node:crypto";
+import { EventEmitter } from "node:events";
+import { eq } from "drizzle-orm";
+import { companies, createDb, pluginConfig, plugins, resourceLifecycleEvents, type Db } from "@paperclipai/db";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { getEmbeddedPostgresTestSupport, startEmbeddedPostgresTestDatabase } from "./helpers/embedded-postgres.js";
+import { registerPluginLifecycleDelivery } from "../services/plugin-lifecycle-delivery.js";
+import { pluginLifecycleInbox } from "../services/plugin-lifecycle-inbox.js";
+import { pluginRegistryService } from "../services/plugin-registry.js";
+import { recordProjectLifecycleEvent, recordResourceCreationEvent } from "../services/resource-lifecycle-events.js";
+import { DELIVERY_QUEUES, subscribeDeliveryWork } from "../services/delivery-work-notifications.js";
+import type { createDeliveryWorkCoordinator } from "../services/delivery-work-coordinator.js";
+import type { PluginLifecycleManager } from "../services/plugin-lifecycle.js";
+import type { PluginWorkerManager } from "../services/plugin-worker-manager.js";
+
+const support = await getEmbeddedPostgresTestSupport();
+const describePostgres = support.supported ? describe : describe.skip;
+if (!support.supported) console.warn(`Skipping lifecycle delivery database tests: ${support.reason}`);
+
+describePostgres("durable plugin lifecycle delivery", () => {
+  let database: Awaited<ReturnType<typeof startEmbeddedPostgresTestDatabase>>;
+  let db: Db;
+  let companyId: string;
+  let pluginId: string;
+  beforeAll(async () => { database = await startEmbeddedPostgresTestDatabase("paperclip-plugin-delivery-"); db = createDb(database.connectionString); }, 90_000);
+  afterAll(async () => { await database?.cleanup(); });
+  beforeEach(async () => {
+    await db.delete(plugins);
+    companyId = randomUUID(); pluginId = randomUUID();
+    await db.insert(companies).values({ id: companyId, name: "Delivery fixture", issuePrefix: `L${companyId.slice(0, 6)}` });
+    await db.insert(plugins).values({ id: pluginId, pluginKey: pluginId, packageName: "delivery-fixture", version: "1.0.0", status: "ready",
+      manifestJson: { resourceLifecycle: ["project"], capabilities: ["events.subscribe"] } as never });
+    await db.insert(pluginConfig).values({ pluginId, companyId, configJson: {} });
+  });
+  async function event(resourceId = randomUUID(), action: "create" | "update" | "delete" = "create") {
+    await db.transaction(async tx => {
+      if (action === "create") await recordResourceCreationEvent(tx as unknown as Db, companyId, "project", resourceId);
+      else await recordProjectLifecycleEvent(tx as unknown as Db, companyId, resourceId, action);
+    });
+    return resourceId;
+  }
+  function delivery() {
+    let task!: Parameters<ReturnType<typeof createDeliveryWorkCoordinator>["register"]>[1];
+    const wake = vi.fn();
+    const coordinator = { register: vi.fn((_queue, input) => { task = input; return { wake, ready: Promise.resolve() }; }) };
+    const call = vi.fn(async (_pluginId, _method, input) => ({ eventId: input.id, status: "acknowledged" }));
+    const running = vi.fn(() => true);
+    const lifecycle = new EventEmitter();
+    const worker = registerPluginLifecycleDelivery(coordinator as never, db, { call, isRunning: running } as unknown as PluginWorkerManager, lifecycle as unknown as PluginLifecycleManager);
+    return { call, running, wake, lifecycle, worker, run: () => task.run(new AbortController().signal), pending: () => task.hasPending() };
+  }
+  it("drains creation before transitions, recovers acknowledgments across dispatcher replacement, and ignores agent events", async () => {
+    const id = await event(); await event(id, "update"); await event(id, "delete");
+    await db.transaction(tx => recordResourceCreationEvent(tx as unknown as Db, companyId, "agent", randomUUID()));
+    const first = delivery(); await first.run(); first.worker.dispose();
+    expect(first.call.mock.calls.map(c => c[2].action)).toEqual(["create"]);
+    const restarted = delivery(); await restarted.run(); await restarted.run(); await restarted.run();
+    expect(restarted.call.mock.calls.map(c => c[2].action)).toEqual(["update", "delete"]);
+    expect(await restarted.pending()).toBe(false);
+    expect((await pluginLifecycleInbox(db, pluginId).list(companyId)).map(e => e.resourceType)).toEqual(["agent"]);
+    restarted.worker.dispose();
+  });
+  it("replays failures and invalid acknowledgments without blocking independent resources", async () => {
+    const failed = await event(); await event(failed, "delete"); await event();
+    const d = delivery();
+    d.call.mockImplementationOnce(async () => { throw new Error("worker exited after provider effect"); });
+    await d.run();
+    expect(d.call).toHaveBeenCalledTimes(2); expect(await d.pending()).toBe(true);
+    d.call.mockImplementationOnce(async () => ({ eventId: "wrong", status: "acknowledged" }));
+    await d.run(); expect(await d.pending()).toBe(true);
+    await d.run(); await d.run();
+    expect(d.call.mock.calls.map(c => c[2].action)).toEqual(["create", "create", "create", "create", "delete"]);
+    expect(await pluginLifecycleInbox(db, pluginId).list(companyId)).toEqual([]);
+    d.worker.dispose();
+  });
+  it("defers without a retry deadline, retries unfinished work, and wakes on plugin startup", async () => {
+    await event(); const d = delivery();
+    d.call.mockImplementationOnce(async (_p, _m, e) => ({ eventId: e.id, status: "deferred" }));
+    await d.run(); expect(await d.pending()).toBe(false); expect(d.wake).not.toHaveBeenCalled();
+    d.lifecycle.emit("plugin.worker_started"); expect(d.wake).toHaveBeenCalledTimes(1);
+    d.call.mockImplementationOnce(async (_p, _m, e) => ({ eventId: e.id, status: "retry" }));
+    await d.run(); expect(await d.pending()).toBe(true);
+    d.running.mockReturnValue(false); await d.run(); expect(await d.pending()).toBe(true);
+    expect(d.call).toHaveBeenCalledTimes(2); d.worker.dispose();
+    d.lifecycle.emit("plugin.worker_started"); expect(d.wake).toHaveBeenCalledTimes(1);
+  });
+  it("requires ready, configured, company-enabled plugins and rechecks disabling within a batch", async () => {
+    await event(); await event(); const d = delivery(); const registry = pluginRegistryService(db);
+    await registry.upsertCompanySettings(pluginId, companyId, { enabled: false, settingsJson: {} });
+    await d.run(); expect(d.call).not.toHaveBeenCalled();
+    await registry.upsertCompanySettings(pluginId, companyId, { enabled: true, settingsJson: {} });
+    d.call.mockImplementationOnce(async (_p, _m, e) => {
+      await registry.upsertCompanySettings(pluginId, companyId, { enabled: false, settingsJson: {} });
+      return { eventId: e.id, status: "acknowledged" };
+    });
+    await d.run(); expect(d.call).toHaveBeenCalledTimes(1);
+    await registry.upsertCompanySettings(pluginId, companyId, { enabled: true, settingsJson: {} });
+    await db.update(plugins).set({ status: "disabled" }).where(eq(plugins.id, pluginId));
+    await d.run(); expect(d.call).toHaveBeenCalledTimes(1);
+    await db.update(plugins).set({ status: "ready" }).where(eq(plugins.id, pluginId));
+    await db.delete(pluginConfig).where(eq(pluginConfig.pluginId, pluginId));
+    await d.run(); expect(d.call).toHaveBeenCalledTimes(1); d.worker.dispose();
+  });
+  it("notifies only after the outer transaction settles and wakes deferred work for config changes", async () => {
+    const wake = vi.fn(); const unsubscribe = subscribeDeliveryWork(db, DELIVERY_QUEUES.pluginLifecycle, wake);
+    try {
+      await db.transaction(async tx => {
+        await eventInTransaction(tx as unknown as Db);
+        expect(wake).not.toHaveBeenCalled();
+      });
+      expect(wake).toHaveBeenCalledTimes(1);
+      const registry = pluginRegistryService(db);
+      await registry.upsertConfig(pluginId, companyId, { configJson: { enabled: true } });
+      await registry.patchConfig(pluginId, companyId, { configJson: { enabled: false } });
+      await registry.upsertCompanySettings(pluginId, companyId, { enabled: true, settingsJson: {} });
+      expect(wake).toHaveBeenCalledTimes(4);
+    } finally { unsubscribe(); }
+    async function eventInTransaction(tx: Db) {
+      await tx.transaction(inner => recordResourceCreationEvent(inner as unknown as Db, companyId, "project", randomUUID()));
+    }
+  });
+  it("rollbacks never expose queue rows even when settlement wakes the dispatcher", async () => {
+    const d = delivery();
+    await expect(db.transaction(async tx => {
+      await recordResourceCreationEvent(tx as unknown as Db, companyId, "project", randomUUID());
+      throw new Error("rollback");
+    })).rejects.toThrow("rollback");
+    await d.run(); expect(d.call).not.toHaveBeenCalled(); expect(await d.pending()).toBe(false);
+    expect(await db.select().from(resourceLifecycleEvents).where(eq(resourceLifecycleEvents.companyId, companyId))).toEqual([]);
+    d.worker.dispose();
+  });
+});

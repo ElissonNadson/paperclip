@@ -1,0 +1,82 @@
+import { and, asc, eq, isNull, or } from "drizzle-orm";
+import { pluginCompanySettings, pluginConfig, plugins, type Db } from "@paperclipai/db";
+import { pluginLifecycleInbox } from "./plugin-lifecycle-inbox.js";
+import { DELIVERY_QUEUES } from "./delivery-work-notifications.js";
+import type { createDeliveryWorkCoordinator } from "./delivery-work-coordinator.js";
+import type { PluginWorkerManager } from "./plugin-worker-manager.js";
+import type { PluginLifecycleManager } from "./plugin-lifecycle.js";
+
+type Coordinator = ReturnType<typeof createDeliveryWorkCoordinator>;
+
+/** The journal is the queue. Notifications only wake its single local dispatcher. */
+export function registerPluginLifecycleDelivery(
+  coordinator: Coordinator,
+  db: Db,
+  manager: Pick<PluginWorkerManager, "call" | "isRunning">,
+  lifecycle: Pick<PluginLifecycleManager, "on" | "off">,
+) {
+  let pending = false;
+  const delivery = coordinator.register(DELIVERY_QUEUES.pluginLifecycle, {
+    retryMs: 30_000,
+    hasPending: async () => pending,
+    async run(signal) {
+      pending = false;
+      const configured = await db.select({ plugin: plugins, companyId: pluginConfig.companyId })
+        .from(plugins).innerJoin(pluginConfig, eq(pluginConfig.pluginId, plugins.id))
+        .where(eq(plugins.status, "ready"))
+        .orderBy(asc(plugins.installOrder), asc(pluginConfig.companyId));
+      for (const { plugin, companyId } of configured) {
+        const types = plugin.manifestJson.resourceLifecycle;
+        if (!types?.length || !plugin.manifestJson.capabilities.includes("events.subscribe")) continue;
+        const [disabled] = await db.select({ id: pluginCompanySettings.id }).from(pluginCompanySettings)
+          .where(and(eq(pluginCompanySettings.pluginId, plugin.id), eq(pluginCompanySettings.companyId, companyId), eq(pluginCompanySettings.enabled, false)));
+        if (disabled) continue;
+        const inbox = pluginLifecycleInbox(db, plugin.id);
+        let afterId: string | undefined;
+        // Visit independent resources past a failed or deferred head.
+        for (;;) {
+          if (signal.aborted) return;
+          const events = await inbox.list(companyId, 100, afterId, types);
+          for (const event of events) {
+            if (signal.aborted) return;
+            if (!manager.isRunning(plugin.id)) { pending = true; break; }
+            try {
+              // Recheck enablement for each invocation; a disable during a batch must stop delivery.
+              const [enabled] = await db.select({ manifest: plugins.manifestJson }).from(plugins)
+                .leftJoin(pluginCompanySettings, and(eq(pluginCompanySettings.pluginId, plugins.id), eq(pluginCompanySettings.companyId, companyId)))
+                .where(and(eq(plugins.id, plugin.id), eq(plugins.status, "ready"),
+                  or(isNull(pluginCompanySettings.enabled), eq(pluginCompanySettings.enabled, true))));
+              if (!enabled?.manifest.resourceLifecycle?.includes(event.resourceType) || !enabled.manifest.capabilities.includes("events.subscribe")) break;
+              const result = await manager.call(plugin.id, "resourceLifecycle", event, 30_000);
+              if (result?.eventId !== event.id || !["acknowledged", "retry", "deferred"].includes(result.status)) {
+                throw new Error("Invalid resource lifecycle result");
+              }
+              if (signal.aborted) return;
+              if (result.status === "acknowledged") {
+                await inbox.acknowledge(companyId, event.id);
+                // An acknowledgment exposes the next event for this resource. Drain immediately.
+                delivery.wake();
+              } else if (result.status === "retry") pending = true;
+            } catch {
+              // Failed RPCs and uncertain acknowledgments leave durable work for replay.
+              pending = true;
+            }
+          }
+          if (events.length < 100) break;
+          afterId = events.at(-1)!.id;
+        }
+      }
+    },
+  });
+  lifecycle.on("plugin.loaded", delivery.wake);
+  lifecycle.on("plugin.enabled", delivery.wake);
+  lifecycle.on("plugin.worker_started", delivery.wake);
+  return {
+    ...delivery,
+    dispose() {
+      lifecycle.off("plugin.loaded", delivery.wake);
+      lifecycle.off("plugin.enabled", delivery.wake);
+      lifecycle.off("plugin.worker_started", delivery.wake);
+    },
+  };
+}
