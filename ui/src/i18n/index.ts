@@ -3,11 +3,15 @@ import { initReactI18next, useTranslation as useReactI18nextTranslation } from "
 
 import { DEFAULT_LOCALE, i18nextResources, supportedLocales } from "./locales";
 
-function resolveInitialLocale(): string {
+export function resolveInitialLocale(): string {
   if (typeof window !== "undefined") {
-    const saved = window.localStorage.getItem("paperclip.locale");
-    if (saved && supportedLocales.includes(saved)) {
-      return saved;
+    try {
+      const saved = window.localStorage.getItem("paperclip.locale");
+      if (saved && supportedLocales.includes(saved)) {
+        return saved;
+      }
+    } catch {
+      // Storage access can throw when cookies/storage are blocked.
     }
   }
   if (typeof navigator !== "undefined" && navigator.language) {
@@ -40,7 +44,11 @@ void i18n.use(initReactI18next).init(i18nextOptions).catch((error: unknown) => {
 export function changeLanguage(locale: string) {
   if (supportedLocales.includes(locale)) {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem("paperclip.locale", locale);
+      try {
+        window.localStorage.setItem("paperclip.locale", locale);
+      } catch {
+        // Storage access may be blocked; language still switches in-memory for this session.
+      }
     }
     void i18n.changeLanguage(locale);
   }
@@ -55,4 +63,4 @@ export function t(key: string, options: TOptions = {}) {
 }
 
 export const useTranslation = useReactI18nextTranslation;
-export { i18n };
+export { i18n, supportedLocales, DEFAULT_LOCALE };
