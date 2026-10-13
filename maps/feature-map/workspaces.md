@@ -40,7 +40,8 @@ workspace. Verify that source admission creates a separate checkout from the
 configured remote, with no private local branches, commits or shared Git storage.
 Reusing, closing and reopening that task must retain the company/task-bound source;
 a failed workspace save must clean up only its owned checkout. Explicit workspace,
-parent/channel selections, low-trust tasks, and local or credential-bearing remote
+parent/channel selections, literal or task-independent branch templates, low-trust
+tasks, and local or credential-bearing remote
 URLs must not use this fallback. The [remote-source tests](../../server/src/services/isolated-remote-workspace-source.test.ts)
 and [preparation tests](../../server/src/services/heartbeat/workspace-preparation.test.ts)
 exercise the real Git isolation and lifecycle guards. They do not qualify live

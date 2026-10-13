@@ -21,6 +21,9 @@ describe("isolated remote source admission", () => {
     { reuseExisting: true },
     { hasExistingWorkspace: true },
     { strategy: { type: "git_worktree", existingBranch: "unpublished-work" } },
+    { strategy: { type: "git_worktree", branchTemplate: "feature/literal-pin" } },
+    { strategy: { type: "git_worktree", branchTemplate: "feature/{{unknown}}" } },
+    { strategy: { type: "git_worktree", branchTemplate: "feature/{{agent.name}}" } },
     { error: forbidden("Project access denied") },
     { error: new Error("Task workspace access is no longer available") },
     { repoUrl: "file:///private/source" },
@@ -32,6 +35,10 @@ describe("isolated remote source admission", () => {
     { trustPresetKind: "unknown" },
   ])("preserves the original denial for %j", patch => {
     expect(canIsolateRemoteWorkspaceSource({ ...allowed, ...patch })).toBe(false);
+  });
+
+  it.each(["test-{{issue.identifier}}", "feature/{{issue.id}}", "feature/{{slug}}"])("allows a task-derived branch template: %s", branchTemplate => {
+    expect(canIsolateRemoteWorkspaceSource({ ...allowed, strategy: { type: "git_worktree", branchTemplate } })).toBe(true);
   });
 
   it.each(["explicit", "parent", "channel", "operator_cwd"] as const)("preserves %s source intent", source => {

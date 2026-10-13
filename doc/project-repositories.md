@@ -44,6 +44,9 @@ before the task workspace is published. Low-trust review runs cannot use this
 persistent clone fallback. This fallback does not copy unpublished
 local changes or replace reused workspaces, explicit workspace selections, pinned
 branches, or repositories that only exist on the local filesystem.
+Configured branch templates must derive the branch from the task identifier, ID,
+title, or slug. Literal or task-independent templates retain the source denial,
+so a fresh clone cannot replace a selected local branch with a new empty branch.
 Workspace close and reopen use the recorded isolated source. Both operations
 verify its company, task, repository URL, and separate Git storage before use.
 

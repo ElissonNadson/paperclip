@@ -65,8 +65,11 @@ export function canIsolateRemoteWorkspaceSource(input: {
   trustPresetKind: string;
 }): boolean {
   const error = input.error as { status?: unknown; message?: unknown } | null;
+  const branchTemplate = input.strategy.branchTemplate;
+  const selectsFixedBranch = typeof branchTemplate === "string" && branchTemplate.length > 0
+    && !/\{\{\s*(?:issue\.(?:id|identifier|title)|slug)\s*\}\}/.test(branchTemplate);
   if (input.trustPresetKind !== "standard" || error?.status !== 403 || error.message !== "Task workspace access is no longer available"
-    || input.reuseExisting || input.hasExistingWorkspace || input.strategy.existingBranch
+    || input.reuseExisting || input.hasExistingWorkspace || input.strategy.existingBranch || selectsFixedBranch
     || (input.selection && !["project", "task_default", "legacy"].includes(input.selection.source))) return false;
   if (!input.repoUrl) return false;
   try {

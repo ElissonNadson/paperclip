@@ -119,7 +119,7 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
     expect(input.controllerLease.assertOwned).toHaveBeenCalledTimes(2);
   });
 
-  it.each([false, true])("isolates a restricted worktree and handles a failed workspace save (%s)", async failSave => {
+  it.each(["create", "failed-save", "literal-branch"] as const)("preserves restricted source isolation during %s", async scenario => {
     const { input, source, issue } = await fixture(true);
     const remoteUrl = "https://example.test/public/repository.git";
     await db.update(projectWorkspaces).set({ repoUrl: remoteUrl }).where(eq(projectWorkspaces.id, issue.projectWorkspaceId!));
@@ -146,7 +146,24 @@ describe.skipIf(!support.supported)("heartbeat workspace preparation boundary", 
       return { cwd, warning: null };
     });
     const isolatedSource = isolatedRemoteSourcePath(issue.companyId, issue.id);
-    if (failSave) {
+    if (scenario === "literal-branch") {
+      await execFile("git", ["-C", source, "checkout", "-b", "feature/literal-pin"]);
+      await writeFile(join(source, "selected-work.txt"), "Selected unpublished branch work\n");
+      await execFile("git", ["-C", source, "add", "selected-work.txt"]);
+      await execFile("git", ["-C", source, "commit", "-m", "Selected branch work"]);
+      const branchTip = (await execFile("git", ["-C", source, "rev-parse", "HEAD"])).stdout.trim();
+      await execFile("git", ["-C", source, "checkout", "main"]);
+      input.config.mergedConfig = { workspaceStrategy: { type: "git_worktree", baseRef: "main", branchTemplate: "feature/literal-pin" } };
+      const acquire = vi.spyOn(input.services.envOrchestrator, "acquireForRun");
+      await expect(prepareHeartbeatWorkspace(db, input)).rejects.toThrow("Task workspace access is no longer available");
+      expect(clone).not.toHaveBeenCalled();
+      expect(acquire).not.toHaveBeenCalled();
+      expect((await readIssue(issue.id)).executionWorkspaceId).toBeNull();
+      expect((await execFile("git", ["-C", source, "rev-parse", "refs/heads/feature/literal-pin"])).stdout.trim()).toBe(branchTip);
+      await expect(access(isolatedSource)).rejects.toMatchObject({ code: "ENOENT" });
+      return;
+    }
+    if (scenario === "failed-save") {
       vi.spyOn(input.services.executionWorkspacesSvc, "create").mockRejectedValueOnce(new Error("Workspace persistence failed"));
       await expect(prepareHeartbeatWorkspace(db, input)).rejects.toThrow("Workspace persistence failed");
       const worktrees = (await execFile("git", ["-C", isolatedSource, "worktree", "list", "--porcelain"])).stdout;

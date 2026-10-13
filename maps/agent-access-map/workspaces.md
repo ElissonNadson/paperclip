@@ -45,7 +45,9 @@ remote clone when the shared default source fails the restricted-task workspace
 guard. This does not grant access to the private local checkout or its Git metadata.
 The normal admitted Git identity must already authorize the configured remote.
 Creation of a fallback source is unavailable for explicit, parent/channel, reused
-or low-trust selections; an existing verified owned source remains reusable.
+or low-trust selections, or branch templates without a task-derived placeholder;
+an existing verified owned source remains reusable. Literal branch selections
+retain the original denial without cloning or replacing their unpublished commits.
 local paths, unsupported transports and credential-bearing URLs are not fallback
 sources. Company/task/remote bindings, real paths, Git storage and the exact origin
 are revalidated for reuse, cleanup and reopening. A failed save removes only the
