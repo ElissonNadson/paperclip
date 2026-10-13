@@ -305,7 +305,7 @@
         "ui/storybook/stories/agent-chat/agent-chat-sidebar.stories.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "d95a1e9a7a4cf997b6d11c72cd26dce0ffd1c5d976b189e572fb4d716d943a51",
+      "fingerprint": "2973cbd7b859db2b2535a0e3f80402c3755801627d4efa3ff44de380050a2a55",
       "stableId": "design-explorations-agent-chat-sidebar-pages",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat sidebar/Pages"
     },
@@ -366,7 +366,7 @@
         "ui/storybook/stories/agent-chat/agent-chat.stories.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "991e34e4a986a8d85f59ba28a71b875236c2bdd24a15872448963801d1aa674a",
+      "fingerprint": "052bff02117a14b972e48ee4b773f8258f05bbc1dd481d36b535d3240b8b992f",
       "stableId": "design-explorations-agent-chat",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat"
     },
@@ -521,7 +521,7 @@
         "ui/storybook/stories/agents/agent-persona-pages.stories.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "b8756ae1b4b6c713793d979e540167a641451261de455cceb4395ca4a06b4fc9",
+      "fingerprint": "11e416bdddb44ece283d934eaf87f30eb85b04e5270c06d7bbba815c89484a76",
       "stableId": "agents-personas-full-pages",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Personas/Full pages"
     },
@@ -1207,7 +1207,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/assigned-backlog-safeguards.stories.tsx"
       ],
-      "fingerprint": "cdb63642517b31c68df9ca8d62e60039f9f4d69d95d1a96dc96235fb7db1487d",
+      "fingerprint": "d6e735a2c56092274f139709aba0c1c555f3f3cb0fbf9820d50ee02874907b79",
       "stableId": "paperclip-assigned-backlog-safeguards",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Assigned Backlog Safeguards"
     },
@@ -1231,7 +1231,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/inbox-search/blocked-inbox.stories.tsx"
       ],
-      "fingerprint": "bcb6c0a3cb34fcd06e7b056521ad84fb968f73ba46a7ba00eda2a86bb060b11b",
+      "fingerprint": "70b54f5ce7c083b8e64c28501d66247d4753adabd732b377f7ad18309dc90ffe",
       "stableId": "product-inbox-blocked-tab",
       "sidebarTitle": "Tasks and conversations/Inbox, decisions, and search/Product/Inbox/Blocked tab"
     },
@@ -1470,7 +1470,7 @@
         "ui/storybook/stories/agent-chat/chat-entry.stories.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "4919a8431260abef52e018a03d607655484d728377bad92ae658aa4c0eff063e",
+      "fingerprint": "1063df44a6ff6e8972e15c4fa4718ea12d1edbe1ae5816055ab12a9964f007a8",
       "replacement": "ui/storybook/stories/agents/primary-agent/05-chat.stories.tsx",
       "stableId": "design-explorations-chat-entry",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Chat entry"
@@ -1513,13 +1513,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/CloudAccessGate.tsx",
         "ui/storybook/stories/recovery/cloud-access-recovery.stories.tsx"
       ],
-      "fingerprint": "bbec224b127ec6898cf95dfae922e6747483c0d0d4ec55ff7d1560c0c4a5c041",
+      "fingerprint": "64b2422bdabe2b07b563354481000171455841e49ccbf6a72270066d4e27e9e0",
       "stableId": "app-connection-recovery",
       "sidebarTitle": "Projects and execution/Recovery/App/Connection recovery"
     },
@@ -1843,14 +1843,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "maps/feature-map/secrets.md",
         "ui/src/components/task-chat/TaskChatMarker.tsx",
         "ui/storybook/stories/secrets/credential-access/01-notice.stories.tsx"
       ],
-      "fingerprint": "2eba045db9127e5cd8d8bf7c9664e4598a5c84be117ae6159ce7171b24f2005d",
+      "fingerprint": "14757d026311d143e9301d6294d2f46f40dad25af8ea3f8d5cf1893b260f82db",
       "stableId": "task-credential-access-01-notice",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/01 Notice"
     },
@@ -1877,7 +1877,7 @@
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx",
         "ui/src/adapters/adapter-display-registry.ts"
       ],
-      "fingerprint": "2fe1a1618237eb46648432c017fd19a5798a68b1ba29b293fa025b3ed293bdc0",
+      "fingerprint": "0c7ad2d8456115e0907edeab6925234516918387b9a6a7cb809464612a6cb01c",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -2227,13 +2227,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/ExecutionBlockerNotice.tsx",
         "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx"
       ],
-      "fingerprint": "bee366ba1266e6692c8f0ee027c449fdda6b51762369ba431871a5af5ee018c6",
+      "fingerprint": "018d8d687921ea109cb98f587abd59b94722f1f148940852326417ce8a457b04",
       "stableId": "task-chat-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Task chat/Recovery notice"
     },
@@ -2247,7 +2247,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/ActiveAgentsPanel.tsx",
@@ -2257,7 +2257,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/execution-recovery.stories.tsx"
       ],
-      "fingerprint": "6f8b245b169d95046bdb52513dfaf4937a96f807b72470c198863471f59c8149",
+      "fingerprint": "82ddff0cf6d98e558f9038d59960758347ad39f3c7a9aaf18f29214a8ad81756",
       "stableId": "tasks-execution-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Execution recovery"
     },
@@ -2881,7 +2881,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "maps/feature-map/task-coordination.md",
@@ -2889,7 +2889,7 @@
         "ui/src/components/task-chat/TaskChatBlockerLinks.tsx",
         "ui/storybook/stories/recovery/issue-blocked-notice.stories.tsx"
       ],
-      "fingerprint": "6a84d7f60318d33a1835a668873095aaad1c215a83bbbb4735823fdcb3291140",
+      "fingerprint": "52f861389de245bda4d9c582581b49ce0b9442d60ee7eff950adc6801aaca8a4",
       "stableId": "product-issue-blocked-notice",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue/Blocked notice"
     },
@@ -3113,13 +3113,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueScheduledRetryCard.tsx",
         "ui/storybook/stories/recovery/model-capacity-retry.stories.tsx"
       ],
-      "fingerprint": "5e08f681f3f96cb7be32e316d3f4066e5239dcf0f4393cb9ec09d599734f201e",
+      "fingerprint": "1db367a2b77b8c747ab5c81c1fe3317da02bf294308e9e09af827bcd12ee0b9f",
       "stableId": "tasks-model-capacity-retry",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Model capacity retry"
     },
@@ -3383,7 +3383,7 @@
         "ui/storybook/prototypes/originating-tasks/OriginatingTasks.tsx",
         "ui/storybook/stories/task-coordination/originating-tasks.stories.tsx"
       ],
-      "fingerprint": "59123e73a0286fd11a48376ee152a974d730c59bd5421fd273cfca3a185f6e08",
+      "fingerprint": "32c9981ce024550b26636b97d7337f7b34a1207e8bcdd5759a11d9a7ddb204fe",
       "stableId": "ux-labs-tasks-created-from-a-task",
       "sidebarTitle": "Tasks and conversations/Delegation, dependencies, and signoff/UX Labs/Tasks Created From a Task"
     },
@@ -3825,7 +3825,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "d4b5ba6bce33a9657d859d3278b1f84bbc9b77cffd24e370214a0fce24c0a02b",
+      "fingerprint": "ebd9132a1f0228f775b1f382fc30dcae68e65284c8118c7b8a2eee3219c741ed",
       "stableId": "private-tasks-01-creation",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/01 Creation"
     },
@@ -3971,7 +3971,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "5fb218d88c3b6815839732e4226a27f4b40a2df46c8cbad6709cb665546b4248",
+      "fingerprint": "6069116fffc3a661df1fb10245f3f6d8045086efd71c886a8064a27eed09ac42",
       "stableId": "private-tasks-06-full-product-pages",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/06 Full product pages"
     },
@@ -4018,7 +4018,7 @@
         "ui/storybook/stories/access/private-tasks/07-user-stories.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "5fbe5c61f8754bc0c1db1c6a990b9c44bc5d941b7b61de77fac76300e6c42a22",
+      "fingerprint": "483a8bfae265844bfa10ebd8529572f43c23c8474d414b45ba0b663efc280dbd",
       "stableId": "private-tasks-07-user-stories",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/07 User stories"
     },
@@ -4477,7 +4477,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/DispositionRecoveryNotice.tsx",
@@ -4486,7 +4486,7 @@
         "ui/storybook/prototypes/recovery-notice/RecoveryNoticePreview.tsx",
         "ui/storybook/stories/recovery/recovery-notice-preview.stories.tsx"
       ],
-      "fingerprint": "cfd7345545112ea9ecc13035ebd187451117de5ed010f439cfb8c6962461fb3f",
+      "fingerprint": "e83bcaf099227bfcd17d571f680121b5b51d5f605d76479165000a575229a884",
       "stableId": "design-previews-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Design previews/Recovery notice"
     },
@@ -4737,7 +4737,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueProperties.tsx",
@@ -4745,7 +4745,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/scheduled-retry.stories.tsx"
       ],
-      "fingerprint": "43ef1917079251d558b3f52e5af750dfb69a54d3326d31494dbf037baeefe193",
+      "fingerprint": "f360f4207ef2b1cef18eee2307c50a7bce3a5f5bbf8966b24cd86b3ec50d21b4",
       "stableId": "product-issue-scheduled-retry-surfaces",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue Scheduled retry surfaces"
     },
@@ -5049,8 +5049,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review confirms ordinary recovery fixtures remain applicable after the native-owner resolution gate; native-owner stop verification has its own suite.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueBlockedNotice.tsx",
@@ -5059,7 +5059,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/source-issue-recovery.stories.tsx"
       ],
-      "fingerprint": "1b6e44d4fb4ab7e2e63fb8816aa31fbe3267e10647f238ed82e6591a82d2e918",
+      "fingerprint": "949814263788ae0e3501b67bbd26118f150db219fc04e5cf653f18dd345ec8d5",
       "stableId": "paperclip-source-issue-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source Issue Recovery"
     },
@@ -5074,14 +5074,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/SourceResolvedFoldBadge.tsx",
         "ui/src/components/SourceResolvedFoldCallout.tsx",
         "ui/storybook/stories/recovery/source-resolved-fold.stories.tsx"
       ],
-      "fingerprint": "3af3daff618b8c278bcbf10ba3e5d081d87240c680758ccb3078eccdf9283122",
+      "fingerprint": "70cab38574df19267e35ab13c10c4a3eea444bb3b6e72c81f739f21cfc519df0",
       "stableId": "paperclip-source-resolved-fold",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source-resolved Fold"
     },
@@ -5162,7 +5162,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/successful-run-handoff.stories.tsx"
       ],
-      "fingerprint": "2a7db108d46f35f37dd9346d2fc039e61dff8c688e09d9ed7b0e777e7f79af0d",
+      "fingerprint": "27ad7c3c2b09acf5ac07163d44026511bd0c2b806387b591fef5fca343b0c63b",
       "stableId": "paperclip-successful-run-handoff",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Successful Run Handoff"
     },
@@ -5615,14 +5615,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/WorkspaceBaseRefRecoveryNotice.tsx",
         "ui/storybook/stories/recovery/workspace-branch-recovery/01-component.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "77f708cc660f6829cadaffa6139930a102109976c41f7e24e2f662ed687d2412",
+      "fingerprint": "eeaa7044a1d5a2b5355a8ac2375820e3611c71920e88c04d87e5d7ce64ed929a",
       "stableId": "workspace-branch-recovery-01-repair-card",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/01 Repair card"
     },
@@ -5647,7 +5647,7 @@
         "ui/storybook/stories/recovery/workspace-branch-recovery/02-task-journey.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "5eedfcb5738c125d3fa8ed7dc4b3d20a300b216de51f1ae5e58ede98d38fd75c",
+      "fingerprint": "f8a090cfdbadfe77d8ee064b99fc11b8f5e097d4e72173df2496280ef52152d1",
       "stableId": "workspace-branch-recovery-02-task-journey",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/02 Task journey"
     },
@@ -5711,6 +5711,53 @@
       "fingerprint": "b9cd51c58b31ab445e2997b9f2a23c7a7b3f4ecd7b6dd39fc0f35ae0779311df",
       "stableId": "workspaces-service-control-bar",
       "sidebarTitle": "Projects and execution/Workspaces, services, and files/Workspaces/Service control bar"
+    },
+    {
+      "file": "ui/storybook/stories/recovery/workspace-finalization-recovery/01-notice.stories.tsx",
+      "capabilities": [
+        "recovery/workspace",
+        "recovery/source-action"
+      ],
+      "purpose": "Workspace finalization recovery/01 Notice",
+      "status": "current",
+      "implementation": "production",
+      "boundary": "fixtures",
+      "notes": "Production quiet status; automatic restoration, legacy operator fallback, queued and resolved states. No task repair form, process details or API simulation. Provider proof is verified by separate server and harness tests.",
+      "reviewedAt": "2026-10-13",
+      "sources": [
+        "maps/feature-map/recovery.md",
+        "ui/src/components/WorkspaceExportRecovery.tsx",
+        "ui/storybook/stories/recovery/workspace-finalization-recovery/01-notice.stories.tsx",
+        "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
+      ],
+      "fingerprint": "45bf8c793c91362634b7ce32ed0ec2007861b7fefbfd0e2da692c3dc804a53c9",
+      "stableId": "workspace-finalization-recovery-01-notice",
+      "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/01 Notice"
+    },
+    {
+      "file": "ui/storybook/stories/recovery/workspace-finalization-recovery/02-task-journey.stories.tsx",
+      "capabilities": [
+        "recovery/workspace",
+        "recovery/source-action"
+      ],
+      "purpose": "Workspace finalization recovery/02 Task journey",
+      "status": "unreviewed",
+      "implementation": "mixed",
+      "boundary": "fixtures",
+      "notes": "Production shell, status, bubbles and composer in a local conversation composition; shows restoration and saved work waiting for confirmation. Fixture messages; not the shipped task page or live provider acceptance.",
+      "reviewedAt": "2026-10-13",
+      "sources": [
+        "maps/feature-map/recovery.md",
+        "ui/src/components/Layout.tsx",
+        "ui/src/components/WorkspaceExportRecovery.tsx",
+        "ui/src/components/task-chat/TaskChatBubble.tsx",
+        "ui/src/components/task-chat/TaskChatComposer.tsx",
+        "ui/storybook/stories/recovery/workspace-finalization-recovery/02-task-journey.stories.tsx",
+        "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
+      ],
+      "fingerprint": "aa76cd28dde8d50abd208b34283249170f3a85435ba82fff169a1c33433dfca1",
+      "stableId": "workspace-finalization-recovery-02-task-journey",
+      "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/02 Task journey"
     },
     {
       "file": "ui/storybook/stories/agents/codex-runner/creation.stories.tsx",
