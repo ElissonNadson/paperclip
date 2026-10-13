@@ -28,7 +28,6 @@ function redactNativeProbeMessage(message: string, environment: Record<string, s
   return message.slice(0, 2000);
 }
 
-/** Remote setup shares task artifacts, PRP, isolated launch home, and process ownership. */
 async function probeRemoteNativeCodex(options: {
   context: AdapterEnvironmentTestContext;
   model: string | null;
@@ -45,11 +44,7 @@ async function probeRemoteNativeCodex(options: {
   if (!runner) throw new Error("runner_transport_ineligible: remote process runner is unavailable");
   const id = crypto.randomUUID();
   const runnerInstanceId = `setup-${id}`;
-  // Eligibility is checked before writing to the selected host, using the
-  // same server-owned public URL and CA configuration as ordinary tasks.
   const ingress = target.transport === "sandbox" && target.effectiveCapabilities?.runnerWebSocketIngress === true;
-  // Outbound eligibility is read-only; acquire provider ingress only after the
-  // exact daemon has been prepared and its listener capability verified.
   const outbound = !ingress ? await resolvePaperclipRunnerTransport({ target, runId: id, localConnectUrl: "ws://127.0.0.1/unused",
     runnerPublicUrl: process.env.PAPERCLIP_RUNNER_PUBLIC_URL?.trim() || null,
     runnerCaBundlePath: process.env.PAPERCLIP_RUNNER_CA_BUNDLE_PATH?.trim() || null, runnerIngressAuthorized: true }) : null;
@@ -83,8 +78,6 @@ async function probeRemoteNativeCodex(options: {
       prpIdentity: { runnerInstanceId, runId: id, environmentLeaseId: `setup-${id}`, normalizedSessionId: `setup-${id}`, turnId: `turn-${id}`, itemId: `item-${id}` },
       readRunnerState: () => readRemoteRunnerState({ runner, stateDirectory: remoteStateDirectory }),
       controlPlaneRegistration: async authority => {
-        // Claim a private per-probe root. Never merge credentials or state into
-        // another session's directory on the remote host.
         const created = await runner.execute({ command: "sh", args: ["-c", 'set -eu; umask 077; mkdir -p -- "$1"; test -d "$1" && test ! -L "$1"; mkdir -- "$2"; install -d -m 0700 "$3" "$4" "$5"',
           "paperclip-native-setup", posix.dirname(remoteRoot), remoteRoot, remoteFilesystemRoot, remoteWorkspace, posix.join(remoteFilesystemRoot, "probe-home")], cwd: target.remoteCwd, bypassSession: true, timeoutMs: 10_000 });
         requireSuccess(created, "Native setup could not claim a private runtime directory.");
@@ -118,8 +111,6 @@ async function probeRemoteNativeCodex(options: {
       runnerProcessLauncher: createRemoteRunnerProcessLauncher({ target, runner, remoteBinary, stateDirectory: remoteStateDirectory,
         onRunnerProcessSpawned: signalSpawned, processIdentityPath: posix.join(remoteStateDirectory, "runner-process.identity"), diagnosticsDirectory: posix.join(remoteRoot, "diagnostics"), runnerInstanceId,
         ensureArtifact: async () => {
-          // The normal transport has already materialized the bound account and
-          // its managed config locally. Publish only those two fresh files.
           for (const name of ["auth.json", "config.toml"] as const) {
             const sourcePath = join(runtimeDirectory, "codex-home", name);
             try { await stat(sourcePath); } catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") continue; throw error; }
@@ -130,8 +121,6 @@ async function probeRemoteNativeCodex(options: {
     ...(options.credentialRefreshAuthPath ? { onCodexCredentialRefresh: async (filename: string) => {
       if (filename !== posix.join(remoteFilesystemRoot, "codex-home", "auth.json")) throw new Error("The native Codex credential refresh handoff is invalid.");
       await copyBackCodexAuth({ hostAuthPath: options.credentialRefreshAuthPath!, log: () => {}, readSandboxAuth: async () => {
-        // Reuse the task's shell/base64 handoff without requiring a guest JS
-        // runtime. Bound and validate the private owner-only credential file.
         const read = await runner.execute({ command: "sh", args: ["-c", 'set -eu; file=$1; test -f "$file" || exit 66; test ! -L "$file"; parent=$(dirname -- "$file"); while test "$parent" != /; do test -d "$parent" && test ! -L "$parent"; parent=$(dirname -- "$parent"); done; metadata=$(stat -c "%u %a %s" "$file" 2>/dev/null || stat -f "%u %Lp %z" "$file"); set -- $metadata; test "$1" = "$(id -u)" && test "$2" = 600 && test "$3" -le 65536; head -c 65537 -- "$file" | base64', "paperclip-native-refresh", filename], bypassSession: true, timeoutMs: 10_000 });
         if (read.timedOut || read.exitCode !== 0) throw Object.assign(new Error("Native Codex credential refresh handoff unavailable."), { code: read.exitCode === 66 ? "ENOENT" : "INVALID_CREDENTIAL" });
         const body = Buffer.from(read.stdout, "base64");
@@ -149,7 +138,6 @@ async function probeRemoteNativeCodex(options: {
   });
 }
 
-/** Codex readiness uses the same daemon, bound credentials and cleanup as task execution. */
 export async function testNativeRunnerAuthentication(context: AdapterEnvironmentTestContext, provider: "codex", model: string | null): Promise<AdapterEnvironmentTestResult> {
   const remote = context.executionTarget?.kind === "remote";
   const configured = context.config.env;
@@ -167,14 +155,10 @@ export async function testNativeRunnerAuthentication(context: AdapterEnvironment
   const timeoutMs = remote ? 90_000 : 45_000;
   let runtimeDirectory: string | undefined;
   try {
-    // Match task execution's closed host projection before the probe replaces
-    // HOME. API keys never enter this projection from the ambient process.
     if (provider === "codex") {
       const { buildNativeProviderEnvironment } = await import("./native-session-executor.js");
       sourceCodexHome = context.managedAiCredentialHome ?? resolveSourceCodexHome(buildNativeProviderEnvironment(environment));
     }
-    // Preserve refreshes in the authorized source account before deleting the
-    // private probe home. API-key probes must never write to a host login.
     let credentialRefreshAuthPath: string | undefined;
     if (sourceCodexHome && !environment.OPENAI_API_KEY?.trim() && !environment.PAPERCLIP_AI_PROVIDER_KEY?.trim()) {
       try {

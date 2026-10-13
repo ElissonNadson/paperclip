@@ -208,7 +208,6 @@ export function getAdapterDisplay(type: string): AdapterDisplayInfo {
   };
 }
 
-/** Codex branding follows its harness; diagnostics retain the saved adapter. */
 export function agentDisplayAdapterType(agent: { adapterType: string; adapterConfig: Record<string, unknown> }): string {
   if (agent.adapterType !== "paperclip_runner") return agent.adapterType;
   if (agent.adapterConfig.provider === "openai_dot") return "openai_dot";

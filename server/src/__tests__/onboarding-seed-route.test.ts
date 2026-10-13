@@ -41,7 +41,6 @@ describeEmbeddedPostgres("POST /api/companies/:companyId/onboarding-seed", () =>
   let runnerSelectionSpy: { mockRestore(): void } | undefined;
 
   beforeEach(async () => {
-    // Exercise real runner policy on the qualified Linux release target.
     const selection = await import("../services/agent-runner-selection.js");
     runnerSelectionSpy = vi.spyOn(selection, "resolveNewAgentRunnerForCompany").mockImplementation(async (_db, _companyId, input) =>
       selection.resolveNewAgentRunner({ ...input, target: { driver: "local", platform: "linux", architecture: "x64" } }));

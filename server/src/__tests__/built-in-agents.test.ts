@@ -160,7 +160,6 @@ describeEmbeddedPostgres("built-in agents", () => {
   }, 20_000);
 
   beforeEach(async () => {
-    // Exercise real runner policy on the qualified Linux release target.
     runnerTarget.platform = "linux";
     runnerTarget.architecture = "x64";
     const selection = await import("../services/agent-runner-selection.js");
@@ -329,7 +328,6 @@ describeEmbeddedPostgres("built-in agents", () => {
     expect(switchedBack.agent).toMatchObject({ adapterType: "codex_local", adapterConfig: savedSettings });
     const switchedAgain = await svc.ensure(companyId, "briefs", { runner: "paperclip" });
     expect(switchedAgain.agent).toMatchObject({ adapterType: "paperclip_runner", adapterConfig: { provider: "codex", ...savedSettings } });
-    // Existing native execution survives editing on an unqualified target.
     runnerTarget.platform = "win32";
     runnerTarget.architecture = "x64";
     const edited = await svc.ensure(companyId, "briefs", { adapterType: "codex_local", adapterConfig: { model: "gpt-5.4" } });
@@ -340,7 +338,6 @@ describeEmbeddedPostgres("built-in agents", () => {
     const companyId = await seedCompany({ requireApproval: true });
     const result = await builtInAgentService(db).provision(companyId, "briefs", { adapterType: "codex_local", adapterConfig: { model: "gpt-5.4" } }, { requestedByUserId: "board-user" });
     expect(result.approval?.payload).toMatchObject({ adapterType: "paperclip_runner", adapterConfig: { provider: "codex", model: "gpt-5.4" } });
-    // Restart and approval activate the reviewed config even if eligibility changed.
     runnerTarget.platform = "win32";
     runnerTarget.architecture = "x64";
     await reconcileBuiltInAgentsOnStartup(db);

@@ -22,7 +22,6 @@ export interface SelectPopoverOption {
   group?: string;
 }
 
-/** The harness picker surface, shared by simple and searchable configuration pickers. */
 export function SelectPopover({
   value,
   onValueChange,

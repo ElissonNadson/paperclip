@@ -34,6 +34,12 @@ Automated: [doctor](../../cli/src/__tests__/doctor.test.ts), [update command](..
 
 Manual: Inspect the selected installation/channel and configuration, start the isolated instance, confirm health and browser access, then stop that instance. For update changes, use the dry-run/check path first and verify installed version and rollback state on an owned disposable installation.
 
+Routine HTTP monitoring may use `GET /api/liveness` (or `HEAD`). It returns only
+process startup status and the public build commit without SQL or authentication.
+It remains reachable during an idle drain. Use `/api/health` for explicit database
+readiness, signed bootstrap, and authorized diagnostics; liveness does not
+establish database health or claim a workspace.
+
 ### `settings-backup`
 
 Automated: [experimental settings](../../ui/src/pages/InstanceExperimentalSettings.test.tsx) and [database backup routes](../../server/src/__tests__/instance-database-backups-routes.test.ts) cover their UI/API contracts.

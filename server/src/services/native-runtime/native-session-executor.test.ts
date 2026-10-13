@@ -5851,7 +5851,7 @@ describe("native resumed preparation timing", () => {
     const payloadFor = (span: string) =>
       events.find((event) => event.payload?.span === span)?.payload;
     expect(payloadFor("question_response.to_run_created")).toMatchObject({
-      parentSpan: "task.run",
+      parentSpan: "task.provider_session",
       durationMs: 50,
       startOffsetMs: 0,
     });
@@ -5859,7 +5859,7 @@ describe("native resumed preparation timing", () => {
       durationMs: 30,
       startOffsetMs: 70,
     });
-    expect(payloadFor("task.run.measured")).toMatchObject({ durationMs: 100 });
+    expect(payloadFor("task.provider_session.measured")).toMatchObject({ durationMs: 100 });
   });
 
   it("uses attempt-local preparation in the executor without truncating run elapsed time", async () => {
@@ -5913,7 +5913,7 @@ describe("native resumed preparation timing", () => {
       durationMs: 1_000,
       startOffsetMs: 0,
     });
-    expect(payloadFor("task.run.measured")).toMatchObject({
+    expect(payloadFor("task.provider_session.measured")).toMatchObject({
       durationMs: 984_050,
     });
   });
@@ -12354,8 +12354,6 @@ describe("runnerd provider runtime wiring", () => {
     { version: "0.156.0", model: "gpt-6.1-sol", floor: null, recover: true },
     { version: "0.158.0", model: "gpt-6.1-sol", floor: null, recover: true },
   ])("lets sandbox Codex $version reach actual model verification ($model, recover=$recover)", async ({ version, model, recover }) => {
-    // Version metadata is diagnostic. A working app-server reaches the model
-    // turn instead of being rejected or replaced by a static CLI version floor.
     const preparedModel = recover ? resolvePaperclipRunnerNativeProviderInput({
       backend: "codex_app_server", adapterConfig: { provider: "codex", model }, codexCliVersion: version,
     }).model : model;

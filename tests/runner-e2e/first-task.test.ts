@@ -6,11 +6,14 @@ import { firstTaskRejectionReplyRecorded, isFirstTaskRejectionCancellation } fro
 import { createIssueThreadInteractionSchema } from "../../packages/shared/src/validators/issue.js";
 import { renderInteractionCard } from "./interaction-report.js";
 import { main as judgeCommand } from "./first-task-judge.js";
-import { projectFirstTaskResult } from "./first-task-flow.js";
+import { projectFirstTaskResult, managedFirstTaskFileCheck, observeManagedFirstTaskSetup } from "./first-task-flow.js";
 import { validateRetainedRunnerResult } from "./result-validation.js";
+import { buildRuntimeUsage } from "./billing.js";
+import { fixtureRuntimeCostCoverage, selectFixtureRuntimeLeases } from "./live-fixtures.js";
 import {
   firstTaskNativeRuntimePatch,
   provisionFirstTaskFixtures,
+  MANAGED_FIRST_TASK_CELL,
 } from "./first-task-fixtures.js";
 import { describe, expect, it, vi } from "vitest";
 import { mkdtemp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
@@ -1440,5 +1443,203 @@ describe("recorded refusal cancellation", () => {
       if (kind === "run") last.runs.push({ id: "active", status: "running" });
       expect(failed(e), kind).toContain(kind === "agent" ? "no-premature-work" : "rejection-respected");
     }
+  });
+});
+
+describe("managed onboarding through the production wizard", () => {
+  const image = `registry.example.test/runtime@sha256:${"a".repeat(64)}`;
+  const execution = () => runnerMatrix.find(entry => entry.id === MANAGED_FIRST_TASK_CELL)!;
+
+  it("prepares only encrypted credentials and an immutable managed default, with no fixture probe or agent", async () => {
+    const calls: string[] = [];
+    const api = {
+      get: vi.fn(async () => []),
+      patch: vi.fn(async (path: string) => { calls.push(`PATCH ${path}`); return {}; }),
+      postSensitive: vi.fn(async (_path: string, data: any) => ({ id: `encrypted-${data.key}` })),
+      post: vi.fn(async (path: string, data: any) => {
+        calls.push(`POST ${path}`);
+        if (path === "/api/plugins/install") return { id: "plugin", status: "ready" };
+        expect(path).toBe("/api/companies/company/environments");
+        expect(data.config).toMatchObject({ image, apiKey: { type: "secret_ref", secretId: "encrypted-DAYTONA_API_KEY", version: "latest" } });
+        expect(data).not.toHaveProperty("metadata");
+        return { id: "environment", driver: "sandbox", config: data.config };
+      }),
+      delete: vi.fn(async () => {}),
+    };
+    const fixtures = await provisionFirstTaskFixtures({ api: api as any, execution: execution(), nonce: "private", company: { id: "company", name: "Fresh" },
+      daytonaImage: image, credentials: { OPENAI_API_KEY: "synthetic-key", DAYTONA_API_KEY: "synthetic-platform" } });
+    expect(calls).toEqual(["PATCH /api/companies/company", "POST /api/plugins/install", "POST /api/companies/company/environments", "PATCH /api/instance/settings", "PATCH /api/instance/settings/experimental"]);
+    expect(api.patch).toHaveBeenCalledWith("/api/instance/settings", { defaultEnvironmentId: "environment" });
+    expect(api.patch).toHaveBeenCalledWith("/api/instance/settings/experimental", { enableManagedSandboxOnly: true });
+    expect(fixtures.agent.id).toBe("");
+    expect(fixtures.setupLeases).toEqual([]);
+    expect(JSON.stringify(fixtures)).not.toContain("synthetic");
+    await fixtures.teardown();
+    expect(api.delete).toHaveBeenCalledExactlyOnceWith("/api/environments/environment?destroyReusableSandboxLeases=true", { allowNotFound: true });
+  });
+
+  it.each(["missing-key", "mutable-image", "other-cell"])("rejects %s before admitting a managed browser fixture", async mode => {
+    const api = { get: vi.fn(), patch: vi.fn(), postSensitive: vi.fn(), post: vi.fn(), delete: vi.fn() };
+    await expect(provisionFirstTaskFixtures({ api, execution: mode === "other-cell" ? { ...execution(), id: "other" } : execution(), nonce: "private", company: { id: "company", name: "Fresh" },
+      daytonaImage: mode === "mutable-image" ? "ubuntu:24.04" : image,
+      credentials: mode === "missing-key" ? { OPENAI_API_KEY: "synthetic" } : { OPENAI_API_KEY: "synthetic", DAYTONA_API_KEY: "synthetic" } })).rejects.toThrow();
+    expect(api.post).not.toHaveBeenCalled();
+    expect(api.postSensitive).not.toHaveBeenCalled();
+  });
+
+  function fileEvidence() {
+    const e = recording("task-card-accept");
+    const last = e.checkpoints.at(-1)!;
+    last.tasks = [{ id: "child", parentId: e.onboardingIssueId, status: "done" }];
+    const body = `Welcome beginners. Join our free Saturday meetup ${firstTaskScenario(e.caseId, e.nonce).marker}.`;
+    last.attachments = [{ id: "file", issueId: "child", originalFilename: "garden-welcome.txt", contentType: "text/plain", body,
+      contentVerified: true, contentSha256: digestText(body) }];
+    return e;
+  }
+  it("requires the downloaded verified physical artifact", () => {
+    expect(managedFirstTaskFileCheck(fileEvidence()).passed).toBe(true);
+  });
+  it.each(["document-only", "unverified", "wrong-hash", "wrong-child", "wrong-name", "wrong-marker"])("rejects %s as physical-file proof", async mode => {
+    const e = fileEvidence();
+    const last = e.checkpoints.at(-1)!;
+    const file = last.attachments![0]!;
+    if (mode === "document-only") { last.documents = [{ ...file, key: "welcome" }]; last.attachments = []; }
+    if (mode === "unverified") file.contentVerified = false;
+    if (mode === "wrong-hash") file.contentSha256 = "0".repeat(64);
+    if (mode === "wrong-child") file.issueId = "foreign";
+    if (mode === "wrong-name") file.originalFilename = "plan.txt";
+    if (mode === "wrong-marker") { file.body = "A different welcome note"; file.contentSha256 = digestText(file.body); }
+    expect(managedFirstTaskFileCheck(e).passed).toBe(false);
+  });
+
+  function setupHarness(mode = "success") {
+    const listeners = new Map<string, Set<(event: any) => void>>();
+    const page = { on: (name: string, callback: (event: any) => void) => { const set = listeners.get(name) ?? new Set(); set.add(callback); listeners.set(name, set); },
+      off: (name: string, callback: (event: any) => void) => listeners.get(name)?.delete(callback) };
+    const fixtures = { company: { id: "company", name: "Fresh" }, environment: { id: "environment", driver: "sandbox" },
+      agent: { id: "", companyId: "company", name: "Ada" }, secretRefs: {}, setupLeases: [],
+      setupQualification: { recorded: false, adapterType: null, platformResponses: 0, adapterResponses: 0 }, teardown: async () => {} } as import("./live-fixtures.js").LiveFixtureValues;
+    const rows = ["platform", "adapter"].map(id => ({ id, companyId: "company", environmentId: "environment", provider: "daytona", heartbeatRunId: null, issueId: null,
+      status: mode === "cleanup" ? "failed" : "released", cleanupStatus: "success" }));
+    if (mode === "foreign") rows[0]!.companyId = "another-company";
+    let begun = false;
+    const api = { get: vi.fn(async (path: string) => path.includes("environment-leases/") ? rows.find(row => path.endsWith(`/${row.id}`))
+      : begun ? [...rows, { ...rows[0], id: "unrelated", issueId: "other-task" }] : []) } as unknown as RunnerApi;
+    const start = (kind: "platform" | "discovery" | "adapter", runner?: string) => {
+      begun = true;
+      const request = { url: () => `http://fixture.test${kind === "platform" ? "/api/environments/environment/probe?companyId=company"
+        : kind === "discovery" ? "/api/adapters?companyId=company&environmentId=environment" : "/api/companies/company/adapters/codex_local/test-environment"}`,
+        method: () => kind === "discovery" ? "GET" : "POST", postDataJSON: () => runner ? { runner } : {} };
+      for (const listener of listeners.get("request") ?? []) listener(request);
+      return request;
+    };
+    const respond = (request: ReturnType<typeof start>, body: any) => {
+      const response = { request: () => request, json: async () => body, ok: () => true };
+      for (const listener of listeners.get("response") ?? []) listener(response);
+    };
+    const emit = (kind: "platform" | "discovery" | "adapter", body: any, runner?: string) => respond(start(kind, runner), body);
+    const fail = (request: ReturnType<typeof start>) => {
+      for (const listener of listeners.get("requestfailed") ?? []) listener(request);
+    };
+    return { fixtures, page: page as unknown as import("@playwright/test").Page, api, emit, start, respond, fail, listeners, rows };
+  }
+
+  it.each(["missing-response", "request-failed"])("retains unknown adapter setup cost after %s without an attributable row", async mode => {
+    const h = setupHarness();
+    h.rows.splice(1);
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.emit("platform", { ok: true, details: { platformQualificationRecorded: true, leaseId: "platform" } });
+    const request = h.start("adapter");
+    if (mode === "request-failed") h.fail(request);
+    await stop(false);
+    expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform"]);
+    expect(h.fixtures.setupLeaseAccountingIncomplete).toBe(true);
+    expect(h.fixtures.setupQualification!.adapterResponses).toBe(0);
+    const leases = selectFixtureRuntimeLeases({ leases: h.rows.map(row => ({ ...row,
+      acquiredAt: "2026-10-13T00:00:00Z", releasedAt: "2026-10-13T00:00:02Z", metadata: { cpu: 4, memory: 4, disk: 10 } })),
+      runIds: [], setupLeaseIds: h.fixtures.setupLeases!.map(row => row.leaseId) });
+    const usage = fixtureRuntimeCostCoverage(buildRuntimeUsage({ environmentId: "daytona", runs: [], leases }), h.fixtures);
+    expect(usage.leaseCount).toBe(1);
+    expect(usage.costStatus).toBe("unavailable");
+    expect(usage).not.toHaveProperty("estimatedListCostUsd");
+    expect([...h.listeners.values()].every(listeners => listeners.size === 0)).toBe(true);
+  });
+
+  it("retains unknown failed platform setup without a response or visible lease row", async () => {
+    const h = setupHarness();
+    h.rows.splice(0);
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.fail(h.start("platform"));
+    await stop(false);
+    expect(h.fixtures.setupLeases).toEqual([]);
+    expect(h.fixtures.setupLeaseAccountingIncomplete).toBe(true);
+    expect(h.fixtures.setupQualification!.recorded).toBe(false);
+  });
+
+  it("does not clear failed-request accounting uncertainty when later responses correlate", async () => {
+    const h = setupHarness();
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.emit("platform", { ok: true, details: { platformQualificationRecorded: true, leaseId: "platform" } });
+    const request = h.start("adapter");
+    h.fail(request);
+    h.respond(request, { adapterType: "paperclip_runner", status: "pass", checks: [{ code: "sandbox_test_identity", detail: "paperclipLeaseId=adapter" }] });
+    await stop(false);
+    expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform", "adapter"]);
+    expect(h.fixtures.setupLeaseAccountingIncomplete).toBe(true);
+  });
+
+  it.each(["success", "missing-discovery", "explicit-runner", "duplicate", "foreign", "cleanup"])("verifies exact UI setup responses and owned cleanup for %s", async mode => {
+    const h = setupHarness(mode);
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, mode === "cleanup" ? Date.now() - 1 : Date.now() + 1000);
+    const platform = { ok: true, details: { platformQualificationRecorded: true, leaseId: "platform" } };
+    h.emit("platform", platform);
+    if (mode === "duplicate") h.emit("platform", platform);
+    if (mode !== "missing-discovery") h.emit("discovery", [{ type: "codex_local", defaultRunner: "paperclip", supportedRunners: ["paperclip", "legacy"] }]);
+    h.emit("adapter", { adapterType: "paperclip_runner", status: "pass", checks: [{ code: "sandbox_test_identity", detail: "paperclipLeaseId=adapter; providerLeaseId=private-provider" }] }, mode === "explicit-runner" ? "paperclip" : undefined);
+    if (mode === "success") { await stop(true); expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform", "adapter"]); }
+    else await expect(stop(true)).rejects.toThrow();
+    expect(h.fixtures.setupLeases!.some(row => row.leaseId === "unrelated")).toBe(false);
+    expect([...h.listeners.values()].every(listeners => listeners.size === 0)).toBe(true);
+  });
+
+  it("reports a rejected platform setup immediately without waiting for the long browser deadline", async () => {
+    const h = setupHarness();
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    const rejected = expect(stop.failure).rejects.toThrow("UI environment qualification did not pass");
+    h.emit("platform", { ok: false, details: { leaseId: "platform", platformQualificationRecorded: false } });
+    await rejected;
+    await stop(false);
+    expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform"]);
+  });
+
+  it("keeps an uncorrelated lease out of setup billing and retains unavailable cost coverage", async () => {
+    const h = setupHarness();
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.emit("platform", { ok: false, details: { leaseId: "platform", platformQualificationRecorded: false } });
+    await stop(false);
+    expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform"]);
+    expect(h.fixtures.setupLeaseAccountingIncomplete).toBe(true);
+    expect(h.fixtures.setupQualification!.recorded).toBe(false);
+  });
+
+  it("retains exact failed setup leases for accounting without granting qualification", async () => {
+    const h = setupHarness();
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.emit("platform", { ok: true, details: { leaseId: "platform", platformQualificationRecorded: true } });
+    h.emit("adapter", { adapterType: "paperclip_runner", status: "fail", checks: [{ code: "sandbox_test_identity", detail: "paperclipLeaseId=adapter; providerLeaseId=private-provider" }] });
+    await stop(false);
+    expect(h.fixtures.setupLeases!.map(row => row.leaseId)).toEqual(["platform", "adapter"]);
+    expect(h.fixtures.setupQualification!.adapterType).toBeNull();
+  });
+
+  it("keeps a missing response lease ID unknown even without visible lease history", async () => {
+    const h = setupHarness();
+    h.rows.splice(0);
+    const stop = await observeManagedFirstTaskSetup(h.page, h.api, h.fixtures, Date.now() + 1000);
+    h.emit("platform", { ok: false, details: { platformQualificationRecorded: false } });
+    await stop(false);
+    expect(h.fixtures.setupLeases).toEqual([]);
+    expect(h.fixtures.setupLeaseAccountingIncomplete).toBe(true);
+    expect(h.fixtures.setupQualification!.recorded).toBe(false);
   });
 });

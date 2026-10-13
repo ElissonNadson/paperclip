@@ -2152,6 +2152,29 @@ the changed chief-of-staff persona and skill selections; it needs no fixture
 change for that default selection. Hiring from that wizard-created chief of
 staff remains a separate follow-up qualification.
 
+The explicit-only cell `confirmation-replies.runner-codex.daytona.task-card-accept`
+extends that wizard journey to one fresh managed company. Select this exact ID;
+the automatic roster and all local prompts remain unchanged. Its fixture seeds
+encrypted credentials and an immutable OCI image environment, but does not
+prequalify the image or create an agent. Connect owns the existing saved
+environment probe, fresh scoped adapter discovery, and selected runtime setup.
+The case requires one confirmed platform probe and one native Codex setup lease,
+then verifies the automatically saved native configuration after reload.
+
+The completed child must expose a downloaded `garden-welcome.txt` attachment
+whose byte size, SHA-256, content and scenario marker are independently checked.
+A saved document alone cannot pass. Existing task-card grading and the same-task
+follow-up continuity checks remain required. This cell has one attempt, zero
+automatic retries and a shared fifteen-minute deadline with cleanup time
+reserved. The script authors three turns; four task runs were observed in the
+historical local journey. The existing twelve-run guard and $5 company task cap
+remain, with native setup, one completion judge request, sandbox time and cleanup
+requiring separate reservation. Registration and provider-free controls do not
+establish live qualification or funding within the remaining paid reserve.
+
+This OCI-image Core case does not prove Cloud signup, warm/cold provisioning or
+name-only snapshot qualification. Those remain separate acceptance gates.
+
 ### Hiring completion accounting evidence
 
 The v3 hiring grader uses turn-accounting v2 in both executable guards. It requires complete per-run public event streams, exact native tool-use/result pairing and canonical execution IDs for completion actions. Only successful known GET issue/document/comment operations, verified reads/discovery, and attributed native chat finish are admitted. Writes, failed mutation attempts, incomplete streams and unknown actions cannot pass. Separate ACPX host request IDs and provider execution IDs are not joined by name/order/count; missing mapping is uncomparable action coverage, not a measured task failure. The original source-read and exact template checks remain unchanged.
@@ -2198,6 +2221,48 @@ Private traces and database files must not be published. Unconfirmed cleanup
 always preserves recovery state regardless of this optional diagnostic flag.
 
 The `file-edit-validate` fixture independently downloads the exact active artifact work product from the tested run. It requires the matching run-attributed attachment, filename, MIME type, recorded byte count and SHA-256, then compares the downloaded content to the expected bytes. A workspace file alone cannot satisfy this gate. Explicit failed-case diagnostic retention follows the final result after integrity, isolation and evidence checks, including incomplete publication.
+
+## Projectless task workspaces (explicit-only)
+
+`task-workspaces` contains exactly three cells: legacy OpenCode locally and native
+OpenCode locally and on Daytona, using the existing qualified model. These are
+configured acceptance cells; registration and fixture calibration do not establish
+live qualification.
+
+```sh
+pnpm test:e2e:runner -- --list --suite task-workspaces
+pnpm test:e2e:runner -- --id task-workspaces.legacy-opencode.local.task-directory-repository-resume --max-automatic-retries 0
+pnpm test:e2e:runner -- --id task-workspaces.runner-opencode.local.task-directory-repository-resume --max-automatic-retries 0
+pnpm test:e2e:runner -- --id task-workspaces.runner-opencode.daytona.task-directory-repository-resume --max-automatic-retries 0
+```
+
+Each cell creates a task through the browser without a project or configured
+adapter cwd. The first turn writes task files and requests the same public
+repository preparation twice. Independent APIs must show one pending receipt
+and the same original root. After a controller restart, the second admission
+prepares the repository; the agent makes a local commit and leaves a dirty file.
+The third turn copies those prior bytes into a registered downloadable artifact.
+The oracle checks the task's exact root and stable binding, public file reads,
+repository pin, local Git ancestry and dirty bytes, artifact metadata/digest,
+three attributed successful runs, durable native terminal events and remote
+lease attribution. Daytona uses per-turn leases, so a warm process cannot stand
+in for persisted files. This suite does not qualify channel-default configuration
+or arbitrary repository credentials.
+
+These cells exercise trusted app-created tasks. Low-trust chat tasks cannot use
+`prepare_repository` to initiate controller clones, even for public URLs with
+full-auto provider permissions. Their pending acquisitions fail after a trust
+downgrade; verified existing public checkouts can be reused without acquisition.
+No-repository admission and immutable recovery remain supported. Trusted
+acquisition does not yet impose repository byte or cumulative storage quotas.
+
+Each cell allows three turns, one attempt, four minutes per turn and fifteen
+minutes total, with 1,000-cent company and agent budget hard stops. `--all` excludes
+it. `OPENROUTER_API_KEY` is required; Daytona also requires `DAYTONA_API_KEY`, a
+verified immutable image and its matching remote runner/provider artifacts.
+Use the normal isolated-instance cleanup and report pipeline. Private evidence
+includes `snapshots/task-workspaces.json` and `task-workspaces-runs.json`; only
+marked synthetic task screenshots can enter the public projection.
 
 ## Repository skill packages
 

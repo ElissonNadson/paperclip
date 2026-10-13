@@ -49,9 +49,7 @@ describe("removeTestHome", () => {
 
     // The plain removal the setup file used to run is what fails in CI.
     if (process.platform !== "win32" && process.getuid?.() !== 0) {
-      expect(() => fs.rmSync(home, { recursive: true, force: true })).toThrow(
-        process.platform === "darwin" ? /EACCES|EPERM|ENOTEMPTY/ : /EACCES|EPERM/,
-      );
+      expect(() => fs.rmSync(home, { recursive: true, force: true })).toThrow(/EACCES|EPERM|ENOTEMPTY/);
       expect(fs.existsSync(bundle)).toBe(true);
     }
 
@@ -63,7 +61,6 @@ describe("removeTestHome", () => {
     const home = makeHome();
     fs.mkdirSync(path.join(home, "instances", "default"), { recursive: true });
     fs.writeFileSync(path.join(home, "instances", "default", "paperclip.json"), "{}\n");
-    // An unrelated ENOTEMPTY must not cause permission changes or be swallowed.
     const error = Object.assign(new Error("unrelated nonempty directory"), { code: "ENOTEMPTY" });
     const removal = vi.spyOn(fs, "rmSync").mockImplementation(() => { throw error; });
     const permissionChange = vi.spyOn(fs, "chmodSync");

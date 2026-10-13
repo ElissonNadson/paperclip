@@ -68,8 +68,6 @@ export function createSshCommandManagedRuntimeRunner(input: {
       const envPrefix = envEntries.length > 0
         ? `env ${envEntries.map(([key, value]) => shellQuote(`${key}=${value}`)).join(" ")} `
         : "";
-      // Keep sh -c's command name and positional arguments intact. Flattening
-      // its script loses $0/$1/... and breaks native runner launch/identity.
       const commandScript = `exec ${envPrefix}${[shellQuote(command), ...args.map((arg) => shellQuote(arg))].join(" ")}`;
       const remoteCommand = `cd ${shellQuote(cwd)} && ${commandScript}`;
 
@@ -1090,7 +1088,7 @@ async function isLocalGitRepositoryRoot(localDir: string): Promise<boolean> {
   }
 }
 
-async function listLocalProjectRepositories(localDir: string): Promise<string[]> {
+export async function listLocalProjectRepositories(localDir: string): Promise<string[]> {
   const root = path.join(localDir, PROJECT_REPOSITORIES_DIR);
   const rootStat = await fs.lstat(root).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") return null;

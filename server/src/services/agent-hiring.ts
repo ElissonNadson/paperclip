@@ -15,8 +15,6 @@ import { initializePrimaryAgent } from "./primary-agent.js";
 import { resolveNewAgentRunnerForCompany } from "./agent-runner-selection.js";
 
 export async function prepareAgentHire(db: Db, companyId: string, input: CreateAgentData, options?: CreateAgentOptions): Promise<CreateAgentData> {
-  // Resolve every new hire before adapter-specific normalization and credentials.
-  // Approval/import callers freeze their reviewed execution; runner is request-only.
   const { runner, ...data } = input;
   const selection = options?.runnerResolved
     ? { adapterType: data.adapterType ?? "process", adapterConfig: isPlainRecord(data.adapterConfig) ? data.adapterConfig : {} }

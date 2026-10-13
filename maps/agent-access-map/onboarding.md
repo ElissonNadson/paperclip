@@ -88,6 +88,29 @@ testing an existing agent; interactive account login additionally requires a
 board user and owner-bound session. An agent's right to hire is not login or
 instance-environment administration authority.
 
+For fresh managed Codex Auto setup, the wizard's explicit Connect path can call
+`POST /api/environments/{environmentId}/probe?companyId={companyId}` before
+selected-runtime testing, then refresh scoped adapter discovery. This reuses the
+existing board instance-admin/local-implicit probe gate; `agents:create` alone
+is insufficient. A 403, absent proof, changed configuration, missing response
+identity or unconfirmed cleanup remains visible. No probe is added to creation
+or discovery, no agent/company grant is broadened, and provider authentication
+errors never cause an automatic runner switch.
+
+Scoped source review: 2026-10-13, exact baseline
+`1a0ca66242121e39d88455aa2b52a07acc4a07d9` plus the privately composed onboarding
+correction. [Wizard controls](../../ui/src/components/OnboardingWizard.test.tsx)
+and [existing Product E2E observer controls](../../tests/runner-e2e/first-task.test.ts)
+exercise mocked allowed/denied setup and sticky unknown cost coverage. They do
+not prove live actor authorization or provider execution. The explicit manual
+`confirmation-replies.runner-codex.daytona.task-card-accept` case requires an
+eligible immutable OCI target and the existing probe authority, two identified
+setup leases and separately authorized paid/cleanup reservations. Its fixture
+neither prequalifies the environment nor creates the agent. Actual Cloud named
+snapshot binding, warm/cold signup and live allowed/denied agent checks remain
+`not-run`.
+
+
 Evidence: `source-only` —
 [implementation](../../ui/src/components/OnboardingWizard.tsx#L279) at the reviewed
 commit above.

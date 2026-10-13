@@ -188,8 +188,6 @@ describe("server-owned Codex runner selection", () => {
     const adapterConfig = { ...(engine ? { engine } : {}), env: { PAPERCLIP_CODEX_ACP_NETWORK_ACCESS: "false" } };
     expect(resolveCodexExecutionEngine(adapterConfig).engine).toBe("acp");
     expect(buildCodexAcpConfig(adapterConfig)).toMatchObject({ env: { PAPERCLIP_CODEX_ACP_NETWORK_ACCESS: "false" } });
-    // Native permissions use a separately trusted server variable. This would
-    // enable networking despite the saved Legacy flag without admission rejection.
     const { codexNetworkAccess } = await import(new URL(
       "../../../packages/paperclip-runner/src/drivers/codex/codex-security-config.ts", import.meta.url,
     ).href);

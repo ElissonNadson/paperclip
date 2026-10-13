@@ -1,6 +1,5 @@
 import { paperclipRunnerSupportsPlatform } from "@paperclipai/shared";
 
-/** Inspect only libc identity; never retain or log Node's diagnostic report. */
 export function localAgentRunnerTarget(): { driver: "local"; platform: NodeJS.Platform; architecture: string; libc?: "glibc" | "unknown"; glibcVersion?: string } {
   if (process.platform !== "linux") return { driver: "local", platform: process.platform, architecture: process.arch };
   let libc: "glibc" | "unknown" = "unknown";

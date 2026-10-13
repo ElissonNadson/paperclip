@@ -49,8 +49,6 @@ async function main(): Promise<void> {
 
     console.log(
       JSON.stringify({
-        // New Codex agents can use runnerd immediately, including on instances
-        // that have disabled the experimental providers.
         nativeRunnerRequired: localPaperclipRunnerSupported()
           || experimental.enableNativeRunner === true
           || experimental.enableOpenAiDot === true

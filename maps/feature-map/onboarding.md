@@ -60,6 +60,27 @@ Use [runner validation](./runs-adapters.md#adapter-setup) and
 [environment qualification](./execution-environments.md#environment-settings)
 for the prerequisites; a successful login alone is insufficient.
 
+For a new Codex agent with Auto on a saved immutable OCI sandbox, Connect first
+uses the existing saved environment probe when authoritative qualification is
+absent. The board actor needs the existing instance-environment administration
+permission. Refresh company/environment-scoped discovery before testing the
+selected runtime. A denied probe, unconfirmed cleanup or setup failure must be
+visible; selecting Legacy remains an explicit choice. Creation and discovery
+themselves allocate no target. A valid measured unsupported target follows the
+server's Legacy default. Named Cloud snapshots remain a separate unqualified
+boot-identity and fresh-signup gap.
+
+The explicit manual Product E2E cell
+`confirmation-replies.runner-codex.daytona.task-card-accept` covers this fresh
+managed wizard path without fixture agent creation or a fixture preprobe. Its
+existing attachment oracle checks a downloaded physical file and follow-up
+continuity. Setup evidence must correlate both lease IDs with the same company,
+environment and provider; missing responses or unmatched rows keep cost coverage
+unknown. Run this cell only on an eligible target with separately authorized
+provider, runtime and cleanup reservations. Its source and mock controls are
+prepared; live execution remains unverified. Local cases and automatic selection
+remain unchanged.
+
 Leave and resume during harness/runner setup. Confirm the draft retains the
 explicit choice and compatible account bindings, old native Codex setup links
 recover the harness and runner, and a changed harness or runner invalidates stale

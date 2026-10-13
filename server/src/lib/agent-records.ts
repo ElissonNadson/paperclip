@@ -87,7 +87,6 @@ export type AgentConfigurationPatch = Partial<Pick<typeof agents.$inferInsert, t
 export type AgentHireRecord = Pick<typeof agents.$inferSelect, "id" | "companyId" | "adapterType" | "adapterConfig" | "permissions" | "metadata" | "status">;
 
 export interface CreateAgentOptions {
-  /** Reviewed/historical execution already resolved by a governed internal caller. */
   runnerResolved?: boolean;
   responsibleUserId?: string | null;
   createdByUserId?: string | null;

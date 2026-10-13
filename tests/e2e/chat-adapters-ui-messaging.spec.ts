@@ -1450,8 +1450,6 @@ test.describe("Exact failed chat run retry", () => {
             : null;
         await page.goto(startPath);
         if (canonicalAgentResponse) {
-          // The URL changes before the canonical query finishes. Wait for its
-          // body so the loading boundary cannot discard the retry mutation.
           const response = await canonicalAgentResponse;
           expect(response.ok()).toBe(true);
           expect(await response.json()).toMatchObject({

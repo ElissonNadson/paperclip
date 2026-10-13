@@ -75,7 +75,6 @@ describe("Codex selected native account verification", () => {
     const store = join(home, "account.json");
     try {
       await writeFile(store, auth("qa-account", "old", 120_000), { mode: 0o600 });
-      // Existing per-agent homes can point at their authorized shared account.
       await symlink(store, join(home, "auth.json"));
       nativeProbe.mockImplementation(async input => {
         const privateHome = join(input.runtimeDirectory, "codex-home");

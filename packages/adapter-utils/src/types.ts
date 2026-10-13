@@ -370,7 +370,6 @@ export interface AdapterEnvironmentTestContext {
   companyId: string;
   adapterType: string;
   config: Record<string, unknown>;
-  /** Server-owned account materialization; native probes copy refreshed auth back before cleanup. */
   managedAiCredentialHome?: string;
   /**
    * Optional execution target the adapter should run probes against.
@@ -727,7 +726,6 @@ export interface CreateConfigValues {
   runner?: "auto" | "paperclip" | "legacy";
   adapterType: string;
   codexPermissionMode?: "never" | "on-request" | "untrusted";
-  /** Explicit Legacy permission choice; never persisted as a runner setting. */
   codexLegacySandboxBypass?: boolean;
   paperclipRunnerLifecycleMode?: "per_turn" | "warm";
   paperclipRunnerIdleTimeoutMs?: number;

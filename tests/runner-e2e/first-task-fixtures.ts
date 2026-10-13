@@ -1,21 +1,27 @@
 import { normalizePaperclipOperationalSkillPreference } from "../../packages/adapter-utils/src/server-utils.js";
 import type { RunnerApi } from "./api.js";
-import type { LiveFixtureValues } from "./live-fixtures.js";
+import { deleteDaytonaEnvironment, installFixtureDaytonaProvider, type LiveFixtureValues } from "./live-fixtures.js";
+import { isImmutableDaytonaImage } from "./catalog.js";
 import type { CredentialName, MatrixExecution } from "./types.js";
 
-/** Provision credentials and a bounded budget for the UI-created company. The production wizard
- * remains the sole creator/configurer of its first agent and onboarding task. */
+export const MANAGED_FIRST_TASK_CELL = "confirmation-replies.runner-codex.daytona.task-card-accept";
+export function isManagedFirstTask(execution: Pick<MatrixExecution, "id">): boolean {
+  return execution.id === MANAGED_FIRST_TASK_CELL;
+}
+
 export async function provisionFirstTaskFixtures(input: {
-  api: Pick<RunnerApi, "get" | "patch" | "postSensitive">;
+  api: Pick<RunnerApi, "get" | "patch" | "postSensitive"> & Partial<Pick<RunnerApi, "post" | "delete">>;
   execution: MatrixExecution;
   nonce: string;
+  daytonaImage?: string;
   company: LiveFixtureValues["company"];
   credentials: Partial<Record<CredentialName, string>>;
 }): Promise<LiveFixtureValues> {
   const { api, execution, nonce, company, credentials } = input;
+  const managed = isManagedFirstTask(execution);
   if (
     !["first-task", "completion-updates", "confirmation-replies"].includes(execution.suite.id) || execution.task.flow !== "first_task" ||
-    execution.environment.id !== "local" ||
+    (execution.environment.id !== "local" && !managed) ||
     ![
       "legacy-codex",
       "legacy-claude",
@@ -27,42 +33,52 @@ export async function provisionFirstTaskFixtures(input: {
       "First-task fixtures require a supported local onboarding profile",
     );
   }
-  const credential = execution.profile.credential;
-  const value = credentials[credential];
-  if (!value) throw new Error(`Missing credential ${credential}`);
+  if (managed && (!isImmutableDaytonaImage(input.daytonaImage) || !api.post || !api.delete)) {
+    throw new Error("Managed onboarding requires the immutable image and normal environment create/cleanup APIs");
+  }
+  const required = managed ? [execution.profile.credential, "DAYTONA_API_KEY" as const] : [execution.profile.credential];
+  for (const name of required) if (!credentials[name]) throw new Error(`Missing credential ${name}`);
   await api.patch(`/api/companies/${company.id}`, { budgetMonthlyCents: 500 });
-  const environments = await api.get<Array<LiveFixtureValues["environment"]>>(
-    `/api/companies/${company.id}/environments?driver=local`,
-  );
-  const environment = environments.find((e) => e.driver === "local");
-  if (!environment)
-    throw new Error("Onboarding fixture local environment missing");
-  const secret = await api.postSensitive<{ id: string }>(
-    `/api/companies/${company.id}/secrets`,
-    {
-      name: `First task ${credential}`,
-      key: credential,
-      value,
-    },
-  );
+  let localEnvironment: LiveFixtureValues["environment"] | undefined;
+  if (!managed) {
+    const environments = await api.get<Array<LiveFixtureValues["environment"]>>(`/api/companies/${company.id}/environments?driver=local`);
+    localEnvironment = environments.find(candidate => candidate.driver === "local");
+    if (!localEnvironment) throw new Error("Onboarding fixture local environment missing");
+  }
+  const secretRefs: LiveFixtureValues["secretRefs"] = {};
+  for (const name of required) {
+    const secret = await api.postSensitive<{ id: string }>(`/api/companies/${company.id}/secrets`, {
+      name: `First task ${name}`, key: name, value: credentials[name],
+    });
+    secretRefs[name] = { type: "secret_ref", secretId: secret.id, version: "latest" };
+  }
+  let environment: LiveFixtureValues["environment"];
+  let teardown = async () => {};
+  if (managed) {
+    const remoteApi = api as Pick<RunnerApi, "post" | "delete">;
+    await installFixtureDaytonaProvider(remoteApi, execution);
+    environment = await remoteApi.post<LiveFixtureValues["environment"]>(`/api/companies/${company.id}/environments`,
+      execution.environment.buildEnvironment({ secretRefs, daytonaImage: input.daytonaImage, executionId: nonce }));
+    teardown = () => deleteDaytonaEnvironment(remoteApi, environment.id);
+    try {
+      await api.patch("/api/instance/settings", { defaultEnvironmentId: environment.id });
+      await api.patch("/api/instance/settings/experimental", { enableManagedSandboxOnly: true });
+    } catch (error) {
+      try { await teardown(); } catch (cleanup) { throw new AggregateError([error, cleanup], "Managed onboarding fixture setup and cleanup failed"); }
+      throw error;
+    }
+  } else environment = localEnvironment!;
+
   return {
     company,
     environment,
-    secretRefs: {
-      [credential]: {
-        type: "secret_ref",
-        secretId: secret.id,
-        version: "latest",
-      },
-    },
+    secretRefs,
     agent: { id: "", name: `Garden lead ${nonce}`, companyId: company.id },
-    teardown: async () => {}, // Existing launcher removes the complete isolated instance.
+    ...(managed ? { setupLeases: [], setupQualification: { recorded: false, adapterType: null, platformResponses: 0, adapterResponses: 0 } } : {}),
+    teardown,
   };
 }
 
-/** Reuse the qualified runtime configuration for explicit regression switches,
- * never the QA persona from buildAgent. Codex default qualification does not
- * call this helper; its wizard must persist the native selection directly. */
 export function firstTaskNativeRuntimePatch(
   execution: MatrixExecution,
   fixtures: LiveFixtureValues,

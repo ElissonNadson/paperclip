@@ -3145,7 +3145,6 @@ export function agentRoutes(
       const retainsSavedExecution = savedAgent && req.body.runner === undefined
         && savedAgent.adapterType === type
         && agentHarnessType(type, adapterConfigForTest) === agentHarnessType(savedAgent.adapterType, savedAgent.adapterConfig);
-      // Preserve saved execution; the adapter probe below still validates runtime readiness.
       const selection = retainsSavedExecution
         ? { adapterType: type, adapterConfig: adapterConfigForTest }
         : await resolveNewAgentRunnerForCompany(db, companyId, {
@@ -4228,8 +4227,6 @@ export function agentRoutes(
       ...hireInput
     } = req.body;
 
-    // Check actor restrictions on the requested harness before runner translation
-    // changes its identity or reads the selected execution target.
     const hiredAgentId = randomUUID();
     const requestedHireConfig = (hireInput.adapterConfig ?? {}) as Record<string, unknown>;
     assertProviderTraceSettingTransition(req, hireInput.runtimeConfig);
@@ -4577,7 +4574,6 @@ export function agentRoutes(
       runner: createRunner,
       ...createInput
     } = req.body;
-    // Preserve the requested harness's actor restrictions before translation.
     const agentId = randomUUID();
     const requestedCreateConfig = (createInput.adapterConfig ?? {}) as Record<string, unknown>;
     assertProviderTraceSettingTransition(req, createInput.runtimeConfig);

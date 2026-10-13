@@ -126,8 +126,6 @@ export function resolveNativeRuntimeMode(input: {
     }
     throw error;
   }
-  // Native Codex is a supported default. Other providers retain their rollout;
-  // enabling Dot does not opt in any of those providers.
   if (runnerProfile.provider === "openai_dot") {
     if (input.dotEnabled !== true) throw ineligible("paperclip_runner_dot_disabled", "Enable OpenAI Dot and Assistant connections (MCP) in experimental settings before assigning new work.");
   } else if (runnerProfile.provider !== "codex" && !input.enabled) {

@@ -14,7 +14,6 @@ export const SANDBOX_INSTALL_COMMAND = "npm install -g @openai/codex";
 export const DEFAULT_CODEX_LOCAL_MODEL = PAPERCLIP_RUNNER_DEFAULT_MODELS.codex;
 export const DEFAULT_CODEX_LOCAL_BYPASS_APPROVALS_AND_SANDBOX = true;
 
-/** Shared by CLI execution and configuration previews; explicit arguments keep their policy. */
 export function resolveCodexLocalCliPolicy(config: unknown, options: { networkAccess?: boolean } = {}) {
   const record = typeof config === "object" && config !== null && !Array.isArray(config)
     ? config as Record<string, unknown> : {};

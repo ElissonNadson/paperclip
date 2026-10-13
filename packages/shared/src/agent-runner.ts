@@ -1,4 +1,3 @@
-/** Request intent only. Agents persist the selected adapter, not an automatic choice. */
 export type AgentRunnerChoice = "auto" | "paperclip" | "legacy";
 export type AgentRunner = Exclude<AgentRunnerChoice, "auto">;
 
@@ -7,17 +6,14 @@ export interface AgentRunnerAvailability {
   defaultRunner: AgentRunner;
 }
 
-/** Codex is the only harness whose creation default graduates in this release. */
 export function paperclipRunnerProfileForHarness(harness: string): { provider: "codex" } | undefined {
   return harness === "codex_local" ? { provider: "codex" } : undefined;
 }
 
-/** Highest required GLIBC version in the shipped GNU/Linux daemon's ELF version needs. */
 export const PAPERCLIP_RUNNER_MINIMUM_GLIBC_VERSION = "2.39";
 
 function supportsLinuxLibc(libc?: "glibc" | "musl" | "unknown", version?: string): boolean {
   if (libc !== undefined && libc !== "glibc") return false;
-  // Source-only/platform callers do not assert a measured host libc version.
   if (version === undefined) return true;
   const match = typeof version === "string" ? version.trim().match(/^(?:glibc\s+)?(\d+)\.(\d+)(?:\.\d+)?$/) : null;
   if (!match) return false;
@@ -27,15 +23,12 @@ function supportsLinuxLibc(libc?: "glibc" | "musl" | "unknown", version?: string
   return major > requiredMajor! || (major === requiredMajor && minor >= requiredMinor!);
 }
 
-/** Creation defaults follow GNU/Linux and macOS artifacts; Alpine/musl is deferred. */
 export function paperclipRunnerSupportsPlatform(harness: string, platform: string, architecture: string, libc?: "glibc" | "musl" | "unknown", glibcVersion?: string): boolean {
   return !!paperclipRunnerProfileForHarness(harness)
-    // Omitted libc preserves platform-only callers; detected unknown Linux is not qualified.
     && ((platform === "linux" && supportsLinuxLibc(libc, glibcVersion) && (architecture === "x64" || architecture === "arm64"))
       || (platform === "darwin" && (architecture === "arm64" || architecture === "x64")));
 }
 
-/** Recover harness identity without changing execution or guessing unknown providers. */
 export function agentHarnessType(adapterType: string, config: Record<string, unknown> = {}): string {
   if (adapterType !== "paperclip_runner") return adapterType;
   if (config.provider === undefined || config.provider === "codex") return "codex_local";

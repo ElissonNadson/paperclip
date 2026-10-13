@@ -848,8 +848,6 @@ describe("P6-31 Section 18.13 executable status-authority corpus", () => {
         completionState === "kill_switch_during_active_native_run"
         && (fixture.covers.migrationRows ?? []).includes("MIG-08")
       ) {
-        // Codex has graduated; preserve the existing rollback control on an
-        // experimental provider, whose fresh runs still require the flag.
         const experimentalAdapterConfig = {
           provider: "opencode",
           model: "openrouter/deepseek/deepseek-v4-flash-0731",

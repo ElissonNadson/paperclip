@@ -81,7 +81,6 @@ describeEmbeddedPostgres("pending approval agent config integrity", () => {
     expect(reviewedLegacy.adapterType).toBe("codex_local");
     for (const agent of [native, legacy, reviewedLegacy]) {
       expect(agent).not.toHaveProperty("runner");
-      // Ordinary title changes on an activated agent must not revisit creation defaults.
       await lifecycle.approveHire(agent.id);
       await service.update(agent.id, { title: "Updated title" });
       const saved = await service.getById(agent.id);

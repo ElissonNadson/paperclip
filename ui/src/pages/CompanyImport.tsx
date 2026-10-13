@@ -586,7 +586,6 @@ function importAdapterValues(
       model: typeof sourceConfig.model === "string" ? sourceConfig.model : "",
       thinkingEffort: String(sourceConfig.modelReasoningEffort ?? sourceConfig.reasoningEffort ?? ""),
       ...(typeof savedBypass === "boolean" ? { codexLegacySandboxBypass: savedBypass } : {}),
-      // Runner-only imports preserve server-translated policy; display that policy too.
       dangerouslyBypassSandbox: typeof savedBypass === "boolean" ? savedBypass
         : nativeCodex
           ? (sourceConfig.codexPermissionMode ?? PAPERCLIP_RUNNER_PERMISSION_CAPABILITIES.codex.defaultMode) === "never"
@@ -1084,8 +1083,6 @@ export function CompanyImport() {
     return ceo?.adapterType ?? "claude_local";
   }, [companyAgents]);
 
-  // Missing legacy adapters use a warned fallback. Saved native profiles keep
-  // their identity so availability or an experimental gate cannot change the harness.
   const { data: installedAdapters } = useQuery({
     queryKey: queryKeys.adapters.all,
     queryFn: () => adaptersApi.list(),
@@ -1102,8 +1099,6 @@ export function CompanyImport() {
     queryFn: () => instanceSettingsApi.getExperimental(),
     retry: false,
   });
-  // These new provider choices remain experimental. Saved native Codex needs
-  // only the installed Runner; Dot does not enable other native providers.
   const runnerInstalled = availableAdapterTypes?.has("paperclip_runner") === true;
   const nativeRunnerAvailable = runnerInstalled && experimentalSettings?.enableNativeRunner === true;
   const dotAvailable = runnerInstalled && experimentalSettings?.enableOpenAiDot === true;
@@ -1677,7 +1672,6 @@ export function CompanyImport() {
     }
   }
 
-  // Recover Codex's harness for display while retaining its saved native profile.
   const adapterAgents = useMemo<AdapterPickerItem[]>(() => {
     if (!importPreview) return [];
     return importPreview.manifest.agents.map((a) => {
@@ -1750,9 +1744,6 @@ export function CompanyImport() {
         if (agent.adapterType === "paperclip_runner" && selectedType === agent.adapterChoice
           && selectedType === "codex_local" && configVals.adapterType === "codex_local"
           && agentHarnessType("paperclip_runner", configVals.adapterSchemaValues) === "codex_local") {
-          // Project only real form changes onto the saved native configuration.
-          // Form defaults must not replace bindings or runtime fields; explicit
-          // clears must not be filled back in from the source either.
           const original = importAdapterValues(selectedType, agent.adapterConfig, agent.adapterType, configVals.runner);
           const baseline = build(original);
           const retained = { ...agent.adapterConfig };

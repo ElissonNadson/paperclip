@@ -43,8 +43,6 @@ export async function testAgentSetup(input: {
     input.providerAdapter,
     {
       ...payload,
-      // This supplementary CLI probe is authentication evidence only. The
-      // first probe must establish readiness of the selected runtime.
       runner: "legacy",
       adapterConfig: {
         ...input.adapterConfig,

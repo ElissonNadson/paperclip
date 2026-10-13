@@ -1745,7 +1745,6 @@ export function builtInAgentService(db: Db) {
     const resolvedInput = existingPendingApproval || preserveExistingAdapter
       ? input
       : existing && input.runner !== undefined && input.adapterType === undefined && input.adapterConfig === undefined
-        // A runner-only request translates saved settings, not provisioning defaults.
         ? { ...input, adapterType: existing.adapterType, adapterConfig: existing.adapterConfig }
         : await defaultProvisionInput(companyId, definition, input);
     if (!existingPendingApproval && !preserveExistingAdapter) {
@@ -1823,7 +1822,6 @@ export function builtInAgentService(db: Db) {
         reportsTo,
         metadata: {
           ...builtInMetadata(definition),
-          // Provider defaults must not turn an unconfigured built-in into a ready agent.
           paperclipBuiltInSetupRequired: !hasCompleteAdapterConfig(
             definitionPatch(definition, resolvedInput).adapterType,
             definitionPatch(definition, resolvedInput).adapterConfig,

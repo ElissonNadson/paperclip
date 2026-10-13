@@ -105,7 +105,6 @@ describeEmbeddedPostgres("plugin-managed agents", () => {
   }, 20_000);
 
   beforeEach(async () => {
-    // Exercise real runner policy on the qualified Linux release target.
     runnerTarget.platform = "linux";
     runnerTarget.architecture = "x64";
     const selection = await import("../services/agent-runner-selection.js");
@@ -337,7 +336,6 @@ describeEmbeddedPostgres("plugin-managed agents", () => {
     expect(created.agent).toMatchObject({ adapterType: "paperclip_runner", adapterConfig: { provider: "codex" } });
     const reconciled = await services.agents.managedReconcile({ companyId, agentKey: "wiki-maintainer" });
     expect(reconciled.agent?.adapterConfig).toEqual(created.agent?.adapterConfig);
-    // Reset declaration defaults without requalifying an existing native agent.
     runnerTarget.platform = "win32";
     runnerTarget.architecture = "x64";
     const reset = await services.agents.managedReset({ companyId, agentKey: "wiki-maintainer" });

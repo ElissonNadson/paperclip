@@ -303,8 +303,6 @@ export function adapterRoutes(options: {
     const disabledSet = new Set(getDisabledAdapterTypes());
     // One shared implementation, with independent provider rollouts. Explicit
     // adapter-admin disabling still applies to both choices.
-    // Codex is generally available; the other native providers retain their
-    // provider-specific selection gates. Explicit adapter disabling still applies.
 
     const result: AdapterInfo[] = registeredAdapters.map((adapter) =>
       buildAdapterInfo(adapter, externalRecords.get(adapter.type), disabledSet, target),

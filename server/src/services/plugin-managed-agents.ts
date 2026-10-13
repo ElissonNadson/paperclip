@@ -647,7 +647,6 @@ export function pluginManagedAgentService(
         : {};
       const adapterType = await resolveManagedAdapterType(companyId, declaration);
       const defaults = declarationPatch(declaration, { adapterType });
-      // A Codex reset keeps its selected runner; other harness reset behavior is unchanged.
       const sameCodexHarness = adapterType === "codex_local" && agentHarnessType(reconciled.agent.adapterType, reconciled.agent.adapterConfig) === adapterType;
       const retainedNative = sameCodexHarness && reconciled.agent.adapterType === "paperclip_runner";
       const resetAdapterConfig = { ...defaults.adapterConfig };

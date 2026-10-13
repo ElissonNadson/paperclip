@@ -50,13 +50,11 @@ const runnerHarnessOptions = [
   { value: "grok", label: "Grok Build", adapter: "grok_local" },
 ];
 
-/** Keep explicit Legacy policy even when the server resolves an automatic choice. */
 export function buildCodexRunnerConfig(values: CreateConfigValues): Record<string, unknown> {
   const config = buildCodexLocalConfig(values);
   if (values.codexLegacySandboxBypass !== undefined) {
     config.dangerouslyBypassApprovalsAndSandbox = values.codexLegacySandboxBypass;
   } else if (values.runner !== "legacy") {
-    // An untouched false form default is not an explicit native permission policy.
     delete config.dangerouslyBypassApprovalsAndSandbox;
   }
   return {

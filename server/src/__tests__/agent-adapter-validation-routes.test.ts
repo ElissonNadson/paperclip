@@ -745,8 +745,6 @@ describe("agent routes adapter validation", () => {
   });
 
   it("defaults new Codex on a qualified Linux target while the experimental flag is off", async () => {
-    // Exercise route ordering and the real translator with an explicitly qualified target.
-    // Environment/platform discovery has its own company-boundary and platform tests.
     const selection = await import("../services/agent-runner-selection.js");
     vi.spyOn(selection, "resolveNewAgentRunnerForCompany").mockImplementation(async (_db, _companyId, input) =>
       selection.resolveNewAgentRunner({ ...input, target: { driver: "local", platform: "linux", architecture: "x64" } }));

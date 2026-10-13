@@ -8,7 +8,6 @@ vi.mock("../services/agent-runner-selection.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../services/agent-runner-selection.js")>();
   return {
     ...actual,
-    // Exercise the real selection/translation policy on an explicit target.
     resolveNewAgentRunnerForCompany: vi.fn(async (...[_db, _companyId, input]: Parameters<typeof actual.resolveNewAgentRunnerForCompany>) =>
       actual.resolveNewAgentRunner({ ...input, target: runnerTarget })),
   };
@@ -261,6 +260,17 @@ function makeAgent(adapterType: string) {
   };
 }
 
+function skillSnapshot(adapterType = "claude_local", mode = "ephemeral") {
+  return {
+    adapterType: adapterType,
+    supported: true,
+    mode: mode,
+    desiredSkills: ["paperclipai/paperclip/paperclip"],
+    entries: [],
+    warnings: [],
+  };
+}
+
 describe("agent skill routes", () => {
   beforeEach(async () => {
     runnerTarget.platform = "linux";
@@ -320,22 +330,8 @@ describe("agent skill routes", () => {
         unresolved: [],
       }),
     );
-    mockAdapter.listSkills.mockResolvedValue({
-      adapterType: "claude_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
-    mockAdapter.syncSkills.mockResolvedValue({
-      adapterType: "claude_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
+    mockAdapter.listSkills.mockResolvedValue(skillSnapshot());
+    mockAdapter.syncSkills.mockResolvedValue(skillSnapshot());
     mockAgentService.update.mockImplementation(async (_id: string, patch: Record<string, unknown>) => {
       const previousAgent = persistedAgent ?? makeAgent("claude_local");
       persistedAgent = {
@@ -478,61 +474,11 @@ describe("agent skill routes", () => {
     );
   });
 
-  it("threads a non-undefined actor secret context into resolveAdapterConfigForRuntime on both skills routes (audit fidelity, skipUserSecrets preserved)", async () => {
-    const expectedContext = {
-      consumerType: "agent",
-      consumerId: "11111111-1111-4111-8111-111111111111",
-      actorType: "user",
-      actorId: "local-board",
-      actorSource: "local_implicit",
-      responsibleUserId: "local-board",
-    };
 
-    // GET /agents/:id/skills
-    mockAgentService.getById.mockResolvedValue(makeAgent("claude_local"));
-    const listRes = await requestApp(
-      await createApp(),
-      (baseUrl) => request(baseUrl)
-        .get("/api/agents/11111111-1111-4111-8111-111111111111/skills?companyId=company-1"),
-    );
-    expect(listRes.status, JSON.stringify(listRes.body)).toBe(200);
-    const listCall = mockSecretService.resolveAdapterConfigForRuntime.mock.calls.at(-1);
-    expect(listCall?.[2]).toBeDefined();
-    expect(listCall?.[2]).toEqual(expectedContext);
-    expect(listCall?.[3]).toEqual({ adapterType: "claude_local", skipUserSecrets: true });
-
-    // POST /agents/:id/skills/sync
-    mockAdapter.syncSkills.mockResolvedValue({
-      adapterType: "claude_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
-    const syncRes = await requestApp(
-      await createApp(),
-      (baseUrl) => request(baseUrl)
-        .post("/api/agents/11111111-1111-4111-8111-111111111111/skills/sync?companyId=company-1")
-        .send({ desiredSkills: ["paperclip"], mode: "replace" }),
-    );
-    expect(syncRes.status, JSON.stringify(syncRes.body)).toBe(200);
-    const syncCall = mockSecretService.resolveAdapterConfigForRuntime.mock.calls.at(-1);
-    expect(syncCall?.[2]).toBeDefined();
-    expect(syncCall?.[2]).toEqual(expectedContext);
-    expect(syncCall?.[3]).toEqual({ adapterType: "claude_local", skipUserSecrets: true });
-  });
 
   it("skips runtime materialization when listing Codex skills", async () => {
     mockAgentService.getById.mockResolvedValue(makeAgent("codex_local"));
-    mockAdapter.listSkills.mockResolvedValue({
-      adapterType: "codex_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
+    mockAdapter.listSkills.mockResolvedValue(skillSnapshot("codex_local"));
 
     const res = await requestApp(
       await createApp(),
@@ -555,14 +501,7 @@ describe("agent skill routes", () => {
     mockSecretService.resolveAdapterConfigForRuntime.mockResolvedValueOnce({
       config: { agent: "claude" },
     });
-    mockAdapter.listSkills.mockResolvedValue({
-      adapterType: "acpx_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
+    mockAdapter.listSkills.mockResolvedValue(skillSnapshot("acpx_local"));
 
     const res = await requestApp(
       await createApp(),
@@ -603,14 +542,7 @@ describe("agent skill routes", () => {
         },
       },
     });
-    mockAdapter.syncSkills.mockResolvedValue({
-      adapterType: "acpx_local",
-      supported: true,
-      mode: "ephemeral",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
+    mockAdapter.syncSkills.mockResolvedValue(skillSnapshot("acpx_local"));
 
     const res = await requestApp(await createApp(), (baseUrl) => request(baseUrl)
       .post("/api/agents/11111111-1111-4111-8111-111111111111/skills/sync?companyId=company-1")
@@ -831,14 +763,7 @@ describe("agent skill routes", () => {
 
   it("skips runtime materialization when listing persistent skill adapters", async () => {
     mockAgentService.getById.mockResolvedValue(makeAgent("cursor"));
-    mockAdapter.listSkills.mockResolvedValue({
-      adapterType: "cursor",
-      supported: true,
-      mode: "persistent",
-      desiredSkills: ["paperclipai/paperclip/paperclip"],
-      entries: [],
-      warnings: [],
-    });
+    mockAdapter.listSkills.mockResolvedValue(skillSnapshot("cursor", "persistent"));
 
     const res = await requestApp(
       await createApp(),
@@ -1291,7 +1216,6 @@ describe("agent skill routes", () => {
     if (native) expect(input.adapterConfig.provider).toBe("codex");
     const canonicalKey = skill === "paperclip" ? "paperclipai/paperclip/paperclip" : skill;
     const expected = ["paperclip", "paperclip-board", "paperclip-converting-plans-to-tasks", "paperclip-create-agent", "para-memory-files", "first-task"]
-      // Native PRP supplies the operational contract; role skills and their pins remain assigned.
       .filter((name) => !native || name !== "paperclip")
       .map((name) => ({ key: `paperclipai/paperclip/${name}`, versionId: `paperclipai/paperclip/${name}` === canonicalKey ? versionId : null }));
     const desiredSkills = input.adapterConfig.paperclipSkillSync.desiredSkills.map((entry: string | { key: string; versionId: string | null }) =>

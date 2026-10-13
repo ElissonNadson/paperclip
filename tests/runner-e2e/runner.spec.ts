@@ -1,3 +1,4 @@
+import { runTaskWorkspacesFlow } from "./task-workspaces-flow.js";
 import type { RestartRunnerIdentity } from "./process-tree-owner.js";
 import { runNativeActiveStopFlow } from "./native-active-stop-flow.js";
 import { runPiControlsFlow } from "./pi-controls-flow.js";
@@ -51,7 +52,7 @@ import { runnerExecutionById } from "./catalog.js";
 import { classifyFailure } from "./failure-classifier.js";
 import { runnerE2EServerControlPaths } from "./harness-env.js";
 import { setupConnectionReview } from "./connection-reviews.js";
-import { setupLiveFixtures, selectFixtureRuntimeLeases, type LiveFixtureValues } from "./live-fixtures.js";
+import { setupLiveFixtures, selectFixtureRuntimeLeases, fixtureRuntimeCostCoverage, type LiveFixtureValues } from "./live-fixtures.js";
 import { evaluateMatcher, persistedFinalRunMessage, type MatcherResult } from "./matchers.js";
 import { readRegisteredArtifacts } from "./registered-artifact.js";
 import {
@@ -697,7 +698,7 @@ for (const execution of executions) {
       );
       runtimeLeases = selectFixtureRuntimeLeases({ leases: listed,
         runIds: selectedRuns.map(run => run.id), issueId: issue?.id,
-        setupProbeLeaseId: fixtures.setupProbe?.leaseId });
+        setupProbeLeaseId: fixtures.setupProbe?.leaseId, setupLeaseIds: fixtures.setupLeases?.map(lease => lease.leaseId) });
     };
 
     const cancelActiveRunsForCleanup = async () => {
@@ -864,7 +865,6 @@ for (const execution of executions) {
         const receipt = verifyStockHarnessPreflight(process.env[STOCK_PREFLIGHT_ENV]);
         await writeSanitizedJson(snapshotsDir, "stock-harness-preflight.json", receipt, secrets);
       }
-      // Codex default journeys must work with the experimental gate disabled.
       const nativeRolloutEnabled = execution.profile.provider !== "codex";
       const experimental = await api.patch<{
         enableNativeRunner: boolean;
@@ -889,7 +889,7 @@ for (const execution of executions) {
         await setupGitStreamingWorkspace(workspacePath);
       }
       fixtures = execution.task.flow === "first_task"
-        ? await setupFirstTaskFixtures({ page, api, execution, nonce, credentials, observe: value => { fixtures = value; } })
+        ? await setupFirstTaskFixtures({ page, api, execution, nonce, credentials, daytonaImage: process.env.PAPERCLIP_E2E_DAYTONA_IMAGE, deadlineAt: startedAtMs + deadlineMs, observe: value => { fixtures = value; } })
         : await setupLiveFixtures({
         api,
         execution,
@@ -980,7 +980,17 @@ for (const execution of executions) {
         secrets,
       );
 
-      if (execution.task.flow === "public_mcp") {
+      if (execution.task.flow === "task_workspaces") {
+        const journey = await runTaskWorkspacesFlow({ page, api, fixtures, execution, nonce, temporaryRoot,
+          deadlineAt: startedAtMs + deadlineMs - 30_000,
+          restart: () => restartIsolatedPaperclipServer({ api, requestId: `task-workspaces-${nonce}`, deadlineAt: startedAtMs + deadlineMs }),
+          observe: (currentIssue, currentRuns, checks) => {
+            issue = currentIssue as IssueRecord; selectedRuns = currentRuns as RunRecord[];
+            matcherResults = checks.map(check => ({ matcher: { kind: "json_path" as const, path: `taskWorkspaces.${check.id}`, expected: true }, passed: check.passed, detail: check.detail }));
+          }, capture: captureScreenshot, evidence: (name, data) => writeSanitizedJson(snapshotsDir, name, data, secrets),
+        });
+        issue = journey.issue as IssueRecord; selectedRuns = journey.runs as RunRecord[];
+      } else if (execution.task.flow === "public_mcp") {
         const journey = await runPublicMcpFlow({
           page, api, fixtures, execution, nonce, secrets, userId: publicMcpUserId,
           credential: credentials[execution.profile.credential]!, usage: publicMcpUsage!, deadlineAt: startedAtMs + deadlineMs,
@@ -1147,7 +1157,7 @@ for (const execution of executions) {
         if (matcherResults.length === 0) matcherResults = [{ matcher: { kind: "issue_status", expected: "in_review" }, passed: true, detail: "Chat workflow and durable handoff/session assertions passed" }];
       } else if (execution.task.flow === "first_task") {
         const firstTask = await runFirstTaskFlow({
-          page, api, fixtures, execution, nonce, secrets,
+          page, api, fixtures, execution, nonce, deadlineAt: startedAtMs + deadlineMs, secrets,
           observe: (currentIssue, runs, evidence) => {
             issue = currentIssue; selectedRuns = runs; firstTaskEvidence = evidence;
             matcherResults = evidence.checks.map(check => ({ matcher: { kind: "json_path" as const, path: `firstTask.checks.${check.id}`, expected: true }, passed: check.passed, detail: check.detail }));
@@ -3090,12 +3100,12 @@ for (const execution of executions) {
       }
 
       const finishedAtMs = Date.now();
-      const runtimeUsage = buildRuntimeUsage({
+      const runtimeUsage = fixtureRuntimeCostCoverage(buildRuntimeUsage({
         environmentId: execution.environment.id,
         runs: selectedRuns,
         leases: runtimeLeases,
         fallbackFinishedAt: new Date(finishedAtMs),
-      });
+      }), fixtures ?? {});
       const resultWithoutBilling: RunnerE2EResult = {
         schema: "paperclip.runner-e2e.result/v2",
         executionId: execution.id,

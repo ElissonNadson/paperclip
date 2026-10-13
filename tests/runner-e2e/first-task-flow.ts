@@ -10,9 +10,10 @@ import { observeCompletionUpdate } from "./completion-update-flow.js";
 import {
   firstTaskNativeRuntimePatch,
   provisionFirstTaskFixtures,
+  isManagedFirstTask,
 } from "./first-task-fixtures.js";
 import { execFileSync } from "node:child_process";
-import { expect, type Page } from "@playwright/test";
+import { expect, type Page, type Request, type Response } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { pollUntil, type RunnerApi } from "./api.js";
 import {
@@ -34,8 +35,6 @@ import {
   type Row,
 } from "./first-task-scoring.js";
 
-/** Results enter the public history bundle. Full observations stay in the
- * access-controlled snapshots and are graded before this projection. */
 export function projectFirstTaskResult(result: RunnerE2EResult): RunnerE2EResult {
   const e = result.firstTask;
   if (!e) return result;
@@ -145,14 +144,136 @@ export function projectFirstTaskResult(result: RunnerE2EResult): RunnerE2EResult
   };
 }
 
-/** The wizard creates the agent/task. Only credential provisioning uses Node fetch,
- * keeping plaintext keys out of Playwright's trace and recorded form values. */
+export function managedFirstTaskFileCheck(e: FirstTaskEvidence) {
+  const last = e.checkpoints.at(-1);
+  const children = last?.tasks.filter(task => task.parentId === e.onboardingIssueId && task.status === "done") ?? [];
+  const marker = firstTaskScenario(e.caseId, e.nonce).marker;
+  const passed = children.length === 1 && (last?.attachments ?? []).some(attachment =>
+    attachment.issueId === children[0]!.id && attachment.originalFilename === "garden-welcome.txt"
+    && /^text\/(?:plain|markdown)(?:;|$)/i.test(String(attachment.contentType))
+    && attachment.contentVerified === true && typeof attachment.body === "string"
+    && attachment.contentSha256 === digestText(attachment.body) && attachment.body.includes(marker));
+  return { id: "managed-onboarding-physical-artifact", passed, evidence: last ? [last.id] : [],
+    detail: "The completed child has a downloaded, size/hash-verified garden-welcome.txt attachment with the requested marker." };
+}
+
+export async function observeManagedFirstTaskSetup(page: Page, api: RunnerApi, fixtures: LiveFixtureValues, deadlineAt: number) {
+  const before = new Set((await api.get<Row[]>(`/api/environments/${fixtures.environment.id}/leases`)).map(lease => lease.id));
+  const startedAt = Date.now();
+  const qualification = fixtures.setupQualification!;
+  const operations: Promise<void>[] = [];
+  let rejectFailure!: (error: unknown) => void;
+  const failure = new Promise<never>((_resolve, reject) => { rejectFailure = reject; });
+  void failure.catch(() => undefined);
+  const requestStarts = new WeakMap<Request, number>();
+  const pendingSetupRequests = new Set<Request>();
+  let platformEndedAt = Infinity;
+  let qualifiedDefault = false;
+  let automaticRequest = false;
+  function phase(request: Request): "platform" | "adapter" | "discovery" | null {
+    const url = new URL(request.url());
+    if (request.method() === "POST" && url.pathname === `/api/environments/${fixtures.environment.id}/probe`
+      && url.searchParams.get("companyId") === fixtures.company.id) return "platform";
+    if (request.method() === "POST" && url.pathname === `/api/companies/${fixtures.company.id}/adapters/codex_local/test-environment`) return "adapter";
+    if (request.method() === "GET" && url.pathname === "/api/adapters" && url.searchParams.get("companyId") === fixtures.company.id
+      && url.searchParams.get("environmentId") === fixtures.environment.id) return "discovery";
+    return null;
+  }
+  const onRequest = (request: Request) => {
+    const kind = phase(request);
+    if (kind) requestStarts.set(request, Date.now());
+    if (kind === "platform" || kind === "adapter") pendingSetupRequests.add(request);
+  };
+  const onRequestFailed = (request: Request) => {
+    if (pendingSetupRequests.has(request)) fixtures.setupLeaseAccountingIncomplete = true;
+  };
+  const onResponse = (response: Response) => {
+    const request = response.request();
+    const kind = phase(request);
+    if (!kind) return;
+    const responseAt = Date.now();
+    if (kind === "platform") { qualification.platformResponses++; platformEndedAt = responseAt; }
+    if (kind === "adapter") qualification.adapterResponses++;
+    if (qualification.platformResponses > 1 || qualification.adapterResponses > 1) rejectFailure(new Error("The UI repeated a managed setup request"));
+    const operation = (async () => {
+      const body = await response.json() as Row | Row[];
+      if (kind === "discovery") {
+        if (Array.isArray(body) && responseAt >= platformEndedAt) {
+          const codex = body.find(adapter => adapter.type === "codex_local");
+          qualifiedDefault = codex?.defaultRunner === "paperclip" && codex?.supportedRunners?.includes("paperclip") === true;
+          if (!qualifiedDefault) rejectFailure(new Error("The selected image is not qualified for native Codex onboarding"));
+        }
+        return;
+      }
+      const data = body as Row;
+      if (kind === "platform") {
+        qualification.recorded = response.ok() && data.ok === true && data.details?.platformQualificationRecorded === true;
+        if (!qualification.recorded) rejectFailure(new Error("The UI environment qualification did not pass"));
+      }
+      else {
+        qualification.adapterType = response.ok() && data.status === "pass" ? data.adapterType : null;
+        if (qualification.adapterType !== "paperclip_runner") rejectFailure(new Error("The UI native runtime setup did not pass"));
+        automaticRequest = request.postDataJSON()?.runner === undefined && (requestStarts.get(request) ?? 0) >= platformEndedAt;
+      }
+      const leaseId = kind === "platform" ? data.details?.leaseId
+        : /(?:^|;\s*)paperclipLeaseId=([a-zA-Z0-9-]+)(?:;|$)/.exec(String(data.checks?.find((check: Row) => check.code === "sandbox_test_identity")?.detail ?? ""))?.[1];
+      if (typeof leaseId !== "string" || !leaseId) {
+        fixtures.setupLeaseAccountingIncomplete = true;
+        return;
+      }
+      const lease = await api.get<Row>(`/api/environment-leases/${encodeURIComponent(leaseId)}`, { timeout: 10_000 });
+      if (before.has(leaseId) || lease.companyId !== fixtures.company.id || lease.environmentId !== fixtures.environment.id
+        || lease.provider !== "daytona" || lease.heartbeatRunId || lease.issueId) throw new Error("Setup response references a foreign or non-setup lease");
+      pendingSetupRequests.delete(request);
+      if (!fixtures.setupLeases!.some(entry => entry.leaseId === leaseId)) fixtures.setupLeases!.push({ leaseId, phase: kind,
+        durationMs: responseAt - (requestStarts.get(request) ?? startedAt) });
+    })();
+    void operation.catch(error => { fixtures.setupLeaseAccountingIncomplete = true; rejectFailure(error); });
+    operations.push(operation);
+  };
+  page.on("request", onRequest);
+  page.on("response", onResponse);
+  page.on("requestfailed", onRequestFailed);
+  const stop = async (requireSuccess: boolean) => {
+    page.off("request", onRequest);
+    page.off("response", onResponse);
+    page.off("requestfailed", onRequestFailed);
+    const settled = await Promise.allSettled(operations);
+    if (pendingSetupRequests.size > 0) fixtures.setupLeaseAccountingIncomplete = true;
+    const failures = settled.flatMap(result => result.status === "rejected" ? [result.reason] : []);
+    let leases: Row[];
+    try { leases = await api.get<Row[]>(`/api/environments/${fixtures.environment.id}/leases`, { timeout: 10_000 }); }
+    catch (error) { fixtures.setupLeaseAccountingIncomplete = true; throw error; }
+    for (const lease of leases) {
+      if (before.has(lease.id) || lease.companyId !== fixtures.company.id || lease.environmentId !== fixtures.environment.id
+        || lease.provider !== "daytona" || lease.heartbeatRunId || lease.issueId) continue;
+      if (!fixtures.setupLeases!.some(entry => entry.leaseId === lease.id)) fixtures.setupLeaseAccountingIncomplete = true;
+    }
+    if (failures.length) throw new AggregateError(failures, "Managed onboarding setup evidence could not be verified");
+    if (!requireSuccess) return;
+    if (!qualification.recorded || qualification.platformResponses !== 1 || qualification.adapterResponses !== 1
+      || qualification.adapterType !== "paperclip_runner" || !automaticRequest || !qualifiedDefault
+      || fixtures.setupLeaseAccountingIncomplete || fixtures.setupLeases!.length !== 2 || !["platform", "adapter"].every(kind => fixtures.setupLeases!.some(lease => lease.phase === kind))) {
+      throw new Error("The UI did not prove one qualified automatic native setup with both owned leases");
+    }
+    await pollUntil({ label: "managed onboarding setup lease cleanup", deadlineAt: Math.min(deadlineAt, Date.now() + 120_000),
+      load: () => api.get<Row[]>(`/api/environments/${fixtures.environment.id}/leases`),
+      accept: rows => fixtures.setupLeases!.every(entry => rows.some(row => row.id === entry.leaseId
+        && row.companyId === fixtures.company.id && row.environmentId === fixtures.environment.id
+        && row.status === "released" && row.cleanupStatus === "success")),
+    });
+  };
+  return Object.assign(stop, { failure });
+}
+
 export async function setupFirstTaskFixtures(input: {
   page: Page;
   api: RunnerApi;
   execution: MatrixExecution;
   nonce: string;
   credentials: Partial<Record<CredentialName, string>>;
+  daytonaImage?: string;
+  deadlineAt?: number;
   observe: (fixtures: LiveFixtureValues) => void;
 }): Promise<LiveFixtureValues> {
   const { page, api, execution, nonce } = input;
@@ -179,6 +300,7 @@ export async function setupFirstTaskFixtures(input: {
     execution,
     nonce,
     credentials: input.credentials,
+    daytonaImage: input.daytonaImage,
     company: {
       id: company.id,
       name: company.name,
@@ -216,13 +338,20 @@ export async function setupFirstTaskFixtures(input: {
   await page
     .getByRole("combobox", { name: "Saved API key" })
     .selectOption(`company:${secret.secretId}`);
-  await page
-    .getByRole("button", { name: /^(Connect|Next)$/, exact: true })
-    .last()
-    .click();
-  await expect(
-    page.getByRole("button", { name: "Get started", exact: true }),
-  ).toBeVisible({ timeout: 120_000 });
+  const managed = isManagedFirstTask(execution);
+  if (managed && (!input.deadlineAt || input.deadlineAt - Date.now() <= 120_000)) throw new Error("Managed onboarding has no bounded setup deadline");
+  const stopSetup = managed ? await observeManagedFirstTaskSetup(page, api, fixtures, input.deadlineAt! - 60_000) : null;
+  let setupError: unknown;
+  try {
+    await page.getByRole("button", { name: /^(Connect|Next)$/, exact: true }).last().click();
+    const visible = expect(page.getByRole("button", { name: "Get started", exact: true })).toBeVisible({
+      timeout: managed ? input.deadlineAt! - Date.now() - 120_000 : 120_000,
+    });
+    if (stopSetup) await Promise.race([visible, stopSetup.failure]); else await visible;
+  } catch (error) { setupError = error; }
+  try { await stopSetup?.(!setupError); }
+  catch (error) { setupError = setupError ? new AggregateError([setupError, error], "Managed onboarding and setup evidence failed") : error; }
+  if (setupError) throw setupError;
   const agents = await api.get<Row[]>(`/api/companies/${company.id}/agents`);
   expect(agents).toHaveLength(1);
   const wizardAdapter =
@@ -239,9 +368,6 @@ export async function setupFirstTaskFixtures(input: {
     testedAdapterType: wizardAdapter,
     originalModel: agents[0].adapterConfig?.model ?? null,
   };
-  // Claude remains an explicit native regression path in this Codex-only
-  // rollout. Codex is never switched after onboarding: the saved default is
-  // the execution under test.
   if (execution.profile.id === "runner-acpx-claude") {
     const runtimePatch = firstTaskNativeRuntimePatch(
       execution,
@@ -277,6 +403,12 @@ export async function setupFirstTaskFixtures(input: {
     name: agents[0].name,
   };
   input.observe(fixtures);
+  if (managed) {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const persisted = await api.get<Row>(`/api/agents/${fixtures.agent.id}`);
+    expect(persisted.adapterType).toBe("paperclip_runner");
+    expect(persisted.adapterConfig?.provider).toBe("codex");
+  }
   await page.getByRole("button", { name: "Get started", exact: true }).click();
   return fixtures;
 }
@@ -287,6 +419,7 @@ export async function runFirstTaskFlow(input: {
   fixtures: LiveFixtureValues;
   execution: MatrixExecution;
   nonce: string;
+  deadlineAt?: number;
   observe: (issue: any, runs: any[], evidence: FirstTaskEvidence) => void;
   secrets: readonly string[];
   createOrdinary: (title: string, prompt: string) => Promise<Row>;
@@ -295,8 +428,14 @@ export async function runFirstTaskFlow(input: {
 }) {
   const { page, api, fixtures, execution, nonce } = input;
   const scenario = firstTaskScenario(execution.task.id, nonce);
-  const deadlineAt =
-    Date.now() + execution.task.attemptTimeoutMs.local - 120_000;
+  const managed = isManagedFirstTask(execution);
+  if (managed) {
+    const attachment = "Attach the finished note as a UTF-8 text file named garden-welcome.txt.";
+    scenario.prompt += ` ${attachment}`;
+    scenario.facts += ` ${attachment}`;
+  }
+  const deadlineAt = managed ? (input.deadlineAt ?? Date.now()) - 120_000
+    : Date.now() + execution.task.attemptTimeoutMs.local - 120_000;
   const tasksPath = `/api/companies/${fixtures.company.id}/issues?limit=100`;
   const allRuns = async () => {
     const runs = await api.get<Row[]>(
@@ -381,6 +520,7 @@ export async function runFirstTaskFlow(input: {
     };
     e.checkpoints.push(checkpoint);
     e.checks = gradeFirstTask(e);
+    if (managed && e.checkpoints.at(-1)?.phase === "finished") e.checks.push(managedFirstTaskFileCheck(e));
     if (execution.suite.id === "confirmation-replies" && scenario.id !== "task-card-accept") e.checks.push(...gradeConfirmationReply(e));
     input.observe(issue, runs, e);
     await input.evidence("first-task.json", e);
@@ -742,6 +882,7 @@ export async function runFirstTaskFlow(input: {
       await snapshot("finished");
     }
     e.checks = gradeFirstTask(e);
+    if (managed && e.checkpoints.at(-1)?.phase === "finished") e.checks.push(managedFirstTaskFileCheck(e));
     if (execution.suite.id === "confirmation-replies" && scenario.id !== "task-card-accept") e.checks.push(...gradeConfirmationReply(e));
     await input.evidence("first-task.json", e);
     await input.capture(
