@@ -2079,8 +2079,17 @@ unavailable. Preserve current ownership and newer-work fences. See
   runs use local installed snapshots; pinned/active runs retain their versions.
 - Manually selected sources retain reviewed selection, with new candidates checked by default and
   explicit folder exclusions retained. Upstream deletion keeps installed content with
-  removed status; moves are removal plus discovery. Deselect/disconnect retains content
+  removed status; moves are removal plus discovery. Deselect retains content
   and assignments. Originals are read-only, with the existing independent fork workflow.
+- Source disconnection requires a saved revision and an explicit copy/delete choice.
+  Remove the source and all entries to allow a fresh repository import, including
+  legacy disabled sources. Copy materializes complete local files in the caller's
+  My Skills folder, retaining skill IDs, keys, versions, and agent assignments.
+  Delete applies skills.remove to every linked skill (including deselected entries),
+  rejects skills still used by agents, and removes skills and source atomically with
+  the activity record. Copy applies skills.edit and skills.create to every linked
+  skill; failed writes or audit persistence leave the source and imported skills intact.
+
 - Adopt recognizable existing GitHub imports without provider calls or content changes;
   resolve missing repository IDs and full snapshots on successful refresh. Exclude bundled,
   catalog, local/project, skills.sh, and unsupported hosts. Existing GitHub import and update
@@ -2206,3 +2215,8 @@ See [the layer architecture](plans/2026-10-09-task-workspaces.md) for resolution
 ## Company fast-response service
 
 Companies may configure an optional shared API connection and model for short acknowledgements of accepted human turns. Fast responses use direct SDK inference alongside normal agent work, with a three-second admission deadline, bounded prompts/output, current authorization and independent `fast_response` accounting. They are server-marked platform receipts attributed to the agent, never completion, interaction or recovery evidence. Company-sponsored unlinked external senders are explicit; linked-user permission denials are never bypassed. See [fast-responses.md](fast-responses.md) for provider, delivery, history and endpoint contracts.
+
+Project-derived source removal retains dynamic project access for kept editable
+copies and forks. A removed source is absent from Sources and cannot refresh;
+ordinary repository attachment does not restart it. Explicit project adoption can
+restart tracking without widening the retained content’s access.

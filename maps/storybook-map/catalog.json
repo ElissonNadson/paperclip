@@ -798,7 +798,7 @@
         "activity/activity",
         "gateways-profiles/activity"
       ],
-      "purpose": "Apps/App detail · Activity (lifecycle)",
+      "purpose": "Apps/App detail \u00b7 Activity (lifecycle)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -812,8 +812,8 @@
         "ui/storybook/stories/activity/app-activity-lifecycle.stories.tsx"
       ],
       "fingerprint": "6c813a16621d93fe9f817b1b01d451a35b4b552727976168e938409d100b26e9",
-      "stableId": "apps-app-detail-·-activity-lifecycle",
-      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail · Activity (lifecycle)"
+      "stableId": "apps-app-detail-\u00b7-activity-lifecycle",
+      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail \u00b7 Activity (lifecycle)"
     },
     {
       "file": "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx",
@@ -2483,7 +2483,7 @@
       "capabilities": [
         "skills/authoring"
       ],
-      "purpose": "Product/Skill Studio · FrontmatterPanel",
+      "purpose": "Product/Skill Studio \u00b7 FrontmatterPanel",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -2495,8 +2495,8 @@
         "ui/storybook/stories/skills/frontmatter-panel.stories.tsx"
       ],
       "fingerprint": "3ce86c6fc5abd40ab68ce9e6ea45c2ed8891af8f88fe5a7f8b82e32cd9d68657",
-      "stableId": "product-skill-studio-·-frontmatterpanel",
-      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio · FrontmatterPanel"
+      "stableId": "product-skill-studio-\u00b7-frontmatterpanel",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio \u00b7 FrontmatterPanel"
     },
     {
       "file": "ui/storybook/stories/gateways-profiles/gateways-tab.stories.tsx",
@@ -2618,8 +2618,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/Layout.tsx",
@@ -2630,7 +2630,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx"
       ],
-      "fingerprint": "2df9f3323d399a86b19ba1ba94669bf4ecfae0c2d09ed25aaf057b884e1039c9",
+      "fingerprint": "3f5ef1c4bbd9e049117177ec2d8bb270fcd9f31ed4ba79b984b110a4fd74d31a",
       "stableId": "skills-github-sync-journey",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub sync journey"
     },
@@ -2644,8 +2644,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Production Sources page with fixture APIs. Disconnect and legacy removal stories show a required keep-or-delete choice; the real copy, delete, and reimport flows were also tested locally. Other routes remain unreviewed. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/SkillSources.tsx",
@@ -2653,7 +2653,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/github-synced-skills.stories.tsx"
       ],
-      "fingerprint": "2f8eddf13949a48a87a682dd74715fd613dc8a35caf1d599ea0098a2126d1b9e",
+      "fingerprint": "92723acd1d6f53ce2f17cb53fe353049387600ef4b983b2975143ec6f363f688",
       "stableId": "skills-github-synced-skills",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/GitHub synced skills"
     },
@@ -3669,7 +3669,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "ui/src/components/ui/alert-dialog.tsx",
         "ui/src/components/ui/avatar.tsx",
@@ -3685,7 +3685,7 @@
         "ui/storybook/stories/foundations/primitives-coverage.stories.tsx"
       ],
       "exception": "Shared foundations or contributor guide; no single business capability owns this suite.",
-      "fingerprint": "b8a0afd9a2fefb2e89e3215ca86a7dea3673f254d361f7d821d43c13c2a795bc",
+      "fingerprint": "2fba85501507d80dae7b3c202c083d9ac32c796ee8e234a4fecc6a80b33fa35c",
       "stableId": "foundations-primitive-coverage",
       "sidebarTitle": "Foundations/Primitive Coverage"
     },
@@ -4403,8 +4403,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/src/pages/SkillSources.tsx, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/components/Layout.tsx",
@@ -4416,7 +4416,7 @@
         "ui/storybook/stories/skills/github-skills-journey.stories.tsx",
         "ui/storybook/stories/skills/repository-skill-packages/repository-skill-packages.stories.tsx"
       ],
-      "fingerprint": "e5c81fcacb111a978e51d843d6af458e6d562a0bdbb1cfab775138815bfa497a",
+      "fingerprint": "34f238003df909c6a60fb4eceafafbb782a242e7a44f520f5f7f83c0f21e95cc",
       "stableId": "skills-repository-packages",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Repository packages"
     },
@@ -4476,7 +4476,7 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines · Detail (variation C)",
+      "purpose": "Product/Routines \u00b7 Detail (variation C)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4494,8 +4494,8 @@
         "ui/storybook/stories/routines/routine-detail-c.stories.tsx"
       ],
       "fingerprint": "fb01cf281057127e6158871cc880a10448a370d83df64b15771a926630f7385a",
-      "stableId": "product-routines-·-detail-variation-c",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Detail (variation C)"
+      "stableId": "product-routines-\u00b7-detail-variation-c",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Detail (variation C)"
     },
     {
       "file": "ui/storybook/stories/routines/routine-secrets.stories.tsx",
@@ -4503,7 +4503,7 @@
         "routines/definition",
         "secrets/runtime-delivery"
       ],
-      "purpose": "Product/Routines · Secrets tab",
+      "purpose": "Product/Routines \u00b7 Secrets tab",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4518,8 +4518,8 @@
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
       "fingerprint": "b943825322412996f4e5cb22677d5e331b0b7a742762be92c6f46d364ec0b34e",
-      "stableId": "product-routines-·-secrets-tab",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
+      "stableId": "product-routines-\u00b7-secrets-tab",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Secrets tab"
     },
     {
       "file": "ui/storybook/stories/routines/routine-webhooks-ux.stories.tsx",
@@ -4581,7 +4581,7 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines · List (grouped cards)",
+      "purpose": "Product/Routines \u00b7 List (grouped cards)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4593,8 +4593,8 @@
         "ui/storybook/stories/routines/routines-list-groups.stories.tsx"
       ],
       "fingerprint": "957265bdf3d24fe7c5939c452efa40818be97c6e000b5f3896ffb6b87512048f",
-      "stableId": "product-routines-·-list-grouped-cards",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · List (grouped cards)"
+      "stableId": "product-routines-\u00b7-list-grouped-cards",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 List (grouped cards)"
     },
     {
       "file": "ui/storybook/stories/tasks/runner-activity.stories.tsx",
@@ -4748,8 +4748,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/skills.md, ui/storybook/fixtures/githubSkillSources.ts. This dependency review does not add executed story coverage. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/skills.md",
         "ui/src/pages/skills/SkillImportProgress.tsx",
@@ -4757,7 +4757,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/skills/skill-import-progress.stories.tsx"
       ],
-      "fingerprint": "be79cb6994a18d8fa5f508396ad73b7d491e3dbdbf3c1a0b7621092e6ba47cd6",
+      "fingerprint": "402f42b721014ba8ffcd2f8d5db37b9e5cf56282b954aeb0045ec439384b4405",
       "stableId": "skills-import-progress",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Skills/Import progress"
     },
@@ -4857,7 +4857,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
@@ -4880,7 +4880,7 @@
       ],
       "stableId": "skills-project-repository-skills-02-journeys",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys",
-      "fingerprint": "1a6aef3b6cb830a56df07ea4001e08bb687c2f3e8a8a92dfc3e932986c4bef08"
+      "fingerprint": "217fb4ed12d0d9eaeb46b6b593dc7ae2b21e765fa8280fb59404f068664bea41"
     },
     {
       "file": "ui/storybook/stories/chat-channels/slack-automatic-setup.stories.tsx",

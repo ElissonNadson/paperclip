@@ -3,7 +3,7 @@ import { skillAccessRequestContext, skillAccessService } from "../services/skill
 import { skillSourceService, type SkillSourceContext } from "../services/skill-sources.js";
 import { skillSourceGitHubReader } from "../services/skill-source-github-access.js";
 import { toolAccessService } from "../services/tool-access.js";
-import { skillSourceCreateSchema, skillSourceDiscoverySchema, skillSourcePreviewSchema, skillSourceSelectionSchema, skillSourceSettingsSchema, projectSkillSourceAdoptSchema } from "@paperclipai/shared";
+import { skillSourceCreateSchema, skillSourceDiscoverySchema, skillSourcePreviewSchema, skillSourceSelectionSchema, skillSourceSettingsSchema, projectSkillSourceAdoptSchema, skillSourceDisconnectSchema } from "@paperclipai/shared";
 import type { ActivityPublication } from "../services/activity-log.js";
 import { once } from "node:events";
 import type { SkillSourceDiscoveryEvent } from "@paperclipai/shared";
@@ -423,9 +423,12 @@ export function companySkillRoutes(db: Db) {
     const companyId = req.params.companyId as string;
     res.json(await sourceOperation(req, companyId, context => sourceSync.refreshSource(companyId, req.params.sourceId as string, context)));
   });
-  router.delete("/companies/:companyId/skill-sources/:sourceId", async (req, res) => {
+  router.delete("/companies/:companyId/skill-sources/:sourceId", (req, _res, next) => {
+    assertCompanyAccess(req, req.params.companyId as string);
+    next();
+  }, validate(skillSourceDisconnectSchema), async (req, res) => {
     const companyId = req.params.companyId as string;
-    res.json(await sourceOperation(req, companyId, context => sourceSvc.disconnect(companyId, req.params.sourceId as string, context)));
+    res.json(await sourceOperation(req, companyId, context => sourceSvc.disconnect(companyId, req.params.sourceId as string, context, req.body)));
   });
 
   router.get("/skills/catalog", async (req, res) => {

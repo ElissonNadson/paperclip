@@ -2367,6 +2367,13 @@
       "when": 1791858610432,
       "tag": "0339_certain_warpath",
       "breakpoints": true
+    },
+    {
+      "idx": 340,
+      "version": "7",
+      "when": 1791897061142,
+      "tag": "0340_broad_thunderbolt_ross",
+      "breakpoints": true
     }
   ]
 }

@@ -103,6 +103,11 @@ Each execution records the immutable versions it uses; resuming keeps those vers
 while a new execution resolves latest again. Upstream failures and removals preserve
 installed snapshots. GitHub refresh does not delay task execution.
 
+Disconnecting removes a repository from Sources after an explicit choice: keep
+independent editable copies in My Skills, or delete its imported skills. Kept
+copies and derived forks retain their project access restrictions. Copies preserve
+agent assignments; skills used by agents must be detached before deletion.
+
 An explicit restricted policy may deny selected operations or switch to a default-deny preset with explicit allow rules. Core exposes a stable versioned policy API so EE and other administrative clients configure and simulate the same evaluator used by skill mutation routes. Core Skill Studio only needs to perform normal skill work, explain an explicit denial, and point administrators to EE when its richer policy UI is available; it must not recreate a partial enterprise permission editor.
 
 ## Principles

@@ -1,4 +1,4 @@
-import type { ProjectRepositoryOptions, ProjectSkillRepository, SkillSourceSettingsRequest, SkillSourceFilePreview, SkillSourcePreviewRequest, SkillSource, SkillSourceCreateRequest, SkillSourceDiscovery, SkillSourceDiscoveryRequest, SkillSourceRefreshResult, SkillSourceSelectionRequest, SkillSourceScanUpdate, SkillSourceDiscoveryEvent } from '@paperclipai/shared';
+import type { ProjectRepositoryOptions, ProjectSkillRepository, SkillSourceSettingsRequest, SkillSourceFilePreview, SkillSourcePreviewRequest, SkillSource, SkillSourceCreateRequest, SkillSourceDiscovery, SkillSourceDiscoveryRequest, SkillSourceRefreshResult, SkillSourceSelectionRequest, SkillSourceScanUpdate, SkillSourceDiscoveryEvent, SkillSourceDisconnectRequest, SkillSourceDisconnectResult } from '@paperclipai/shared';
 import { api, ApiError, requestResponse } from './client';
 const base = (companyId: string) => `/companies/${companyId}/skill-sources`;
 export const skillSourcesApi = {
@@ -44,5 +44,5 @@ export const skillSourcesApi = {
   create: (companyId: string, input: SkillSourceCreateRequest) => api.post<SkillSourceRefreshResult>(base(companyId), input),
   select: (companyId: string, id: string, input: SkillSourceSelectionRequest) => api.patch<SkillSourceRefreshResult>(`${base(companyId)}/${id}`, input),
   refresh: (companyId: string, id: string) => api.post<SkillSourceRefreshResult>(`${base(companyId)}/${id}/refresh`, {}),
-  disconnect: (companyId: string, id: string) => api.delete<SkillSource>(`${base(companyId)}/${id}`),
+  disconnect: (companyId: string, id: string, input: SkillSourceDisconnectRequest) => api.delete<SkillSourceDisconnectResult>(`${base(companyId)}/${id}`, input),
 };

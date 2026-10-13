@@ -9,7 +9,7 @@ import { agents, authUsers, companies, companyMemberships, companySkillSources, 
 import { startEmbeddedPostgresTestDatabase, getEmbeddedPostgresTestSupport } from './helpers/embedded-postgres.js';
 import { githubFixture } from './helpers/github-skills.js';
 import { enqueueProjectSkillSource, detachProjectSkillSource } from '../services/project-skill-source-bindings.js';
-import { skillSourceSyncService } from '../services/skill-source-sync.js';
+import { adoptProjectSkillRepository, projectSkillRepositories, skillSourceSyncService } from '../services/skill-source-sync.js';
 import { skillSourceService, type SkillSourceContext } from '../services/skill-sources.js';
 import { companySkillService } from '../services/company-skills.js';
 import { projectService } from '../services/projects.js';
@@ -180,6 +180,54 @@ describe.skipIf(!support.supported)('automatic project skill sources', () => {
     await db.delete(projects).where(eq(projects.id, second.projectId));
     await withSkillActor(actor('alice'), async () => expect(await companySkillService(db).getById(companyId, skillId)).toBeNull());
     expect((await db.select().from(companySkills).where(eq(companySkills.id, skillId)))[0]!.accessSourceId).toBe(source.id);
+  });
+
+  it.each(['copy', 'delete'] as const)('removes project tracking with %s while retaining dynamic copy/fork access', async choice => {
+    files = { 'private/SKILL.md': md('retained private workflow') }; commit = '9'.repeat(40);
+    const row = await workspace(`removed-${choice}`, 'private');
+    await enqueueProjectSkillSource(db, row);
+    const worker = skillSourceSyncService(db, { context: async () => context });
+    await worker.tick();
+    const [binding] = await db.select().from(projectSkillSources).where(eq(projectSkillSources.workspaceId, row.id));
+    const service = skillSourceService(db), skills = companySkillService(db);
+    const source = await service.detail(companyId, binding!.sourceId!);
+    const original = (await skills.getById(companyId, source.entries[0]!.skillId!))!;
+    const userId = randomUUID();
+    await db.insert(authUsers).values({ id: userId, name: 'Source owner', email: `${userId}@example.test`, createdAt: new Date(), updatedAt: new Date() });
+    await db.insert(companyMemberships).values({ companyId, principalType: 'user', principalId: userId, membershipRole: 'member', status: 'active' });
+    await db.insert(projectAccessMembers).values({ companyId, projectId: row.projectId, subjectType: 'user', subjectId: userId });
+    await withSkillActor(actor(userId), async () => {
+      const fork = await skills.forkSkill(companyId, original.id, { slug: `retained-${choice}-fork` });
+      const result = await service.disconnect(companyId, source.id, context, { revision: source.revision, skills: choice });
+      expect(result).toMatchObject({ copiedCount: choice === 'copy' ? 1 : 0, deletedCount: choice === 'delete' ? 1 : 0 });
+      await expect(service.detail(companyId, source.id)).rejects.toThrow(/not found/);
+      expect((await service.list(companyId)).some(item => item.id === source.id)).toBe(false);
+      expect((await projectSkillRepositories(db, companyId, actor(userId))).find(item => item.workspaceId === row.id)).toMatchObject({ sourceId: null, status: 'available' });
+      expect(await skills.getById(companyId, fork.skill.id)).not.toBeNull();
+      if (choice === 'copy') {
+        expect(await skills.getById(companyId, original.id)).toMatchObject({ sourceType: 'local_path', accessSourceId: source.id });
+        expect((await skills.readFile(companyId, original.id, 'SKILL.md'))?.content).toBe(md('retained private workflow'));
+      } else expect(await skills.getById(companyId, original.id)).toBeNull();
+      await db.update(companySkillSources).set({ automaticUpdates: false }).where(eq(companySkillSources.companyId, companyId));
+      const before = downloads.mock.calls.length;
+      await worker.tick(new Date(Date.now() + 6 * 60_000));
+      expect(downloads).toHaveBeenCalledTimes(before);
+      // Reattachment retains disconnection; adoption is the deliberate restart action.
+      await enqueueProjectSkillSource(db, row);
+      await worker.tick(new Date(Date.now() + 6 * 60_000));
+      expect(downloads).toHaveBeenCalledTimes(before);
+      await adoptProjectSkillRepository(db, companyId, row.id, context.authorize);
+      await worker.tick(new Date(Date.now() + 6 * 60_000));
+      const restored = await service.detail(companyId, source.id);
+      expect(restored.enabled).toBe(true);
+      expect(restored.entries.filter(entry => entry.skillId)).toHaveLength(1);
+      expect(restored.entries[0]!.skillId).not.toBe(original.id);
+      await db.delete(projectAccessMembers).where(and(eq(projectAccessMembers.projectId, row.projectId), eq(projectAccessMembers.subjectId, userId)));
+      expect(await skills.getById(companyId, fork.skill.id)).toBeNull();
+      if (choice === 'copy') expect(await skills.getById(companyId, original.id)).toBeNull();
+      await db.delete(projects).where(eq(projects.id, row.projectId));
+      expect(await skills.getById(companyId, fork.skill.id)).toBeNull();
+    });
   });
 
   it('recovers expired jobs, competes through durable leases and respects failed-refresh backoff', async () => {

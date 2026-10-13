@@ -25,6 +25,8 @@ export async function projectSkillRepositories(db: Db, companyId: string, actor:
     .innerJoin(projects, and(eq(projects.id, projectWorkspaces.projectId), eq(projects.companyId, companyId)))
     .where(eq(projectWorkspaces.companyId, companyId)).orderBy(asc(projects.name), asc(projectWorkspaces.name));
   const bindings = await db.select().from(projectSkillSources).where(eq(projectSkillSources.companyId, companyId));
+  const removed = new Set((await db.select({ id: companySkillSources.id }).from(companySkillSources)
+    .where(and(eq(companySkillSources.companyId, companyId), sql`${companySkillSources.removedAt} is not null`))).map(source => source.id));
   const allowed = new Map<string, boolean>();
   const access = authorizationService(db);
   const result: ProjectSkillRepository[] = [];
@@ -36,8 +38,8 @@ export async function projectSkillRepositories(db: Db, companyId: string, actor:
     if (!allowed.get(project.id)) continue;
     const binding = bindings.find(item => item.active && item.workspaceId === workspace.id && item.repositoryUrl === repo.repositoryUrl && item.trackingRef === repo.trackingRef);
     result.push({ projectId: project.id, projectName: project.name, projectVisibility: project.visibility as 'open' | 'private',
-      workspaceId: workspace.id, ...repo, bindingId: binding?.id ?? null, sourceId: binding?.sourceId ?? null,
-      status: binding?.status ?? 'available', lastError: binding?.lastError ?? null });
+      workspaceId: workspace.id, ...repo, bindingId: binding?.id ?? null, sourceId: binding?.sourceId && !removed.has(binding.sourceId) ? binding.sourceId : null,
+      status: binding?.sourceId && removed.has(binding.sourceId) ? 'available' : binding?.status ?? 'available', lastError: binding?.lastError ?? null });
   }
   return result;
 }
@@ -54,6 +56,17 @@ export async function adoptProjectSkillRepository(db: Db, companyId: string, wor
     const database = tx as unknown as Db;
     const binding = await enqueueProjectSkillSource(database, workspace);
     if (!binding) throw notFound('Project repository not found');
+    if (binding.sourceId) {
+      const [removed] = await tx.select().from(companySkillSources).where(and(eq(companySkillSources.companyId, companyId),
+        eq(companySkillSources.id, binding.sourceId), sql`${companySkillSources.removedAt} is not null`)).for('update');
+      if (removed) {
+        // Explicit adoption restarts tracking; ordinary attachment never overrides removal.
+        await tx.update(companySkillSources).set({ removedAt: null, enabled: true, automaticUpdates: true,
+          lastScanCommit: null, lastError: null, nextSyncAt: new Date(), failureCount: 0,
+          revision: sql`${companySkillSources.revision} + 1`, ...await projectSkillSetupIdentity(database, companyId),
+        }).where(eq(companySkillSources.id, removed.id));
+      }
+    }
     if (!binding.sourceId) await tx.update(projectSkillSources).set({ status: 'pending', nextSyncAt: new Date(), failureCount: 0, lastError: null,
       ...await projectSkillSetupIdentity(database, companyId),
     }).where(eq(projectSkillSources.id, binding.id));

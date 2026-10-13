@@ -165,3 +165,29 @@ test('connection repair recovers from a concurrent update without losing the sel
   await expect(source.getByRole('alert')).toHaveCount(0);
   await expect(source.getByText('Code review', { exact: true })).toBeVisible();
 });
+
+test('keeping project skill copies explains retained access and removes tracking', async ({ page }) => {
+  await page.goto(story('private-project'));
+  await page.getByRole('button', { name: 'More actions for acme/team-skills', exact: true }).click();
+  await page.getByRole('menuitem', { name: 'Disconnect source', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Disconnect acme/team-skills?', exact: true });
+  await expect(dialog.getByRole('button', { name: 'Disconnect source', exact: true })).toBeDisabled();
+  await expect(dialog.getByText('Move them to My Skills, keeping project access restrictions. Assigned agents keep using them.', { exact: true })).toBeVisible();
+  await dialog.getByRole('radio', { name: /Keep editable copies/ }).click();
+  await dialog.getByRole('button', { name: 'Disconnect source', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'acme/team-skills', exact: true })).toHaveCount(0);
+});
+
+test('cancelling source removal keeps tracking and allows refresh', async ({ page }) => {
+  await page.goto(story('synced'));
+  await page.getByRole('button', { name: 'More actions for acme/team-skills', exact: true }).click();
+  await page.getByRole('menuitem', { name: 'Disconnect source', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Disconnect acme/team-skills?', exact: true });
+  await dialog.getByRole('radio', { name: /Delete skills/ }).click();
+  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  const source = page.getByRole('region', { name: 'acme/team-skills', exact: true });
+  await source.getByRole('button', { name: 'Refresh', exact: true }).click();
+  await expect(source.getByText('Security review', { exact: true })).toBeVisible();
+});

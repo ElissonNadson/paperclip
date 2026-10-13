@@ -18,6 +18,8 @@ export const companySkillSources = pgTable('company_skill_sources', {
   repositoryPackage: jsonb('repository_package').$type<SkillRepositoryPackage>(),
   excludedFolders: jsonb('excluded_folders').$type<string[]>().notNull().default([]),
   enabled: boolean('enabled').notNull().default(true),
+  // Removed project sources retain access provenance for editable copies and forks.
+  removedAt: timestamp('removed_at', { withTimezone: true }),
   automaticUpdates: boolean('automatic_updates').notNull().default(true),
   importNewSkills: boolean('import_new_skills').notNull().default(false),
   accessScope: text('access_scope').$type<'company' | 'projects'>().notNull().default('company'),

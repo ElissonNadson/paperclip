@@ -263,6 +263,10 @@ with inbound admission and adds corresponding verification recipes. Three chat
 catalog dependency hashes were reviewed; their classifications and fixture/provider
 limits remain unchanged. Project skill pages and journeys are unchanged.
 
+## Project source removal integration — 2026-10-13
+
+Reviewed the production Sources keep/delete dialog, preserved automatic update and connection-repair controls, and the upstream GitHub fixture removal handler and new removal journey. Project copies retain their originating access restrictions; removed tracking uses durable provenance. The five affected catalog fingerprints retain their prior classifications. Browser and service verification are recorded in the acceptance report.
+
 ## Task workspace reconciliation — 2026-10-12
 
 Scope: the 26 declared-source entries affected by task-workspace work at

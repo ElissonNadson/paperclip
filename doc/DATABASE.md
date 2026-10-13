@@ -762,6 +762,10 @@ transaction boundary.
 access provenance. Active bindings track their repository/ref; inactive bindings retain
 access to installed versions. Project deletion removes bindings, but retained skills
 with `access_source_id` stay restricted when no originating project remains.
+Removing a project source hides tracking using `company_skill_sources.removed_at`
+while retaining its access identity for editable copies and forks. Bindings become
+inactive and refresh leases are invalidated transactionally. Reattachment preserves
+removal; explicit adoption restarts synchronization with the stored identity.
 
 `company_skill_sources` stores automatic-update and future-import preferences, setup
 user/agent and connection/grant IDs, next-check time, failure count and existing refresh

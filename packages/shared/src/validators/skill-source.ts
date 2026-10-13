@@ -34,3 +34,8 @@ export const skillSourceSettingsSchema = z.object({
 export const projectSkillSourceAdoptSchema = z.object({
   workspaceId: z.string().uuid(),
 });
+
+export const skillSourceDisconnectSchema = z.object({
+  revision: z.number().int().nonnegative(),
+  skills: z.enum(['copy', 'delete']),
+});

@@ -260,3 +260,11 @@ all 56 probe cases on an executable native temporary filesystem passed. A later
 host rerun used Node 26 and hit database/subprocess timeouts. The pinned Node 24
 run passed the unchanged audit deadline, project suites and authorization cases.
 No assertions or timeout thresholds were relaxed to obtain these results.
+
+## Final source-removal integration
+
+Integrated master’s keep/delete choice with project provenance. Removed project
+sources retain an internal access identity, invalidate refresh and attachment leases,
+and stop tracking. Kept copies and forks remain dynamically restricted. Ordinary
+reattachment retains removal; explicit adoption restarts tracking. Focused service
+and browser results for this integration are recorded below when qualification finishes.
