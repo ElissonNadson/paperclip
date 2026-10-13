@@ -10,7 +10,7 @@
       "ui/storybook/generated/feature-index.json",
       "ui/storybook/support/feature-map/FeatureOverview.tsx"
     ],
-    "fingerprint": "6bdb0d9cc1f9abb1d9b1c1d7b4652ee4f4cf5c9c5d939069dfabef70ed731df3"
+    "fingerprint": "cdbb187a9d81e09889a12723644a24d8e850983f3465b5286015a9d7ea89bbc2"
   },
   "entries": [
     {
@@ -22,14 +22,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppLogo.tsx",
         "ui/storybook/stories/connection-setup/AppLogoRegistry.stories.tsx"
       ],
-      "fingerprint": "2381250eecb81320c8cdf02e618bb7b542cadc8f439df7f5b431f05307933182",
+      "fingerprint": "e74294aa8ced95f46bd596899976aa0e3d0d2ca9de295a1ea518fad3efef6ce7",
       "stableId": "apps-canonical-icon-registry",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Canonical icon registry"
     },
@@ -47,7 +47,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -60,7 +60,7 @@
         "ui/storybook/stories/connection-setup/ArcadeConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "53b91223892f2a97f89d06edd70c7c93c62dd11fe4d283012b818fd040e620b8",
+      "fingerprint": "cb6bb23b903f7b56ca6910e143579f7df13bad79e2a8e5fb02170c4b106c4ac2",
       "stableId": "apps-connections-arcade",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Arcade"
     },
@@ -78,7 +78,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -91,7 +91,7 @@
         "ui/storybook/stories/connection-setup/ComposioConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "54bcce843038ab9a429715da98aab9d0353fbc12798c7d8e34f744a732a8a154",
+      "fingerprint": "2640de3350437566eb553fc42bd6e54a38d24e48cafab3e2a3737d835b0fac35",
       "stableId": "apps-connections-composio",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Composio"
     },
@@ -104,7 +104,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -118,7 +118,7 @@
         "ui/storybook/prototypes/RemoteMcpConnectionReview.tsx",
         "ui/storybook/stories/connection-setup/ConnectionProviderChoice.stories.tsx"
       ],
-      "fingerprint": "fbc0df807061ec1d7d470c0755295b1d26f21d6085ce2c41c6402e3be2575abb",
+      "fingerprint": "98cfc2524c157214cd92bc2cc44e690765096736c9bb4c33a2a5ece4c061b314",
       "stableId": "apps-connections-provider-choice",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Provider choice"
     },
@@ -136,7 +136,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -149,7 +149,7 @@
         "ui/storybook/stories/connection-setup/ExecutorConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "cf01cc386c11602caa7f787ef20fdba9db5192750551deeb3b24f8c3b4621d5a",
+      "fingerprint": "e594dfbcea066cf9b3d19c3cc655f1d68876f7163fbf9521c45cc181ef814ce8",
       "stableId": "apps-connections-executor",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Executor"
     },
@@ -167,7 +167,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. SavedDraftResume, Reconnect, SelectedAgents and ManageToolPermissions demonstrate production setup/permissions/test surfaces with an in-memory wrapper. Reload loses the draft; these examples do not verify persisted recovery. NewToolsAllowed does not demonstrate quarantined-action review. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -180,7 +180,7 @@
         "ui/storybook/stories/connection-setup/ZapierConnection.stories.tsx",
         "maps/feature-map/app-permissions.md"
       ],
-      "fingerprint": "dc9eb40407314608e661720df5e487bf079ae1b0d6031ec235f990d3690aae5c",
+      "fingerprint": "8089505add187991697f4fc369a4c2941034833563c37ede686c346ae4f21bd6",
       "stableId": "apps-connections-zapier",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Zapier"
     },
@@ -304,7 +304,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat-sidebar.stories.tsx"
       ],
-      "fingerprint": "6994574cfda7901b4cec355add8dadb58146bd4cf0d3488796fe27e19e34cdc3",
+      "fingerprint": "0fc8fe3663215c79493116ec27e13daf92b8893806ee4e19e7e4143e97e4fe5f",
       "stableId": "design-explorations-agent-chat-sidebar-pages",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat sidebar/Pages"
     },
@@ -364,7 +364,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/agent-chat.stories.tsx"
       ],
-      "fingerprint": "c3faad0b551a84f6c7ddf5cf9566b96e0d435d28a4ac3035d147b069723b7152",
+      "fingerprint": "96b384fffda6225b3f00714d1fa33dc208806d9a502e2dcc46fba3c667010d18",
       "stableId": "design-explorations-agent-chat",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Agent chat"
     },
@@ -513,7 +513,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/agents/agent-persona-pages.stories.tsx"
       ],
-      "fingerprint": "35454c02bbae403677d0d79644dc92da6c96172265d0f7581508e7d111463e0f",
+      "fingerprint": "672f406658a3ade96fed4f5a18d2a413ec9888e348b74244b5d37cb3db760dde",
       "stableId": "agents-personas-full-pages",
       "sidebarTitle": "Agents and reusable capabilities/Hiring, configuration, and organization/Agents/Personas/Full pages"
     },
@@ -588,7 +588,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -604,7 +604,7 @@
         "ui/storybook/fixtures/routineTriggerWizard.tsx",
         "ui/storybook/stories/connection-setup/agent-setup-prompt.stories.tsx"
       ],
-      "fingerprint": "502c996906ffd9784326502f320712657474df275e3fbd90a1c8c69a897421ce",
+      "fingerprint": "5a8a8f9cdb9504b0a3ed1055b4e4042824d023a90c4fbdad6188954a7e4688ec",
       "stableId": "components-agent-setup-prompt",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Components/Agent setup prompt"
     },
@@ -659,7 +659,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -669,7 +669,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/agentmail-onboarding.stories.tsx"
       ],
-      "fingerprint": "61d1181147014f65fa695f6c99b66a49342e82a09f638234115db1af6b7243f9",
+      "fingerprint": "e2115432897256da4cabbc114e81990c9effff7816c72ff9557cada3573b4fd5",
       "stableId": "connections-agentmail-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/AgentMail setup"
     },
@@ -821,7 +821,7 @@
         "activity/activity",
         "gateways-profiles/activity"
       ],
-      "purpose": "Apps/App detail \u00b7 Activity (lifecycle)",
+      "purpose": "Apps/App detail · Activity (lifecycle)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -835,8 +835,8 @@
         "ui/storybook/stories/activity/app-activity-lifecycle.stories.tsx"
       ],
       "fingerprint": "6c813a16621d93fe9f817b1b01d451a35b4b552727976168e938409d100b26e9",
-      "stableId": "apps-app-detail-\u00b7-activity-lifecycle",
-      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail \u00b7 Activity (lifecycle)"
+      "stableId": "apps-app-detail-·-activity-lifecycle",
+      "sidebarTitle": "Oversight and operation/Dashboards and audit trails/Apps/App detail · Activity (lifecycle)"
     },
     {
       "file": "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx",
@@ -847,7 +847,7 @@
       "status": "proposed",
       "implementation": "prototype",
       "boundary": "fixtures",
-      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Local catalog composition uses shipped cards and filters; retains design exploration purpose, not acceptance of the Apps route. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -856,7 +856,7 @@
         "ui/storybook/prototypes/ConnectorCatalogNavigation.tsx",
         "ui/storybook/stories/connection-setup/apps-catalog-source-selection.stories.tsx"
       ],
-      "fingerprint": "23cda96140dc806298cac622869285bfab4002f3e5e66b0fc482618f9291a05e",
+      "fingerprint": "e6665cce3e0b9b792fca5a8dde12f5a809888c675bca00c860c509d2b7577624",
       "stableId": "apps-catalog-source-selection",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Catalog source selection"
     },
@@ -869,7 +869,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -877,7 +877,7 @@
         "ui/src/pages/tools/PasteConfigTab.tsx",
         "ui/storybook/stories/connection-setup/apps-connect-discoverability.stories.tsx"
       ],
-      "fingerprint": "ed772602886d1e6a6cd203dbafdfd693a8076db66858c671e9c189f52e79d4f0",
+      "fingerprint": "7ce4df15a80630cf451b003ec79e00e21f7b639bbaf2863864b1988619c52fe4",
       "stableId": "apps-connect-discoverability-pap-11091",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connect discoverability (PAP-11091)"
     },
@@ -890,14 +890,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/AppsConnect.tsx",
         "ui/storybook/stories/connection-setup/apps-connect-name.stories.tsx"
       ],
-      "fingerprint": "ade23e109a5b22a7452a7e5972eb1577ec2384580440d0d2d753400b8837e227",
+      "fingerprint": "ea09fbe69c8c65248c499b9d10717fe400064f1561443d09dae8c231dca6676a",
       "stableId": "apps-connect-name-at-create-time-pap-11283",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connect name at create time (PAP-11283)"
     },
@@ -1196,7 +1196,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/assigned-backlog-safeguards.stories.tsx"
       ],
-      "fingerprint": "cdb63642517b31c68df9ca8d62e60039f9f4d69d95d1a96dc96235fb7db1487d",
+      "fingerprint": "d6e735a2c56092274f139709aba0c1c555f3f3cb0fbf9820d50ee02874907b79",
       "stableId": "paperclip-assigned-backlog-safeguards",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Assigned Backlog Safeguards"
     },
@@ -1220,7 +1220,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/inbox-search/blocked-inbox.stories.tsx"
       ],
-      "fingerprint": "bcb6c0a3cb34fcd06e7b056521ad84fb968f73ba46a7ba00eda2a86bb060b11b",
+      "fingerprint": "70b54f5ce7c083b8e64c28501d66247d4753adabd732b377f7ad18309dc90ffe",
       "stableId": "product-inbox-blocked-tab",
       "sidebarTitle": "Tasks and conversations/Inbox, decisions, and search/Product/Inbox/Blocked tab"
     },
@@ -1282,7 +1282,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1291,7 +1291,7 @@
         "ui/storybook/fixtures/browser-use.tsx",
         "ui/storybook/stories/connection-setup/browser-use-settings.stories.tsx"
       ],
-      "fingerprint": "073e52bb544f7a5a7048d7de2866a3ac3bf02c05c96af6d9fba2551394cb9381",
+      "fingerprint": "ed8e2da321adb6378bf2c5e56d20c202ff66405f73e5086d9f981719a8bba4cf",
       "stableId": "connections-browser-use-cloud-settings",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Connections/Browser Use Cloud/Settings"
     },
@@ -1456,7 +1456,7 @@
         "ui/storybook/prototypes/chat-entry/ChatEntryReview.tsx",
         "ui/storybook/stories/agent-chat/chat-entry.stories.tsx"
       ],
-      "fingerprint": "444465b306686cc36d85d4d2af43f9cd31f3c7c34a5fd05f8413aa639becf535",
+      "fingerprint": "3e85e934a82dae8089b73a1bddb0538640259ce1c70e7d16da38ee1e91ab0efc",
       "replacement": "ui/storybook/stories/agents/primary-agent/05-chat.stories.tsx",
       "stableId": "design-explorations-chat-entry",
       "sidebarTitle": "Tasks and conversations/Agent conversations and project handoff/Design explorations/Chat entry"
@@ -1499,13 +1499,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/CloudAccessGate.tsx",
         "ui/storybook/stories/recovery/cloud-access-recovery.stories.tsx"
       ],
-      "fingerprint": "bbec224b127ec6898cf95dfae922e6747483c0d0d4ec55ff7d1560c0c4a5c041",
+      "fingerprint": "64b2422bdabe2b07b563354481000171455841e49ccbf6a72270066d4e27e9e0",
       "stableId": "app-connection-recovery",
       "sidebarTitle": "Projects and execution/Recovery/App/Connection recovery"
     },
@@ -1667,7 +1667,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -1681,7 +1681,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/connection-setup/connection-instructions.stories.tsx"
       ],
-      "fingerprint": "cec29b9d52d7dda6c7ad570ea82cf277ff53678f9d80c1857e1ffbbc2e64dc7f",
+      "fingerprint": "c245e586906a6c60cca1320fcad98ff3d9ad6a60d6df1f8e06c28f822c99771b",
       "stableId": "design-explorations-connections-agent-instructions",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Design explorations/Connections/Agent instructions"
     },
@@ -1695,7 +1695,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1708,7 +1708,7 @@
         "ui/storybook/prototypes/ConnectionPoolConnectorHost.tsx",
         "ui/storybook/stories/runs-adapters/connection-pool-connector.stories.tsx"
       ],
-      "fingerprint": "885c8c38c2aade420777d0d5bffe9deaa8113971720755aa44d23d00fa95259f",
+      "fingerprint": "150f52b5d60fe8b66f41415c0f9437a3a72733a5eb87d43f1974e7a720f917f5",
       "stableId": "connectors-pool-host",
       "sidebarTitle": "Agents and reusable capabilities/Runs, harnesses, and model accounts/Connectors/Pool host"
     },
@@ -1748,7 +1748,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -1759,7 +1759,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/questions-and-approvals/connection-reviews.stories.tsx"
       ],
-      "fingerprint": "61b5f1f27356dcdcf277d8106cf7741b1e50ab626ccba07818fd2ada8977bb23",
+      "fingerprint": "b144e4e832a6e59eb1612580a9f4f908d0aa2760d5c4a4a1e0c8998f8791be29",
       "stableId": "chat-comments-connection-reviews",
       "sidebarTitle": "Tasks and conversations/Questions and approvals/Chat & Comments/Connection Reviews"
     },
@@ -1829,14 +1829,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "maps/feature-map/secrets.md",
         "ui/src/components/task-chat/TaskChatMarker.tsx",
         "ui/storybook/stories/secrets/credential-access/01-notice.stories.tsx"
       ],
-      "fingerprint": "2eba045db9127e5cd8d8bf7c9664e4598a5c84be117ae6159ce7171b24f2005d",
+      "fingerprint": "14757d026311d143e9301d6294d2f46f40dad25af8ea3f8d5cf1893b260f82db",
       "stableId": "task-credential-access-01-notice",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/01 Notice"
     },
@@ -1862,7 +1862,7 @@
         "ui/storybook/stories/secrets/credential-access/02-task-page.stories.tsx",
         "ui/storybook/support/credential-access/CredentialTaskPage.tsx"
       ],
-      "fingerprint": "70a07a45f3633984db4bbadd599c3745e098f17100f8421b0c3cd1fec46e2186",
+      "fingerprint": "1289c5e6659cd318f00b63d4f16790bbac988d8d18f6726e10262223c11e66fe",
       "stableId": "task-credential-access-02-task-page",
       "sidebarTitle": "Apps, channels, and extensions/Secrets and proposals/Task credential access/02 Task page"
     },
@@ -2044,14 +2044,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-12",
       "sources": [
         "maps/feature-map/instance-operations.md",
         "ui/src/components/DevRestartBanner.tsx",
         "ui/storybook/stories/instance-operations/dev-ops-surfaces.stories.tsx"
       ],
-      "fingerprint": "e936abb4c886157de2f3772383b4062734e0b3a8c7dc64bb42331eef64cd6456",
+      "fingerprint": "65b11bebc5c0a3f7644149c7ba18c7cd7fa810c300e60459ea045904f771c0ef",
       "stableId": "product-dev-ops-surfaces",
       "sidebarTitle": "Oversight and operation/Instance operations/Product/Dev Ops Surfaces"
     },
@@ -2167,7 +2167,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2176,7 +2176,7 @@
         "ui/src/pages/apps/app-detail/AdvancedPanel.tsx",
         "ui/storybook/stories/connection-setup/enterpret-connect-flow.stories.tsx"
       ],
-      "fingerprint": "7f2f1ae50eddb25d2549697e792ff967dbcfd28a58bb62bf1db1ee5ffb98c28d",
+      "fingerprint": "e8a3bda70de7bb2cf3c12ea4ed7a6ee43bce34fe773077d1becf5813b39f6b17",
       "stableId": "apps-enterpret-connector",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Enterpret connector"
     },
@@ -2210,13 +2210,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/ExecutionBlockerNotice.tsx",
         "ui/storybook/stories/recovery/execution-blocker-notice.stories.tsx"
       ],
-      "fingerprint": "bee366ba1266e6692c8f0ee027c449fdda6b51762369ba431871a5af5ee018c6",
+      "fingerprint": "018d8d687921ea109cb98f587abd59b94722f1f148940852326417ce8a457b04",
       "stableId": "task-chat-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Task chat/Recovery notice"
     },
@@ -2230,7 +2230,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/ActiveAgentsPanel.tsx",
@@ -2240,7 +2240,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/execution-recovery.stories.tsx"
       ],
-      "fingerprint": "6f8b245b169d95046bdb52513dfaf4937a96f807b72470c198863471f59c8149",
+      "fingerprint": "82ddff0cf6d98e558f9038d59960758347ad39f3c7a9aaf18f29214a8ad81756",
       "stableId": "tasks-execution-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Execution recovery"
     },
@@ -2400,7 +2400,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/routines.md. This dependency review does not add executed story coverage. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2420,7 +2420,7 @@
         "ui/storybook/fixtures/routineWebhooks.tsx",
         "ui/storybook/stories/connection-setup/fireflies-pr.stories.tsx"
       ],
-      "fingerprint": "6b4f620a4d07a78fb241fe246268c892dff883777cd5b7694ccc7f61a61bb726",
+      "fingerprint": "8dccafb28a55a68e8c805be3bd92fece9c1df739a90e29b37eedf10e3cabc24e",
       "stableId": "pr-reviews-fireflies-and-app-webhooks",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/PR reviews/Fireflies and app webhooks"
     },
@@ -2522,7 +2522,7 @@
       "capabilities": [
         "skills/authoring"
       ],
-      "purpose": "Product/Skill Studio \u00b7 FrontmatterPanel",
+      "purpose": "Product/Skill Studio · FrontmatterPanel",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -2534,8 +2534,8 @@
         "ui/storybook/stories/skills/frontmatter-panel.stories.tsx"
       ],
       "fingerprint": "3ce86c6fc5abd40ab68ce9e6ea45c2ed8891af8f88fe5a7f8b82e32cd9d68657",
-      "stableId": "product-skill-studio-\u00b7-frontmatterpanel",
-      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio \u00b7 FrontmatterPanel"
+      "stableId": "product-skill-studio-·-frontmatterpanel",
+      "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Product/Skill Studio · FrontmatterPanel"
     },
     {
       "file": "ui/storybook/stories/gateways-profiles/gateways-tab.stories.tsx",
@@ -2631,7 +2631,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2643,7 +2643,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/github-connections.stories.tsx"
       ],
-      "fingerprint": "7c97f13f89e75540e5becda9dbb022e47c3623f81090ce14e2d6cc47d8e1458b",
+      "fingerprint": "4fcdde0ac3137e897e30a0f2244679ab2ca6cd028b70dc5124ac6a541f71e8b4",
       "stableId": "connections-github-and-code-review-bot",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/GitHub and Code Review Bot"
     },
@@ -2785,7 +2785,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Catalog, ChooseAgent, Credentials, Access, Reconnect and ProviderOutageRecovery render shipped setup/detail states with simulated provider data. No live iMessage connection, delivery or recovery claim. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Inspected channel task-default controls, optional API fields, avatar rendering and matching fixture updates; live defaults inheritance and permission checks remain outside these stories. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the endpoint editor addition; this suite selects setup/access and locally simulated conversation states. Endpoint PATCH retains fields, but settings workspace-choice requests and default selection are not covered by these scenarios. Acknowledgment follow-up: the shared defaults editor retains accepted selections until refreshed parent data arrives. Source and focused component review only; these fixtures and their existing coverage limits remain unchanged. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -2802,7 +2802,7 @@
         "ui/storybook/stories/chat-channels/imessage-photon.stories.tsx",
         "maps/feature-map/connection-setup.md"
       ],
-      "fingerprint": "3a3a061157b03a68e259b7ee9eabc42d1d1af7e6cbd71a9481c77f0e5d428ddd",
+      "fingerprint": "0f575ff21a1279f0857bec1825b15bced2ac71e6744f7aa28af87137e40f80f8",
       "stableId": "connections-imessage-photon",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/iMessage Photon"
     },
@@ -2815,7 +2815,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -2826,7 +2826,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/connection-setup/in-feed-connections.stories.tsx"
       ],
-      "fingerprint": "d01eae64ec200738a4f3463cffbe8cdec21bcf969745acfa3b16d8dc12aa3f56",
+      "fingerprint": "a4dcf173e70e8377078635b974cc7982990f905ca589cffa11f358748dd19916",
       "stableId": "connections-in-task-connections",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Connections/In-task connections"
     },
@@ -2861,7 +2861,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "maps/feature-map/task-coordination.md",
@@ -2869,7 +2869,7 @@
         "ui/src/components/task-chat/TaskChatBlockerLinks.tsx",
         "ui/storybook/stories/recovery/issue-blocked-notice.stories.tsx"
       ],
-      "fingerprint": "6a84d7f60318d33a1835a668873095aaad1c215a83bbbb4735823fdcb3291140",
+      "fingerprint": "52f861389de245bda4d9c582581b49ce0b9442d60ee7eff950adc6801aaca8a4",
       "stableId": "product-issue-blocked-notice",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue/Blocked notice"
     },
@@ -3007,14 +3007,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/PaperclipCloudOAuthHandoff.tsx",
         "ui/storybook/stories/connection-setup/managed-cloud-oauth-handoff.stories.tsx"
       ],
-      "fingerprint": "d37eaaf379f0be7a34cd8dd8717dbf0db60b45e439633cd00182ba1cc77923ee",
+      "fingerprint": "8b7891bffb0835186b9b5b072be34956f07c3223dfbe0c7cbacdcb88da76d460",
       "stableId": "apps-managed-cloud-oauth-handoff",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Managed Cloud OAuth handoff"
     },
@@ -3028,7 +3028,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/agents.md",
@@ -3038,7 +3038,7 @@
         "ui/src/pages/apps/Browse.tsx",
         "ui/storybook/stories/connection-setup/memory-connectors.stories.tsx"
       ],
-      "fingerprint": "2a866a4128a84e9fea03c9a24cb3f3d6a2986ba2512eb8ad8bc8d571b21cef4e",
+      "fingerprint": "12a520b0eace59bc21320eba2a8d8bd2de950bd0a1f6cae79fccb8d343c0bb39",
       "stableId": "apps-connections-memory",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Connections/Memory"
     },
@@ -3093,13 +3093,13 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueScheduledRetryCard.tsx",
         "ui/storybook/stories/recovery/model-capacity-retry.stories.tsx"
       ],
-      "fingerprint": "5e08f681f3f96cb7be32e316d3f4066e5239dcf0f4393cb9ec09d599734f201e",
+      "fingerprint": "1db367a2b77b8c747ab5c81c1fe3317da02bf294308e9e09af827bcd12ee0b9f",
       "stableId": "tasks-model-capacity-retry",
       "sidebarTitle": "Projects and execution/Recovery/Tasks/Model capacity retry"
     },
@@ -3251,7 +3251,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
@@ -3263,7 +3263,7 @@
         "ui/src/pages/apps/app-detail/SetupPanel.tsx",
         "ui/storybook/stories/connection-setup/notion-connect-flow.stories.tsx"
       ],
-      "fingerprint": "65123f470c803be19d703225575d4f315833ae50623dc3d2e0a486158b1cafdb",
+      "fingerprint": "56585905ab5e52adc0c07bd7baccf7c5755602571e3df3aef3daac5b65eda466",
       "stableId": "apps-notion-mcp-connect-flow-pap-16650",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Apps/Notion MCP connect flow (PAP-16650)"
     },
@@ -3345,7 +3345,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Creation visibility now defaults to hiding automated independent tasks, with a Show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Creation visibility now defaults to hiding automated independent tasks, with a Show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/projects.md",
@@ -3358,7 +3358,7 @@
         "ui/storybook/prototypes/originating-tasks/OriginatingTasks.tsx",
         "ui/storybook/stories/task-coordination/originating-tasks.stories.tsx"
       ],
-      "fingerprint": "06b73d25a4af29e943a4e941b31c24fe89a40a6cc4abc9f1526a18902a86f163",
+      "fingerprint": "36c371bebb19b36d266ea0321a8d0f72ddd6526e559cef8216db48397315aa3d",
       "stableId": "ux-labs-tasks-created-from-a-task",
       "sidebarTitle": "Tasks and conversations/Delegation, dependencies, and signoff/UX Labs/Tasks Created From a Task"
     },
@@ -3369,7 +3369,7 @@
       "status": "unreviewed",
       "implementation": "guide",
       "boundary": "static",
-      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage.",
+      "notes": "Matches the upstream feature index and order, including features with no cataloged examples. Related suite links and classifications do not imply execution coverage. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/src/components/ui/badge.tsx",
@@ -3379,7 +3379,7 @@
         "ui/storybook/generated/feature-index.json"
       ],
       "exception": "Shared foundations or contributor guide; no single business capability owns this suite.",
-      "fingerprint": "408bb736ebe6591fb5a397db6d8b3d3d0b37741a66ed2a7edc84781c67d5c6c7",
+      "fingerprint": "284371c46ef5f5d50d24d80f4cd67a976c4a59d20c4bfd2074c1340695b83594",
       "stableId": "overview-storybook-guide",
       "sidebarTitle": "Overview/Storybook Guide"
     },
@@ -3439,14 +3439,14 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/connection-setup.md",
         "ui/src/pages/apps/app-detail/IdentitiesSection.tsx",
         "ui/storybook/stories/connection-setup/personal-connection-identity.stories.tsx"
       ],
-      "fingerprint": "c59adb2e9c7cd0d078891e86d4081c5c73658361d8e472987ea1fa756cbf50fb",
+      "fingerprint": "629876b6371ce42ee5a210a6d6cd5bbbc1057f7f4ed69738b6780e46fbd35123",
       "stableId": "reviews-pap-17835-personal-connection-identity",
       "sidebarTitle": "Apps, channels, and extensions/Connection setup/Reviews/PAP-17835 Personal connection identity"
     },
@@ -3793,7 +3793,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "d4b5ba6bce33a9657d859d3278b1f84bbc9b77cffd24e370214a0fce24c0a02b",
+      "fingerprint": "ebd9132a1f0228f775b1f382fc30dcae68e65284c8118c7b8a2eee3219c741ed",
       "stableId": "private-tasks-01-creation",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/01 Creation"
     },
@@ -3921,7 +3921,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation visibility now defaults to hiding automated independent tasks, with a show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Creation visibility now defaults to hiding automated independent tasks, with a show agent-created tasks control and inbox participation exceptions. Source alignment reviewed; these fixture stories do not establish live server pagination or authorization. The filter uses one lowercase label without helper text. All chat-channel tasks count as bot-created; the focused visibility stories cover human-initiated channel work. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master reconciliation inspected assignment-history recipient suggestions and manual-selection retention; existing stories do not establish the new assignment-history behavior. Expanded upstream verification recipes were inspected; the existing fixture scenarios do not prove the added backend handoff, workspace, recovery or authorization contracts. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Project-skill source review: maps/feature-map/projects.md. This dependency review does not add executed story coverage. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/access.md",
@@ -3939,7 +3939,7 @@
         "ui/storybook/stories/access/private-tasks/06-full-product-pages.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "4268fbf5dfd5dce43f1e9989d3cbe118d7da959ff229a6a37028911c0a80a541",
+      "fingerprint": "35fab09a4e9fb124287e73bc5f1f3def00d14ee6738bbb0239a14f9dc3107546",
       "stableId": "private-tasks-06-full-product-pages",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/06 Full product pages"
     },
@@ -3986,7 +3986,7 @@
         "ui/storybook/stories/access/private-tasks/07-user-stories.stories.tsx",
         "ui/storybook/support/private-tasks/PrivacyStory.tsx"
       ],
-      "fingerprint": "5fbe5c61f8754bc0c1db1c6a990b9c44bc5d941b7b61de77fac76300e6c42a22",
+      "fingerprint": "483a8bfae265844bfa10ebd8529572f43c23c8474d414b45ba0b663efc280dbd",
       "stableId": "private-tasks-07-user-stories",
       "sidebarTitle": "Getting started and access/Login, invitations, and access/Private tasks/07 User stories"
     },
@@ -4413,7 +4413,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ToggleOnAndOff, ManagedByCloud and SaveFailedRollsBack mount production experimental settings with simulated saves. Only the assistant-connection flag is represented, not every instance setting.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. ToggleOnAndOff, ManagedByCloud and SaveFailedRollsBack mount production experimental settings with simulated saves. Only the assistant-connection flag is represented, not every instance setting. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/gateways-profiles.md",
@@ -4422,7 +4422,7 @@
         "ui/storybook/stories/gateways-profiles/public-mcp-setting.stories.tsx",
         "maps/feature-map/instance-operations.md"
       ],
-      "fingerprint": "96735a71b1d81cbe604ed55594ee9a8a04de8f365665c33ca260fbfc84263d55",
+      "fingerprint": "06f786e22151a5e1ec113966cbe72f28841a10f4e580c73bab18733091429711",
       "stableId": "assistant-connections-experimental-setting",
       "sidebarTitle": "Apps, channels, and extensions/Tool gateways and access profiles/Assistant connections/Experimental setting"
     },
@@ -4437,7 +4437,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/DispositionRecoveryNotice.tsx",
@@ -4446,7 +4446,7 @@
         "ui/storybook/prototypes/recovery-notice/RecoveryNoticePreview.tsx",
         "ui/storybook/stories/recovery/recovery-notice-preview.stories.tsx"
       ],
-      "fingerprint": "cfd7345545112ea9ecc13035ebd187451117de5ed010f439cfb8c6962461fb3f",
+      "fingerprint": "e83bcaf099227bfcd17d571f680121b5b51d5f605d76479165000a575229a884",
       "stableId": "design-previews-recovery-notice",
       "sidebarTitle": "Projects and execution/Recovery/Design previews/Recovery notice"
     },
@@ -4534,7 +4534,7 @@
         "routines/management",
         "activity/routine-audit"
       ],
-      "purpose": "Product/Routines \u00b7 Detail (variation C)",
+      "purpose": "Product/Routines · Detail (variation C)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4553,8 +4553,8 @@
         "maps/feature-map/activity.md"
       ],
       "fingerprint": "b5e7e977d5e44f9ec4bf90ec391bdcd765a3f566a608929bf5b3a0613a5c1d90",
-      "stableId": "product-routines-\u00b7-detail-variation-c",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Detail (variation C)"
+      "stableId": "product-routines-·-detail-variation-c",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Detail (variation C)"
     },
     {
       "file": "ui/storybook/stories/routines/routine-secrets.stories.tsx",
@@ -4562,7 +4562,7 @@
         "routines/definition",
         "secrets/runtime-delivery"
       ],
-      "purpose": "Product/Routines \u00b7 Secrets tab",
+      "purpose": "Product/Routines · Secrets tab",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4577,8 +4577,8 @@
         "ui/storybook/stories/routines/routine-secrets.stories.tsx"
       ],
       "fingerprint": "b943825322412996f4e5cb22677d5e331b0b7a742762be92c6f46d364ec0b34e",
-      "stableId": "product-routines-\u00b7-secrets-tab",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 Secrets tab"
+      "stableId": "product-routines-·-secrets-tab",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · Secrets tab"
     },
     {
       "file": "ui/storybook/stories/routines/routine-webhooks-ux.stories.tsx",
@@ -4643,7 +4643,7 @@
         "routines/definition",
         "routines/management"
       ],
-      "purpose": "Product/Routines \u00b7 List (grouped cards)",
+      "purpose": "Product/Routines · List (grouped cards)",
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
@@ -4655,8 +4655,8 @@
         "ui/storybook/stories/routines/routines-list-groups.stories.tsx"
       ],
       "fingerprint": "957265bdf3d24fe7c5939c452efa40818be97c6e000b5f3896ffb6b87512048f",
-      "stableId": "product-routines-\u00b7-list-grouped-cards",
-      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines \u00b7 List (grouped cards)"
+      "stableId": "product-routines-·-list-grouped-cards",
+      "sidebarTitle": "Automation and structured work/Routines, schedules, and triggers/Product/Routines · List (grouped cards)"
     },
     {
       "file": "ui/storybook/stories/tasks/runner-activity.stories.tsx",
@@ -4697,7 +4697,7 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueProperties.tsx",
@@ -4705,7 +4705,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/scheduled-retry.stories.tsx"
       ],
-      "fingerprint": "43ef1917079251d558b3f52e5af750dfb69a54d3326d31494dbf037baeefe193",
+      "fingerprint": "f360f4207ef2b1cef18eee2307c50a7bce3a5f5bbf8966b24cd86b3ec50d21b4",
       "stableId": "product-issue-scheduled-retry-surfaces",
       "sidebarTitle": "Projects and execution/Recovery/Product/Issue Scheduled retry surfaces"
     },
@@ -4921,7 +4921,7 @@
       "status": "current",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report.",
+      "notes": "Production subjects and API shapes reviewed. Six built-browser journeys passed before this identity-preserving move; remaining state/theme review is recorded separately. Fixtures do not prove provider, authorization or persistence behavior. Reviewed keyboard focus return after connection repair; executed browser assertion is required separately. Reconciliation source review covers the empty-source guidance, routine route, source identities and ordinary-task fixtures. Other exports received no new executed coverage. Review fix: connection repair reads current source revisions and preserves the selected account across conflicts; an interactive regression covers that case. Other suites received source comparison only. Source review includes the added connection-repair verification recipe; no additional rendering coverage is claimed. Source comparison during master reconciliation preserves existing classifications. Suggested task reply assignees, linked-person avatars and additive verification recipes remain subject to their own coverage; this merge adds no live or visual proof. Source removal now uses the shared keep/delete dialog; project copies preserve access. Source review only; interactive verification is recorded in the acceptance report. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "ui/storybook/stories/skills/project-repository-skills/journeys.stories.tsx",
@@ -4944,7 +4944,7 @@
       ],
       "stableId": "skills-project-repository-skills-02-journeys",
       "sidebarTitle": "Agents and reusable capabilities/Skills and Skill Studio/Project repository skills/02 Journeys",
-      "fingerprint": "af7731483cce00ba879aff1b3108d70e3206aa892387cc567b59095784d4e8d3"
+      "fingerprint": "4e081c3b158ee168f2c1b139c344bf07dc8a6c8a52dceb70dd3d16600df1d894"
     },
     {
       "file": "ui/storybook/stories/chat-channels/slack-automatic-setup.stories.tsx",
@@ -4956,7 +4956,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -4967,7 +4967,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/slack-automatic-setup.stories.tsx"
       ],
-      "fingerprint": "c2834bd08deccae989b994c0344d94c10502ab49d4fda8fe866662f05b432761",
+      "fingerprint": "3d416ae6918c0c7e36478a663a87bf8352ae3cf046d35ffeb50bcf6670b2977c",
       "stableId": "connections-slack-automatic-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/Slack/Automatic setup"
     },
@@ -5025,7 +5025,7 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases.",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Task-workspace reconciliation reviewed the added connection/destination-default recipe; these unchanged setup, identity or conversation examples do not establish default selection or new-task inheritance. Source-only review: withdrawn connection requests use the terminal renderer; original classifications retained. The regression failed before the fix and the interaction/Sources UI/API suites pass 70 cases. Source-only reconciliation with master 1e64c875: inherited recipes now document liveness, Telegram scheduling, and automatic saved-work recovery. Task subjects omit the obsolete shutdown form; existing fixture classifications and IDs remain. No additional runtime or visual proof is inferred.",
       "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/chat-channels.md",
@@ -5036,7 +5036,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/chat-channels/slack-managed-setup.stories.tsx"
       ],
-      "fingerprint": "05adf289bfd58f9275de059e48702b05d4d4024677c36d3d00c83c62de73fee6",
+      "fingerprint": "58fde58e6bd2a031923dc7950bbcfd345ff6e4e1a1e8710e57be5a7b55863159",
       "stableId": "connections-slack-managed-setup",
       "sidebarTitle": "Apps, channels, and extensions/External chat and email/Connections/Slack/Managed setup"
     },
@@ -5070,8 +5070,8 @@
       "status": "unreviewed",
       "implementation": "production",
       "boundary": "fixtures",
-      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Source review confirms ordinary recovery fixtures remain applicable after the native-owner resolution gate; native-owner stop verification has its own suite. Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/IssueBlockedNotice.tsx",
@@ -5080,7 +5080,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/recovery/source-issue-recovery.stories.tsx"
       ],
-      "fingerprint": "1b6e44d4fb4ab7e2e63fb8816aa31fbe3267e10647f238ed82e6591a82d2e918",
+      "fingerprint": "949814263788ae0e3501b67bbd26118f150db219fc04e5cf653f18dd345ec8d5",
       "stableId": "paperclip-source-issue-recovery",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source Issue Recovery"
     },
@@ -5095,14 +5095,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/SourceResolvedFoldBadge.tsx",
         "ui/src/components/SourceResolvedFoldCallout.tsx",
         "ui/storybook/stories/recovery/source-resolved-fold.stories.tsx"
       ],
-      "fingerprint": "3af3daff618b8c278bcbf10ba3e5d081d87240c680758ccb3078eccdf9283122",
+      "fingerprint": "70cab38574df19267e35ab13c10c4a3eea444bb3b6e72c81f739f21cfc519df0",
       "stableId": "paperclip-source-resolved-fold",
       "sidebarTitle": "Projects and execution/Recovery/Paperclip/Source-resolved Fold"
     },
@@ -5183,7 +5183,7 @@
         "ui/storybook/fixtures/paperclipData.ts",
         "ui/storybook/stories/tasks/successful-run-handoff.stories.tsx"
       ],
-      "fingerprint": "2a7db108d46f35f37dd9346d2fc039e61dff8c688e09d9ed7b0e777e7f79af0d",
+      "fingerprint": "27ad7c3c2b09acf5ac07163d44026511bd0c2b806387b591fef5fca343b0c63b",
       "stableId": "paperclip-successful-run-handoff",
       "sidebarTitle": "Tasks and conversations/Task creation and lifecycle/Paperclip/Successful Run Handoff"
     },
@@ -5636,14 +5636,14 @@
       "implementation": "production",
       "boundary": "fixtures",
       "notes": "Shipped subjects identified through imports and local wrappers; full state, fixture-contract and route parity remain unreviewed. Master source review preserves additive verification recipes. No new rendering or runtime proof.",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-10-13",
       "sources": [
         "maps/feature-map/recovery.md",
         "ui/src/components/WorkspaceBaseRefRecoveryNotice.tsx",
         "ui/storybook/stories/recovery/workspace-branch-recovery/01-component.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "77f708cc660f6829cadaffa6139930a102109976c41f7e24e2f662ed687d2412",
+      "fingerprint": "eeaa7044a1d5a2b5355a8ac2375820e3611c71920e88c04d87e5d7ce64ed929a",
       "stableId": "workspace-branch-recovery-01-repair-card",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/01 Repair card"
     },
@@ -5668,7 +5668,7 @@
         "ui/storybook/stories/recovery/workspace-branch-recovery/02-task-journey.stories.tsx",
         "ui/storybook/support/workspace-branch-recovery/fixtures.ts"
       ],
-      "fingerprint": "5eedfcb5738c125d3fa8ed7dc4b3d20a300b216de51f1ae5e58ede98d38fd75c",
+      "fingerprint": "f8a090cfdbadfe77d8ee064b99fc11b8f5e097d4e72173df2496280ef52152d1",
       "stableId": "workspace-branch-recovery-02-task-journey",
       "sidebarTitle": "Projects and execution/Recovery/Workspace branch recovery/02 Task journey"
     },
@@ -5732,6 +5732,53 @@
       "fingerprint": "b9cd51c58b31ab445e2997b9f2a23c7a7b3f4ecd7b6dd39fc0f35ae0779311df",
       "stableId": "workspaces-service-control-bar",
       "sidebarTitle": "Projects and execution/Workspaces, services, and files/Workspaces/Service control bar"
+    },
+    {
+      "file": "ui/storybook/stories/recovery/workspace-finalization-recovery/01-notice.stories.tsx",
+      "capabilities": [
+        "recovery/workspace",
+        "recovery/source-action"
+      ],
+      "purpose": "Workspace finalization recovery/01 Notice",
+      "status": "current",
+      "implementation": "production",
+      "boundary": "fixtures",
+      "notes": "Production quiet status; automatic restoration, legacy operator fallback, queued and resolved states. No task repair form, process details or API simulation. Provider proof is verified by separate server and harness tests.",
+      "reviewedAt": "2026-10-13",
+      "sources": [
+        "maps/feature-map/recovery.md",
+        "ui/src/components/WorkspaceExportRecovery.tsx",
+        "ui/storybook/stories/recovery/workspace-finalization-recovery/01-notice.stories.tsx",
+        "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
+      ],
+      "fingerprint": "45bf8c793c91362634b7ce32ed0ec2007861b7fefbfd0e2da692c3dc804a53c9",
+      "stableId": "workspace-finalization-recovery-01-notice",
+      "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/01 Notice"
+    },
+    {
+      "file": "ui/storybook/stories/recovery/workspace-finalization-recovery/02-task-journey.stories.tsx",
+      "capabilities": [
+        "recovery/workspace",
+        "recovery/source-action"
+      ],
+      "purpose": "Workspace finalization recovery/02 Task journey",
+      "status": "unreviewed",
+      "implementation": "mixed",
+      "boundary": "fixtures",
+      "notes": "Production shell, status, bubbles and composer in a local conversation composition; shows restoration and saved work waiting for confirmation. Fixture messages; not the shipped task page or live provider acceptance.",
+      "reviewedAt": "2026-10-13",
+      "sources": [
+        "maps/feature-map/recovery.md",
+        "ui/src/components/Layout.tsx",
+        "ui/src/components/WorkspaceExportRecovery.tsx",
+        "ui/src/components/task-chat/TaskChatBubble.tsx",
+        "ui/src/components/task-chat/TaskChatComposer.tsx",
+        "ui/storybook/stories/recovery/workspace-finalization-recovery/02-task-journey.stories.tsx",
+        "ui/storybook/support/workspace-finalization-recovery/fixtures.tsx"
+      ],
+      "fingerprint": "aa76cd28dde8d50abd208b34283249170f3a85435ba82fff169a1c33433dfca1",
+      "stableId": "workspace-finalization-recovery-02-task-journey",
+      "sidebarTitle": "Projects and execution/Recovery/Workspace finalization recovery/02 Task journey"
     }
   ]
 }
