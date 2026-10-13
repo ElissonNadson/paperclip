@@ -2,9 +2,7 @@
 
 Reviewed 2026-10-13 against source commit `5e8e992df2b3d71f82091b7bbf29fd482854d9f5` (merged #16154, including #16153 task notifications).
 
-Catalog inventory was reconciled with master `252d9b5077f` on 2026-10-13. The original verification-route review and its not-run evidence remain unchanged.
-
-The catalog has 225 authored suites, 2,224 authored story IDs and 175 feature-map capabilities. Of those capabilities, 60 have no associated example suite: **49 need authored UI examples**, **8 need CLI/operator verification**, and **3 primarily need real browser verification**. Generated Overview pages and guides do not count as examples.
+The catalog has 223 authored suites, 2,212 authored story IDs and 175 feature-map capabilities. Of those capabilities, 60 have no associated example suite: **49 need authored UI examples**, **8 need CLI/operator verification**, and **3 primarily need real browser verification**. Generated Overview pages and guides do not count as examples.
 
 This is step 2 of the Storybook reconciliation: choose and record the verification surface. It is a source classification of the 60 unassociated capabilities, not a full parity review of all suites or a live verification pass. All execution in this inventory is **not run**; test links identify existing starting points, not new passing evidence or exhaustive coverage. The 115 capabilities with example links still need production tests for their non-visual contracts.
 
